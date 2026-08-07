@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <title>Control y Seguimiento - Grupo Pequeño</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f4f7fc;
+            padding: 16px;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* ===== BOTONES ===== */
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s, transform 0.1s;
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary {
+            background: #1e4a7a;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #14355c;
+        }
+
+        .btn-success {
+            background: #0b6e4f;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #09573e;
+        }
+
+        .btn-danger {
+            background: #b91c1c;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #991515;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #94a3b8;
+            color: #334155;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+        }
+
+        .btn-warning {
+            background: #d97706;
+            color: white;
+        }
+        .btn-warning:hover {
+            background: #b45309;
+        }
+
+        /* ===== TARJETAS ===== */
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+            transition: box-shadow 0.2s;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: #0b2b4a;
+            border-bottom: 2px solid #e9edf2;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card h2 span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: #64748b;
+            margin-left: auto;
+        }
+
+        /* ===== HEADER ===== */
+        .report-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+
+        .report-header .titulo-group h1 {
+            font-size: 1.5rem;
+            color: #0b2b4a;
+            margin: 0;
+        }
+
+        .report-header .titulo-group .subtitle {
+            color: #475569;
+            font-size: 0.95rem;
+            margin-top: 2px;
+        }
+
+        /* ===== JERARQUÍA ===== */
+        .jerarquia-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            background: #f8fafc;
+            padding: 16px 18px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 16px;
+        }
+
+        .jerarquia-box .campo {
+            flex: 1 1 180px;
+        }
+
+        .jerarquia-box .campo label {
+            font-weight: 600;
+            display: block;
+            font-size: 0.85rem;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .jerarquia-box .campo select,
+        .jerarquia-box .campo input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .jerarquia-box .campo input[readonly] {
+            background: #e9edf2;
+            font-weight: 500;
+        }
+
+        /* ===== METAS ===== */
+        .grid-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .meta-box {
+            background: #f1f5f9;
+            padding: 14px 16px;
+            border-radius: 8px;
+            border-left: 4px solid #1e4a7a;
+        }
+
+        .meta-box label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+            color: #1e293b;
+        }
+
+        .meta-box input,
+        .meta-box select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .meta-box input[readonly] {
+            background: #e9edf2;
+            font-weight: 600;
+        }
+
+        /* ===== TABLA ===== */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 780px;
+        }
+
+        th,
+        td {
+            border: 1px solid #e2e8f0;
+            padding: 6px 4px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th {
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 8px 4px;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .col-semilla th {
+            background-color: #0b6e4f;
+        }
+        .col-estado th {
+            background-color: #1a5a8c;
+        }
+        .col-bautismo th {
+            background-color: #b45309;
+        }
+        .col-encuentro th {
+            background-color: #6d28d9;
+        }
+        .col-lanzamiento th {
+            background-color: #b91c1c;
+        }
+        .col-charlas th {
+            background-color: #9d174d;
+        }
+        .col-proposito th {
+            background-color: #0f766e;
+        }
+
+        td.semilla-cell select {
+            background-color: #ecfdf5;
+            border-color: #0b6e4f;
+        }
+        td.estado-cell select {
+            background-color: #eff6ff;
+            border-color: #1a5a8c;
+        }
+        td.bautismo-cell select {
+            background-color: #fffbeb;
+            border-color: #b45309;
+        }
+        td.encuentro-cell select {
+            background-color: #f5f3ff;
+            border-color: #6d28d9;
+        }
+        td.lanzamiento-cell select {
+            background-color: #fef2f2;
+            border-color: #b91c1c;
+        }
+        td.charlas-cell select {
+            background-color: #fdf2f8;
+            border-color: #9d174d;
+        }
+        td.proposito-cell select {
+            background-color: #f0fdfa;
+            border-color: #0f766e;
+        }
+
+        td select {
+            width: 100%;
+            padding: 4px 2px;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.8rem;
+            background: white;
+            min-width: 70px;
+        }
+
+        td input[type="text"] {
+            width: 100%;
+            padding: 6px 4px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            min-width: 80px;
+        }
+
+        .row-number {
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .btn-eliminar-fila {
+            background: none;
+            border: none;
+            color: #b91c1c;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 4px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        .btn-eliminar-fila:hover {
+            background: #fee2e2;
+        }
+
+        /* ===== TOTALES (vista normal) ===== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px 8px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #334155;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 4px;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .stat-card .hint {
+            font-size: 0.6rem;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .stat-semilla .number {
+            color: #0b6e4f;
+        }
+        .stat-estado .number {
+            color: #1a5a8c;
+        }
+        .stat-bautismo .number {
+            color: #b45309;
+        }
+        .stat-encuentro .number {
+            color: #6d28d9;
+        }
+        .stat-lanzamiento .number {
+            color: #b91c1c;
+        }
+        .stat-charlas .number {
+            color: #9d174d;
+        }
+        .stat-proposito .number {
+            color: #0f766e;
+        }
+
+        /* ===== VISTA ADMIN ===== */
+        #vistaAdmin {
+            display: none;
+        }
+
+        #vistaAdmin .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        #vistaAdmin .admin-header h2 {
+            color: #0b2b4a;
+            margin: 0;
+        }
+
+        #vistaAdmin .admin-header .admin-user {
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .filtro-admin {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filtro-admin label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .filtro-admin select {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            background: white;
+            font-size: 0.95rem;
+            min-width: 200px;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 24px 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 480px;
+            max-height: 80vh;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 16px;
+            top: 12px;
+            font-size: 28px;
+            font-weight: 300;
+            color: #94a3b8;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: #1e293b;
+        }
+
+        .modal-title {
+            color: #0b2b4a;
+            font-size: 1.2rem;
+            margin: 0 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e9edf2;
+        }
+
+        .modal-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .modal-list li {
+            padding: 10px 8px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px 12px;
+            font-size: 0.95rem;
+        }
+
+        .modal-list li .nombre {
+            font-weight: 500;
+        }
+
+        .modal-list li .jerarquia {
+            font-size: 0.75rem;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 2px 10px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .modal-list li .padre {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+
+        /* ===== LOGIN ===== */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .login-form label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .login-form input {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .login-form .btn {
+            align-self: center;
+            min-width: 120px;
+        }
+
+        .login-error {
+            color: #b91c1c;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            body {
+                padding: 10px;
+            }
+            .report-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 14px;
+            }
+            .jerarquia-box {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .jerarquia-box .campo {
+                flex: 1 1 auto;
+            }
+            .card {
+                padding: 14px;
+            }
+            .grid-meta {
+                grid-template-columns: 1fr;
+            }
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .stat-card .number {
+                font-size: 1.4rem;
+            }
+            .table-wrapper {
+                margin: 0 -10px;
+            }
+            table {
+                font-size: 0.75rem;
+                min-width: 700px;
+            }
+            th,
+            td {
+                padding: 4px 2px;
+            }
+            td select {
+                font-size: 0.7rem;
+                min-width: 60px;
+            }
+            td input[type="text"] {
+                font-size: 0.7rem;
+                min-width: 60px;
+            }
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            .modal-content {
+                padding: 16px;
+                margin: 10% auto;
+                width: 95%;
+            }
+            #vistaAdmin .admin-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .filtro-admin {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filtro-admin select {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stat-card .label {
+                font-size: 0.65rem;
+            }
+            .stat-card .number {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: white;
+                padding: 0.2in;
+                font-size: 9pt;
+            }
+            .btn-container,
+            .btn-eliminar-fila,
+            .hint,
+            .close-btn,
+            .no-print {
+                display: none !important;
+            }
+            .card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+            }
+            .stat-card {
+                border: 1px solid #ccc;
+                background: white !important;
+            }
+            .stat-card .number {
+                text-decoration: none;
+                color: black !important;
+            }
+            table {
+                font-size: 8pt;
+                min-width: auto;
+            }
+            th {
+                background-color: #333 !important;
+                color: white !important;
+            }
+            td select,
+            td input {
+                border: none !important;
+                background: transparent !important;
+                font-weight: bold;
+            }
+            .report-header .remitente {
+                border: 1px solid #ccc;
+                background: #f9f9f9;
+            }
+            #vistaAdmin {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- BOTONES DE ACCIÓN -->
+        <div class="btn-container no-print">
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+            <button class="btn btn-success" id="btnAgregar">➕ Agregar integrante</button>
+            <button class="btn btn-danger" id="btnEliminar">➖ Eliminar último</button>
+            <button class="btn btn-warning" id="btnGuardarReporte">💾 Guardar reporte</button>
+            <button class="btn btn-outline" id="btnAdmin">🔐 Admin</button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VISTA NORMAL (REPORTE) -->
+        <!-- ============================================================ -->
+        <div id="vistaNormal">
+
+            <!-- ENCABEZADO CON REMITENTE Y JERARQUÍA -->
+            <div class="report-header">
+                <div class="titulo-group">
+                    <h1>📋 Control y Seguimiento de Grupo Pequeño</h1>
+                    <div class="subtitle">Registro interactivo con trazabilidad jerárquica</div>
+                </div>
+            </div>
+
+            <!-- JERARQUÍA DEL GRUPO REMITENTE -->
+            <div class="card">
+                <h2>📍 Datos del Grupo Remitente</h2>
+                <div class="jerarquia-box">
+                    <div class="campo">
+                        <label for="nodoSelect">✏️ Grupo Remitente (selecciona tu nodo)</label>
+                        <select id="nodoSelect">
+                            <!-- opciones generadas por JS -->
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label>👆 Padre Directo</label>
+                        <input type="text" id="padreDirecto" readonly placeholder="Selecciona un nodo" />
+                    </div>
+                    <div class="campo">
+                        <label>🔷 Red Principal (Raíz)</label>
+                        <input type="text" id="redPrincipal" readonly placeholder="Selecciona un nodo" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 1: METAS Y FECHAS -->
+            <div class="card">
+                <h2>1. Actividades Espirituales y Metas de Amigos</h2>
+                <div class="grid-meta">
+                    <div class="meta-box">
+                        <label>📅 Día de Salir a Evangelizar</label>
+                        <input type="date" id="fechaEvangelismo" />
+                    </div>
+                    <div class="meta-box">
+                        <label>📅 Día del Amigo Celular</label>
+                        <input type="date" id="fechaAmigoCelular" />
+                        <label style="margin-top:10px;">Meta de Amigos (Celular)</label>
+                        <select id="metaAmigosCelular">
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option>
+                            <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                            <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+                            <option value="9">9</option><option value="10">10+</option>
+                        </select>
+                    </div>
+                    <div class="meta-box">
+                        <label>⛪ Día del Amigo en la Iglesia (30 de Agosto)</label>
+                        <input type="text" value="30 de Agosto" readonly />
+                        <label style="margin-top:10px;">Meta de Amigos a Llevar</label>
+                        <select id="metaAmigosIglesia">
+                            <option value="0">0</option><option value="1">1</option><option value="2">2</option>
+                            <option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                            <option value="6">6</option><option value="7">7</option><option value="8">8</option>
+                            <option value="9">9</option><option value="10">10+</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: TABLA DE INTEGRANTES -->
+            <div class="card">
+                <h2>
+                    2. Integrantes del Grupo
+                    <span id="contadorFilas">(4 personas)</span>
+                </h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:30px; background:#475569;">#</th>
+                                <th style="min-width:140px; background:#475569;">Nombre y Apellido</th>
+                                <th class="col-semilla">Semilla</th>
+                                <th class="col-estado">Estado Civil</th>
+                                <th class="col-bautismo">Bautismo</th>
+                                <th class="col-encuentro">Encuentro</th>
+                                <th class="col-lanzamiento">Lanzamiento</th>
+                                <th class="col-charlas">Charlas Pareja</th>
+                                <th class="col-proposito">Propósito</th>
+                                <th style="width:30px; background:#475569; min-width:30px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaIntegrantes">
+                            <!-- Filas generadas por JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: TOTALES -->
+            <div class="card">
+                <h2>
+                    3. Totales Calculados Automáticamente
+                    <span style="font-size:0.75rem; font-weight:400; color:#64748b;">💡 Haz clic en cualquier tarjeta para ver la lista</span>
+                </h2>
+                <div class="summary-grid" id="summaryGrid">
+                    <!-- Generado por JS -->
+                </div>
+            </div>
+        </div>
+        <!-- FIN VISTA NORMAL -->
+
+        <!-- ============================================================ -->
+        <!-- VISTA ADMIN -->
+        <!-- ============================================================ -->
+        <div id="vistaAdmin">
+            <div class="admin-header">
+                <h2>📊 Panel de Administración - Totales Consolidados</h2>
+                <div>
+                    <span class="admin-user" id="adminUserDisplay">👤 admin</span>
+                    <button class="btn btn-outline" id="btnCerrarSesion" style="margin-left:12px;">Cerrar sesión</button>
+                </div>
+            </div>
+
+            <!-- Filtro por Red Principal -->
+            <div class="filtro-admin">
+                <label for="filtroRaiz">🔷 Filtrar por Red Principal (Raíz):</label>
+                <select id="filtroRaiz">
+                    <option value="__TODAS__">📊 Todas las redes</option>
+                    <!-- opciones generadas por JS -->
+                </select>
+            </div>
+
+            <div class="card">
+                <h2>Totales de todos los reportes guardados (filtrados)</h2>
+                <div class="summary-grid" id="adminSummaryGrid">
+                    <!-- Generado por JS -->
+                </div>
+                <p style="margin-top:16px; font-size:0.85rem; color:#64748b;">
+                    💡 Haz clic en cualquier tarjeta para ver los nombres, su padre directo y la raíz.
+                </p>
+            </div>
+
+            <div style="text-align:center; margin-top:16px;">
+                <button class="btn btn-outline" id="btnVolverNormal">← Volver al reporte</button>
+            </div>
+        </div>
+        <!-- FIN VISTA ADMIN -->
+
+        <!-- MODAL DE LISTA DE PERSONAS (compartido) -->
+        <div id="modalNombres" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="modalClose">&times;</span>
+                <h3 class="modal-title" id="modalTitulo">Lista de Personas</h3>
+                <ul class="modal-list" id="modalListaPersonas"></ul>
+            </div>
+        </div>
+
+        <!-- MODAL DE LOGIN -->
+        <div id="modalLogin" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" id="loginClose">&times;</span>
+                <h3 class="modal-title">🔐 Acceso Administrador</h3>
+                <form id="loginForm" class="login-form">
+                    <div>
+                        <label for="loginUser">Usuario</label>
+                        <input type="text" id="loginUser" placeholder="admin" />
+                    </div>
+                    <div>
+                        <label for="loginPass">Clave</label>
+                        <input type="password" id="loginPass" placeholder="pastor" />
+                    </div>
+                    <div id="loginError" class="login-error"></div>
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        //  ESTRUCTURA JERÁRQUICA (ACTUALIZADA CON LAS 4 REDES)
+        // ============================================================
+        const nodos = [
+            // Red 1: Andy Estrada y Griselda Garcia (Raíz)
+            { id: 'node_1', nombre: 'Andy Estrada y Griselda Garcia', etiqueta: 'Raíz', parent_id: null },
+            { id: 'node_2', nombre: 'Erick Sanchez y Vanessa Garcia', etiqueta: 'Célula directa', parent_id: 'node_1' },
+            { id: 'node_3', nombre: 'Esteban y Sara', etiqueta: 'Célula directa', parent_id: 'node_1' },
+            { id: 'node_4', nombre: 'Sergio Sánchez y Kelly Garcia', etiqueta: 'Célula directa', parent_id: 'node_1' },
+
+            // Red 2: David y Brenda Lepez (Raíz)
+            { id: 'node_5', nombre: 'David y Brenda Lepez', etiqueta: 'Raíz', parent_id: null },
+            { id: 'node_6', nombre: 'Álvaro y Sandra Mazariego', etiqueta: 'Célula directa', parent_id: 'node_5' },
+            { id: 'node_7', nombre: 'Grace & Valery', etiqueta: 'Célula directa (Pre Teen)', parent_id: 'node_5' },
+            { id: 'node_8', nombre: 'Jorge y Lorena Mazariego', etiqueta: 'Célula directa', parent_id: 'node_5' },
+            { id: 'node_9', nombre: 'Frank y Celeste', etiqueta: 'Sub-célula', parent_id: 'node_8' },
+            { id: 'node_10', nombre: 'Juan Carlos Aguirre y Blanca Amaya', etiqueta: 'Célula directa', parent_id: 'node_5' },
+
+            // Red 3: Francisco y Delmy Sánchez (Raíz)
+            { id: 'node_11', nombre: 'Francisco y Delmy Sánchez', etiqueta: 'Raíz', parent_id: null },
+            { id: 'node_12', nombre: 'Hermelindo y Lizeth Tut', etiqueta: 'Célula directa', parent_id: 'node_11' },
+
+            // Red 4: Nelson y Mariela Garcia (Raíz)
+            { id: 'node_13', nombre: 'Nelson y Mariela Garcia', etiqueta: 'Raíz', parent_id: null },
+            { id: 'node_14', nombre: 'Carmen Banegas y Eliazar Beb', etiqueta: 'Célula directa', parent_id: 'node_13' },
+            { id: 'node_15', nombre: 'Hugo y Anna Maria González', etiqueta: 'Célula directa', parent_id: 'node_13' },
+            { id: 'node_16', nombre: 'Onesimo Pop y Jakelin Cucul', etiqueta: 'Sub-célula', parent_id: 'node_15' },
+            { id: 'node_17', nombre: 'Willian Cucul y Rosa Cruz', etiqueta: 'Sub-célula', parent_id: 'node_15' },
+            { id: 'node_18', nombre: 'Kevin Valenzuela y Elena Cucul', etiqueta: 'Sub-célula', parent_id: 'node_17' },
+            { id: 'node_19', nombre: 'Martha Moran y Luis Och', etiqueta: 'Célula directa', parent_id: 'node_13' },
+            { id: 'node_20', nombre: 'Mauricio Alarcón y Filogenia', etiqueta: 'Célula directa', parent_id: 'node_13' },
+            { id: 'node_21', nombre: 'Yanira Villeda', etiqueta: 'Célula directa', parent_id: 'node_13' }
+        ];
+
+        // ============================================================
+        //  FUNCIONES DE AYUDA PARA JERARQUÍA
+        // ============================================================
+        function getNodoById(id) {
+            return nodos.find(n => n.id === id);
+        }
+
+        function getPadreYRaiz(nodoId) {
+            const nodo = getNodoById(nodoId);
+            if (!nodo) return { padre: null, raiz: null };
+            let padre = null;
+            if (nodo.parent_id) {
+                padre = getNodoById(nodo.parent_id);
+            }
+            let actual = nodo;
+            let raiz = null;
+            while (actual) {
+                if (actual.parent_id === null) {
+                    raiz = actual;
+                    break;
+                }
+                actual = getNodoById(actual.parent_id);
+            }
+            return { padre, raiz };
+        }
+
+        function getRaices() {
+            return nodos.filter(n => n.parent_id === null);
+        }
+
+        function getNodosPorRaiz(raizId) {
+            const resultado = [];
+            const raiz = getNodoById(raizId);
+            if (!raiz) return resultado;
+            const cola = [raiz];
+            while (cola.length > 0) {
+                const actual = cola.shift();
+                resultado.push(actual);
+                const hijos = nodos.filter(n => n.parent_id === actual.id);
+                cola.push(...hijos);
+            }
+            return resultado;
+        }
+
+        // ============================================================
+        //  CONFIGURACIÓN GENERAL
+        // ============================================================
+        const MIN_FILAS = 4;
+        const MAX_FILAS = 14;
+        const STORAGE_KEY = 'reportes_grupo_pequeno';
+
+        // ===== NUEVAS CONSTANTES DE SUPABASE (agregadas según solicitud) =====
+        const SUPABASE_URL = 'https://kguwytcdwtuxoeqklqueu.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
+        // ===================================================================
+
+        const categoriaClase = {
+            con_semilla: 'stat-semilla',
+            sin_semilla: 'stat-semilla',
+            graduado_semilla: 'stat-semilla',
+            casado: 'stat-estado',
+            acompanado: 'stat-estado',
+            soltero: 'stat-estado',
+            bautizado: 'stat-bautismo',
+            no_bautizado: 'stat-bautismo',
+            con_encuentro: 'stat-encuentro',
+            sin_encuentro: 'stat-encuentro',
+            con_lanzamiento: 'stat-lanzamiento',
+            falta_lanzamiento: 'stat-lanzamiento',
+            sin_charlas: 'stat-charlas',
+            en_proposito: 'stat-proposito',
+            sin_proposito: 'stat-proposito'
+        };
+
+        const etiquetasTotales = {
+            con_semilla: 'Con Semilla / Cursando',
+            sin_semilla: 'Sin Semilla / Para Integrar',
+            graduado_semilla: 'Graduados de Semilla',
+            casado: 'Casados',
+            acompanado: 'Acompañados (Sin Casar)',
+            soltero: 'Solteros',
+            bautizado: 'Bautizados',
+            no_bautizado: 'No Bautizados',
+            con_encuentro: 'Con Encuentro',
+            sin_encuentro: 'Sin Encuentro',
+            con_lanzamiento: 'Con Lanzamiento',
+            falta_lanzamiento: 'Falta Lanzamiento',
+            sin_charlas: 'Parejas Sin Charlas',
+            en_proposito: 'En Propósito',
+            sin_proposito: 'Sin Propósito'
+        };
+
+        const criterioMap = {
+            'con_semilla': 'semilla',
+            'sin_semilla': 'semilla',
+            'graduado_semilla': 'semilla',
+            'casado': 'estado_civil',
+            'acompanado': 'estado_civil',
+            'soltero': 'estado_civil',
+            'bautizado': 'bautismo',
+            'no_bautizado': 'bautismo',
+            'con_encuentro': 'encuentro',
+            'sin_encuentro': 'encuentro',
+            'con_lanzamiento': 'lanzamiento',
+            'falta_lanzamiento': 'lanzamiento',
+            'sin_charlas': 'charlas',
+            'en_proposito': 'proposito',
+            'sin_proposito': 'proposito'
+        };
+
+        // ============================================================
+        //  ESTADO DE LA VISTA NORMAL
+        // ============================================================
+        let filasActuales = MIN_FILAS;
+
+        // ============================================================
+        //  FUNCIONES DE LA TABLA (vista normal)
+        // ============================================================
+
+        function generarFilaHTML(index) {
+            const i = index;
+            return `
+                <tr id="row_${i}">
+                    <td class="row-number">${i}</td>
+                    <td><input type="text" id="nombre_${i}" placeholder="Persona ${i}" /></td>
+                    <td class="semilla-cell">
+                        <select class="calc" data-index="${i}" data-campo="semilla">
+                            <option value="sin_semilla">Sin Semilla</option>
+                            <option value="con_semilla">Con Semilla</option>
+                            <option value="graduado_semilla">Graduado Semilla</option>
+                        </select>
+                    </td>
+                    <td class="estado-cell">
+                        <select class="calc" data-index="${i}" data-campo="estado_civil">
+                            <option value="soltero">Soltero/a</option>
+                            <option value="casado">Casado/a</option>
+                            <option value="acompanado">Acompañado/a</option>
+                        </select>
+                    </td>
+                    <td class="bautismo-cell">
+                        <select class="calc" data-index="${i}" data-campo="bautismo">
+                            <option value="no_bautizado">No Bautizado</option>
+                            <option value="bautizado">Bautizado</option>
+                        </select>
+                    </td>
+                    <td class="encuentro-cell">
+                        <select class="calc" data-index="${i}" data-campo="encuentro">
+                            <option value="sin_encuentro">Sin Encuentro</option>
+                            <option value="con_encuentro">Con Encuentro</option>
+                        </select>
+                    </td>
+                    <td class="lanzamiento-cell">
+                        <select class="calc" data-index="${i}" data-campo="lanzamiento">
+                            <option value="falta_lanzamiento">Falta Lanzamiento</option>
+                            <option value="con_lanzamiento">Pasó Lanzamiento</option>
+                        </select>
+                    </td>
+                    <td class="charlas-cell">
+                        <select class="calc" data-index="${i}" data-campo="charlas">
+                            <option value="na">N/A (Solteros)</option>
+                            <option value="sin_charlas">Pareja Sin Charlas</option>
+                            <option value="con_charlas">Charlas Completas</option>
+                        </select>
+                    </td>
+                    <td class="proposito-cell">
+                        <select class="calc" data-index="${i}" data-campo="proposito">
+                            <option value="sin_proposito">Sin Propósito</option>
+                            <option value="en_proposito">En Propósito</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn-eliminar-fila no-print" data-index="${i}" title="Eliminar esta persona">✕</button>
+                    </td>
+                </tr>
+            `;
+        }
+
+        function renderizarTabla() {
+            const tbody = document.getElementById('tablaIntegrantes');
+            let html = '';
+            for (let i = 1; i <= filasActuales; i++) {
+                html += generarFilaHTML(i);
+            }
+            tbody.innerHTML = html;
+            actualizarContador();
+            document.querySelectorAll('.btn-eliminar-fila').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const idx = parseInt(this.dataset.index);
+                    eliminarFila(idx);
+                });
+            });
+            calcularTotales();
+        }
+
+        function actualizarContador() {
+            document.getElementById('contadorFilas').textContent = `(${filasActuales} personas)`;
+        }
+
+        function agregarFila() {
+            if (filasActuales >= MAX_FILAS) {
+                alert(`Máximo de ${MAX_FILAS} integrantes alcanzado.`);
+                return;
+            }
+            filasActuales++;
+            renderizarTabla();
+            const tbody = document.getElementById('tablaIntegrantes');
+            const lastRow = tbody.lastElementChild;
+            if (lastRow) lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function eliminarFila(index) {
+            if (filasActuales <= MIN_FILAS) {
+                alert(`Mínimo de ${MIN_FILAS} integrantes requerido.`);
+                return;
+            }
+            const row = document.getElementById(`row_${index}`);
+            if (row) {
+                row.remove();
+                filasActuales--;
+                actualizarContador();
+                calcularTotales();
+                document.querySelectorAll('.btn-eliminar-fila').forEach(btn => {
+                    btn.removeEventListener('click', eliminarFilaHandler);
+                    btn.addEventListener('click', eliminarFilaHandler);
+                });
+            }
+        }
+
+        function eliminarFilaHandler(e) {
+            const idx = parseInt(this.dataset.index);
+            eliminarFila(idx);
+        }
+
+        function eliminarUltimaFila() {
+            if (filasActuales <= MIN_FILAS) {
+                alert(`Mínimo de ${MIN_FILAS} integrantes requerido.`);
+                return;
+            }
+            const tbody = document.getElementById('tablaIntegrantes');
+            const lastRow = tbody.lastElementChild;
+            if (lastRow) {
+                const idx = parseInt(lastRow.id.split('_')[1]);
+                eliminarFila(idx);
+            }
+        }
+
+        // ============================================================
+        //  CÁLCULO DE TOTALES (vista normal)
+        // ============================================================
+
+        function calcularTotales() {
+            const conteos = {
+                con_semilla: 0,
+                sin_semilla: 0,
+                graduado_semilla: 0,
+                casado: 0,
+                acompanado: 0,
+                soltero: 0,
+                bautizado: 0,
+                no_bautizado: 0,
+                con_encuentro: 0,
+                sin_encuentro: 0,
+                con_lanzamiento: 0,
+                falta_lanzamiento: 0,
+                sin_charlas: 0,
+                en_proposito: 0,
+                sin_proposito: 0
+            };
+
+            const selects = document.querySelectorAll('#tablaIntegrantes .calc');
+            selects.forEach(sel => {
+                const val = sel.value;
+                if (conteos.hasOwnProperty(val)) {
+                    conteos[val]++;
+                }
+            });
+
+            const grid = document.getElementById('summaryGrid');
+            let html = '';
+            for (const [key, label] of Object.entries(etiquetasTotales)) {
+                const count = conteos[key] || 0;
+                const clase = categoriaClase[key] || '';
+                html += `
+                    <div class="stat-card ${clase}" onclick="mostrarPersonas('${key}', '${label}')">
+                        <div class="label">${label}</div>
+                        <div class="number">${count}</div>
+                        <div class="hint">Clic para ver nombres</div>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
+        // ============================================================
+        //  MODAL DE LISTA (vista normal y admin)
+        // ============================================================
+
+        function mostrarPersonas(criterio, titulo) {
+            const esAdmin = document.getElementById('vistaAdmin').style.display === 'block';
+            let personas = [];
+
+            if (esAdmin) {
+                const filtroRaiz = document.getElementById('filtroRaiz').value;
+                let reportes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+                if (filtroRaiz !== '__TODAS__') {
+                    const nodosRaiz = getNodosPorRaiz(filtroRaiz);
+                    const idsRaiz = nodosRaiz.map(n => n.id);
+                    reportes = reportes.filter(r => idsRaiz.includes(r.nodoId));
+                }
+
+                reportes.forEach(reporte => {
+                    reporte.integrantes.forEach(p => {
+                        const campo = criterioMap[criterio];
+                        if (p[campo] === criterio) {
+                            personas.push({
+                                nombre: p.nombre,
+                                padre: reporte.padreDirecto || 'Sin padre',
+                                raiz: reporte.redPrincipal || 'Sin raíz'
+                            });
+                        }
+                    });
+                });
+
+                const ul = document.getElementById('modalListaPersonas');
+                ul.innerHTML = '';
+                if (personas.length === 0) {
+                    ul.innerHTML = '<li style="color:#94a3b8; list-style:none;">No hay personas en esta categoría.</li>';
+                } else {
+                    personas.forEach(p => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `
+                            <span class="nombre">${p.nombre}</span>
+                            <span class="jerarquia">👆 ${p.padre}</span>
+                            <span class="jerarquia">🔷 ${p.raiz}</span>
+                        `;
+                        ul.appendChild(li);
+                    });
+                }
+                document.getElementById('modalTitulo').textContent = `${titulo} (${personas.length}) - Consolidado`;
+                document.getElementById('modalNombres').classList.add('active');
+                return;
+            }
+
+            // Modo normal
+            const rows = document.querySelectorAll('#tablaIntegrantes tr');
+            rows.forEach(row => {
+                const inputNombre = row.querySelector('input[type="text"]');
+                if (!inputNombre) return;
+                const nombre = inputNombre.value.trim() || `Persona ${row.id.split('_')[1]}`;
+                const selects = row.querySelectorAll('.calc');
+                selects.forEach(sel => {
+                    if (sel.value === criterio) {
+                        personas.push(nombre);
+                    }
+                });
+            });
+
+            const ul = document.getElementById('modalListaPersonas');
+            ul.innerHTML = '';
+            if (personas.length === 0) {
+                ul.innerHTML = '<li style="color:#94a3b8; list-style:none;">No hay personas en esta categoría.</li>';
+            } else {
+                personas.forEach(p => {
+                    const li = document.createElement('li');
+                    li.textContent = p;
+                    ul.appendChild(li);
+                });
+            }
+            document.getElementById('modalTitulo').textContent = `${titulo} (${personas.length})`;
+            document.getElementById('modalNombres').classList.add('active');
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalNombres').classList.remove('active');
+        }
+
+        // ============================================================
+        //  JERARQUÍA: CARGAR SELECTORES Y ACTUALIZAR PADRE/RAÍZ
+        // ============================================================
+
+        function cargarSelectoresJerarquia() {
+            const selectNodo = document.getElementById('nodoSelect');
+            selectNodo.innerHTML = '';
+            nodos.forEach(n => {
+                const opt = document.createElement('option');
+                opt.value = n.id;
+                opt.textContent = `${n.nombre} (${n.etiqueta})`;
+                selectNodo.appendChild(opt);
+            });
+            if (nodos.length > 0) {
+                selectNodo.value = nodos[0].id;
+                actualizarCamposJerarquia();
+            }
+        }
+
+        function actualizarCamposJerarquia() {
+            const nodoId = document.getElementById('nodoSelect').value;
+            const { padre, raiz } = getPadreYRaiz(nodoId);
+            document.getElementById('padreDirecto').value = padre ? padre.nombre : 'Ninguno (es raíz)';
+            document.getElementById('redPrincipal').value = raiz ? raiz.nombre : 'Ninguna';
+        }
+
+        // ============================================================
+        //  GUARDAR REPORTE (con jerarquía)
+        // ============================================================
+
+        function guardarReporte() {
+            const nodoId = document.getElementById('nodoSelect').value;
+            if (!nodoId) {
+                alert('Por favor, selecciona un nodo (grupo remitente).');
+                return;
+            }
+            const nodo = getNodoById(nodoId);
+            const { padre, raiz } = getPadreYRaiz(nodoId);
+
+            const integrantes = [];
+            const rows = document.querySelectorAll('#tablaIntegrantes tr');
+            rows.forEach(row => {
+                const inputNombre = row.querySelector('input[type="text"]');
+                if (!inputNombre) return;
+                const nombre = inputNombre.value.trim() || `Persona ${row.id.split('_')[1]}`;
+                const selects = row.querySelectorAll('.calc');
+                const datos = {};
+                selects.forEach(sel => {
+                    const campo = sel.dataset.campo;
+                    datos[campo] = sel.value;
+                });
+                integrantes.push({
+                    nombre: nombre,
+                    semilla: datos.semilla,
+                    estado_civil: datos.estado_civil,
+                    bautismo: datos.bautismo,
+                    encuentro: datos.encuentro,
+                    lanzamiento: datos.lanzamiento,
+                    charlas: datos.charlas,
+                    proposito: datos.proposito
+                });
+            });
+
+            const fechaEv = document.getElementById('fechaEvangelismo').value;
+            const fechaAmigo = document.getElementById('fechaAmigoCelular').value;
+            const metaCelular = document.getElementById('metaAmigosCelular').value;
+            const metaIglesia = document.getElementById('metaAmigosIglesia').value;
+
+            const reporte = {
+                timestamp: new Date().toISOString(),
+                nodoId: nodoId,
+                grupoRemitente: nodo ? nodo.nombre : 'Desconocido',
+                padreDirecto: padre ? padre.nombre : 'Ninguno (raíz)',
+                redPrincipal: raiz ? raiz.nombre : 'Ninguna',
+                fechaEvangelismo: fechaEv,
+                fechaAmigoCelular: fechaAmigo,
+                metaCelular: metaCelular,
+                metaIglesia: metaIglesia,
+                integrantes: integrantes
+            };
+
+            let reportes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            reportes.push(reporte);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(reportes));
+
+            alert(`Reporte guardado correctamente. (Total de reportes: ${reportes.length})`);
+        }
+
+        // ============================================================
+        //  VISTA ADMIN - TOTALES CONSOLIDADOS CON FILTRO
+        // ============================================================
+
+        function actualizarAdminTotales() {
+            const filtroRaiz = document.getElementById('filtroRaiz').value;
+            let reportes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+            if (filtroRaiz !== '__TODAS__') {
+                const nodosRaiz = getNodosPorRaiz(filtroRaiz);
+                const idsRaiz = nodosRaiz.map(n => n.id);
+                reportes = reportes.filter(r => idsRaiz.includes(r.nodoId));
+            }
+
+            const conteos = {
+                con_semilla: 0,
+                sin_semilla: 0,
+                graduado_semilla: 0,
+                casado: 0,
+                acompanado: 0,
+                soltero: 0,
+                bautizado: 0,
+                no_bautizado: 0,
+                con_encuentro: 0,
+                sin_encuentro: 0,
+                con_lanzamiento: 0,
+                falta_lanzamiento: 0,
+                sin_charlas: 0,
+                en_proposito: 0,
+                sin_proposito: 0
+            };
+
+            reportes.forEach(reporte => {
+                reporte.integrantes.forEach(p => {
+                    const campos = ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas',
+                        'proposito'
+                    ];
+                    campos.forEach(campo => {
+                        const val = p[campo];
+                        if (val && conteos.hasOwnProperty(val)) {
+                            conteos[val]++;
+                        }
+                    });
+                });
+            });
+
+            const grid = document.getElementById('adminSummaryGrid');
+            let html = '';
+            for (const [key, label] of Object.entries(etiquetasTotales)) {
+                const count = conteos[key] || 0;
+                const clase = categoriaClase[key] || '';
+                html += `
+                    <div class="stat-card ${clase}" onclick="mostrarPersonas('${key}', '${label}')">
+                        <div class="label">${label}</div>
+                        <div class="number">${count}</div>
+                        <div class="hint">Clic para ver nombres</div>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
+        function cargarFiltroRaiz() {
+            const select = document.getElementById('filtroRaiz');
+            const raices = getRaices();
+            select.innerHTML = '<option value="__TODAS__">📊 Todas las redes</option>';
+            raices.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.id;
+                opt.textContent = `🔷 ${r.nombre}`;
+                select.appendChild(opt);
+            });
+        }
+
+        // ============================================================
+        //  AUTENTICACIÓN Y CAMBIO DE VISTAS
+        // ============================================================
+
+        function mostrarLogin() {
+            document.getElementById('modalLogin').classList.add('active');
+            document.getElementById('loginError').textContent = '';
+        }
+
+        function cerrarLogin() {
+            document.getElementById('modalLogin').classList.remove('active');
+        }
+
+        function autenticar(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUser').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+            if (user === 'admin' && pass === 'pastor') {
+                cerrarLogin();
+                document.getElementById('vistaNormal').style.display = 'none';
+                document.getElementById('vistaAdmin').style.display = 'block';
+                document.getElementById('adminUserDisplay').textContent = '👤 ' + user;
+                cargarFiltroRaiz();
+                actualizarAdminTotales();
+            } else {
+                document.getElementById('loginError').textContent = 'Usuario o clave incorrectos.';
+            }
+        }
+
+        function volverNormal() {
+            document.getElementById('vistaAdmin').style.display = 'none';
+            document.getElementById('vistaNormal').style.display = 'block';
+            calcularTotales();
+        }
+
+        function cerrarSesion() {
+            volverNormal();
+        }
+
+        // ============================================================
+        //  INICIALIZACIÓN
+        // ============================================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fechaEvangelismo').value = hoy;
+            document.getElementById('fechaAmigoCelular').value = hoy;
+
+            cargarSelectoresJerarquia();
+            document.getElementById('nodoSelect').addEventListener('change', actualizarCamposJerarquia);
+
+            renderizarTabla();
+
+            document.getElementById('btnAgregar').addEventListener('click', agregarFila);
+            document.getElementById('btnEliminar').addEventListener('click', eliminarUltimaFila);
+            document.getElementById('btnGuardarReporte').addEventListener('click', guardarReporte);
+
+            document.getElementById('tablaIntegrantes').addEventListener('change', function(e) {
+                if (e.target.classList.contains('calc')) {
+                    calcularTotales();
+                }
+            });
+
+            document.getElementById('modalClose').addEventListener('click', cerrarModal);
+            document.getElementById('modalNombres').addEventListener('click', function(e) {
+                if (e.target === this) cerrarModal();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') cerrarModal();
+            });
+
+            document.getElementById('btnAdmin').addEventListener('click', mostrarLogin);
+            document.getElementById('loginClose').addEventListener('click', cerrarLogin);
+            document.getElementById('modalLogin').addEventListener('click', function(e) {
+                if (e.target === this) cerrarLogin();
+            });
+            document.getElementById('loginForm').addEventListener('submit', autenticar);
+            document.getElementById('btnCerrarSesion').addEventListener('click', cerrarSesion);
+            document.getElementById('btnVolverNormal').addEventListener('click', volverNormal);
+
+            document.getElementById('filtroRaiz').addEventListener('change', actualizarAdminTotales);
+
+            document.getElementById('vistaAdmin').style.display = 'none';
+            document.getElementById('vistaNormal').style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
