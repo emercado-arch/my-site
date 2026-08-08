@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
     <title>Control y Seguimiento - Grupo Pequeño</title>
+    
+    <!-- ===== LIBRERÍA DE SUPABASE ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -992,13 +996,18 @@
         // ============================================================
         const MIN_FILAS = 4;
         const MAX_FILAS = 14;
-        const STORAGE_KEY = 'reportes_grupo_pequeno';
 
-        // ===== NUEVAS CONSTANTES DE SUPABASE (agregadas según solicitud) =====
-        const SUPABASE_URL = 'https://kguwytcdwtuxoeqklqueu.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
-        // ===================================================================
+        // ===== ⚠️ REEMPLAZA ESTOS VALORES CON LOS TUYOS =====
+        const SUPABASE_URL = 'https://kguwyctdwtuxoeqklque.supabase.co';   // <-- PON TU URL
+        const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8'; // <-- PON TU CLAVE ANON COMPLETA
+        // ======================================================
 
+        // ===== INICIALIZAR CLIENTE SUPABASE =====
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // ============================================================
+        //  MAPAS Y ETIQUETAS
+        // ============================================================
         const categoriaClase = {
             con_semilla: 'stat-semilla',
             sin_semilla: 'stat-semilla',
@@ -1237,22 +1246,148 @@
         }
 
         // ============================================================
+        //  FUNCIONES PARA SUPABASE
+        // ============================================================
+
+        async function cargarReportesDesdeSupabase(filtroRaiz = '__TODAS__') {
+            let query = supabaseClient.from('reportes').select('*');
+            if (filtroRaiz !== '__TODAS__') {
+                const nodosRaiz = getNodosPorRaiz(filtroRaiz);
+                const idsRaiz = nodosRaiz.map(n => n.id);
+                query = query.in('nodo_id', idsRaiz);
+            }
+            const { data, error } = await query;
+            if (error) {
+                console.error('Error al obtener reportes:', error);
+                return [];
+            }
+            return data;
+        }
+
+        // ============================================================
+        //  GUARDAR REPORTE (con Supabase)
+        // ============================================================
+
+        async function guardarReporte() {
+            const nodoId = document.getElementById('nodoSelect').value;
+            if (!nodoId) {
+                alert('Por favor, selecciona un nodo (grupo remitente).');
+                return;
+            }
+            const nodo = getNodoById(nodoId);
+            const { padre, raiz } = getPadreYRaiz(nodoId);
+
+            const integrantes = [];
+            document.querySelectorAll('#tablaIntegrantes tr').forEach(row => {
+                const inputNombre = row.querySelector('input[type="text"]');
+                if (!inputNombre) return;
+                const nombre = inputNombre.value.trim() || `Persona ${row.id.split('_')[1]}`;
+                const selects = row.querySelectorAll('.calc');
+                const datos = {};
+                selects.forEach(sel => {
+                    datos[sel.dataset.campo] = sel.value;
+                });
+                integrantes.push({
+                    nombre,
+                    semilla: datos.semilla,
+                    estado_civil: datos.estado_civil,
+                    bautismo: datos.bautismo,
+                    encuentro: datos.encuentro,
+                    lanzamiento: datos.lanzamiento,
+                    charlas: datos.charlas,
+                    proposito: datos.proposito
+                });
+            });
+
+            const reporte = {
+                timestamp: new Date().toISOString(),
+                nodo_id: nodoId,
+                grupo_remitente: nodo ? nodo.nombre : 'Desconocido',
+                padre_directo: padre ? padre.nombre : 'Ninguno (raíz)',
+                red_principal: raiz ? raiz.nombre : 'Ninguna',
+                fecha_evangelismo: document.getElementById('fechaEvangelismo').value || null,
+                fecha_amigo_celular: document.getElementById('fechaAmigoCelular').value || null,
+                meta_celular: parseInt(document.getElementById('metaAmigosCelular').value),
+                meta_iglesia: parseInt(document.getElementById('metaAmigosIglesia').value),
+                integrantes
+            };
+
+            try {
+                const { error } = await supabaseClient.from('reportes').insert([reporte]);
+                if (error) throw error;
+                alert('✅ Reporte guardado en Supabase correctamente.');
+            } catch (error) {
+                console.error('Error al guardar en Supabase:', error);
+                alert('❌ Error al guardar. Revisa la consola.');
+            }
+        }
+
+        // ============================================================
+        //  VISTA ADMIN - TOTALES CONSOLIDADOS (desde Supabase)
+        // ============================================================
+
+        async function actualizarAdminTotales() {
+            const filtroRaiz = document.getElementById('filtroRaiz').value;
+            const reportes = await cargarReportesDesdeSupabase(filtroRaiz);
+
+            const conteos = {
+                con_semilla: 0, sin_semilla: 0, graduado_semilla: 0,
+                casado: 0, acompanado: 0, soltero: 0,
+                bautizado: 0, no_bautizado: 0,
+                con_encuentro: 0, sin_encuentro: 0,
+                con_lanzamiento: 0, falta_lanzamiento: 0,
+                sin_charlas: 0,
+                en_proposito: 0, sin_proposito: 0
+            };
+
+            reportes.forEach(reporte => {
+                reporte.integrantes.forEach(p => {
+                    ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas', 'proposito'].forEach(campo => {
+                        const val = p[campo];
+                        if (val && conteos.hasOwnProperty(val)) conteos[val]++;
+                    });
+                });
+            });
+
+            const grid = document.getElementById('adminSummaryGrid');
+            let html = '';
+            for (const [key, label] of Object.entries(etiquetasTotales)) {
+                const count = conteos[key] || 0;
+                const clase = categoriaClase[key] || '';
+                html += `
+                    <div class="stat-card ${clase}" onclick="mostrarPersonas('${key}', '${label}')">
+                        <div class="label">${label}</div>
+                        <div class="number">${count}</div>
+                        <div class="hint">Clic para ver nombres</div>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
+        function cargarFiltroRaiz() {
+            const select = document.getElementById('filtroRaiz');
+            const raices = getRaices();
+            select.innerHTML = '<option value="__TODAS__">📊 Todas las redes</option>';
+            raices.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.id;
+                opt.textContent = `🔷 ${r.nombre}`;
+                select.appendChild(opt);
+            });
+        }
+
+        // ============================================================
         //  MODAL DE LISTA (vista normal y admin)
         // ============================================================
 
-        function mostrarPersonas(criterio, titulo) {
+        async function mostrarPersonas(criterio, titulo) {
             const esAdmin = document.getElementById('vistaAdmin').style.display === 'block';
             let personas = [];
 
             if (esAdmin) {
                 const filtroRaiz = document.getElementById('filtroRaiz').value;
-                let reportes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-                if (filtroRaiz !== '__TODAS__') {
-                    const nodosRaiz = getNodosPorRaiz(filtroRaiz);
-                    const idsRaiz = nodosRaiz.map(n => n.id);
-                    reportes = reportes.filter(r => idsRaiz.includes(r.nodoId));
-                }
+                const reportes = await cargarReportesDesdeSupabase(filtroRaiz);
 
                 reportes.forEach(reporte => {
                     reporte.integrantes.forEach(p => {
@@ -1260,8 +1395,8 @@
                         if (p[campo] === criterio) {
                             personas.push({
                                 nombre: p.nombre,
-                                padre: reporte.padreDirecto || 'Sin padre',
-                                raiz: reporte.redPrincipal || 'Sin raíz'
+                                padre: reporte.padre_directo || 'Sin padre',
+                                raiz: reporte.red_principal || 'Sin raíz'
                             });
                         }
                     });
@@ -1287,7 +1422,7 @@
                 return;
             }
 
-            // Modo normal
+            // Modo normal (solo local)
             const rows = document.querySelectorAll('#tablaIntegrantes tr');
             rows.forEach(row => {
                 const inputNombre = row.querySelector('input[type="text"]');
@@ -1347,142 +1482,6 @@
         }
 
         // ============================================================
-        //  GUARDAR REPORTE (con jerarquía)
-        // ============================================================
-
-        function guardarReporte() {
-            const nodoId = document.getElementById('nodoSelect').value;
-            if (!nodoId) {
-                alert('Por favor, selecciona un nodo (grupo remitente).');
-                return;
-            }
-            const nodo = getNodoById(nodoId);
-            const { padre, raiz } = getPadreYRaiz(nodoId);
-
-            const integrantes = [];
-            const rows = document.querySelectorAll('#tablaIntegrantes tr');
-            rows.forEach(row => {
-                const inputNombre = row.querySelector('input[type="text"]');
-                if (!inputNombre) return;
-                const nombre = inputNombre.value.trim() || `Persona ${row.id.split('_')[1]}`;
-                const selects = row.querySelectorAll('.calc');
-                const datos = {};
-                selects.forEach(sel => {
-                    const campo = sel.dataset.campo;
-                    datos[campo] = sel.value;
-                });
-                integrantes.push({
-                    nombre: nombre,
-                    semilla: datos.semilla,
-                    estado_civil: datos.estado_civil,
-                    bautismo: datos.bautismo,
-                    encuentro: datos.encuentro,
-                    lanzamiento: datos.lanzamiento,
-                    charlas: datos.charlas,
-                    proposito: datos.proposito
-                });
-            });
-
-            const fechaEv = document.getElementById('fechaEvangelismo').value;
-            const fechaAmigo = document.getElementById('fechaAmigoCelular').value;
-            const metaCelular = document.getElementById('metaAmigosCelular').value;
-            const metaIglesia = document.getElementById('metaAmigosIglesia').value;
-
-            const reporte = {
-                timestamp: new Date().toISOString(),
-                nodoId: nodoId,
-                grupoRemitente: nodo ? nodo.nombre : 'Desconocido',
-                padreDirecto: padre ? padre.nombre : 'Ninguno (raíz)',
-                redPrincipal: raiz ? raiz.nombre : 'Ninguna',
-                fechaEvangelismo: fechaEv,
-                fechaAmigoCelular: fechaAmigo,
-                metaCelular: metaCelular,
-                metaIglesia: metaIglesia,
-                integrantes: integrantes
-            };
-
-            let reportes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-            reportes.push(reporte);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(reportes));
-
-            alert(`Reporte guardado correctamente. (Total de reportes: ${reportes.length})`);
-        }
-
-        // ============================================================
-        //  VISTA ADMIN - TOTALES CONSOLIDADOS CON FILTRO
-        // ============================================================
-
-        function actualizarAdminTotales() {
-            const filtroRaiz = document.getElementById('filtroRaiz').value;
-            let reportes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-            if (filtroRaiz !== '__TODAS__') {
-                const nodosRaiz = getNodosPorRaiz(filtroRaiz);
-                const idsRaiz = nodosRaiz.map(n => n.id);
-                reportes = reportes.filter(r => idsRaiz.includes(r.nodoId));
-            }
-
-            const conteos = {
-                con_semilla: 0,
-                sin_semilla: 0,
-                graduado_semilla: 0,
-                casado: 0,
-                acompanado: 0,
-                soltero: 0,
-                bautizado: 0,
-                no_bautizado: 0,
-                con_encuentro: 0,
-                sin_encuentro: 0,
-                con_lanzamiento: 0,
-                falta_lanzamiento: 0,
-                sin_charlas: 0,
-                en_proposito: 0,
-                sin_proposito: 0
-            };
-
-            reportes.forEach(reporte => {
-                reporte.integrantes.forEach(p => {
-                    const campos = ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas',
-                        'proposito'
-                    ];
-                    campos.forEach(campo => {
-                        const val = p[campo];
-                        if (val && conteos.hasOwnProperty(val)) {
-                            conteos[val]++;
-                        }
-                    });
-                });
-            });
-
-            const grid = document.getElementById('adminSummaryGrid');
-            let html = '';
-            for (const [key, label] of Object.entries(etiquetasTotales)) {
-                const count = conteos[key] || 0;
-                const clase = categoriaClase[key] || '';
-                html += `
-                    <div class="stat-card ${clase}" onclick="mostrarPersonas('${key}', '${label}')">
-                        <div class="label">${label}</div>
-                        <div class="number">${count}</div>
-                        <div class="hint">Clic para ver nombres</div>
-                    </div>
-                `;
-            }
-            grid.innerHTML = html;
-        }
-
-        function cargarFiltroRaiz() {
-            const select = document.getElementById('filtroRaiz');
-            const raices = getRaices();
-            select.innerHTML = '<option value="__TODAS__">📊 Todas las redes</option>';
-            raices.forEach(r => {
-                const opt = document.createElement('option');
-                opt.value = r.id;
-                opt.textContent = `🔷 ${r.nombre}`;
-                select.appendChild(opt);
-            });
-        }
-
-        // ============================================================
         //  AUTENTICACIÓN Y CAMBIO DE VISTAS
         // ============================================================
 
@@ -1495,7 +1494,7 @@
             document.getElementById('modalLogin').classList.remove('active');
         }
 
-        function autenticar(e) {
+        async function autenticar(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
@@ -1505,7 +1504,7 @@
                 document.getElementById('vistaAdmin').style.display = 'block';
                 document.getElementById('adminUserDisplay').textContent = '👤 ' + user;
                 cargarFiltroRaiz();
-                actualizarAdminTotales();
+                await actualizarAdminTotales();
             } else {
                 document.getElementById('loginError').textContent = 'Usuario o clave incorrectos.';
             }
