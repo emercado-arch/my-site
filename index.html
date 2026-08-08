@@ -999,7 +999,7 @@
 
         // ===== ⚠️ REEMPLAZA ESTOS VALORES CON LOS TUYOS =====
         // Ve a Settings → API en tu proyecto Supabase y copia:
-        const SUPABASE_URL = 'https://kguwyctdwtuxoeqklque.supabase.co';   // <-- PON TU URL (sin la 'u' extra al final)
+        const SUPABASE_URL = 'https://kguwyctdwtuxoeqklque.supabase.co';   // <-- PON TU URL
         const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8'; // <-- PON TU CLAVE ANON COMPLETA
         // ======================================================
 
@@ -1247,11 +1247,11 @@
         }
 
         // ============================================================
-        //  FUNCIONES PARA SUPABASE
+        //  FUNCIONES PARA SUPABASE (usando tabla 'reports')
         // ============================================================
 
         async function cargarReportesDesdeSupabase(filtroRaiz = '__TODAS__') {
-            let query = supabaseClient.from('reportes').select('*');
+            let query = supabaseClient.from('reports').select('*');
             if (filtroRaiz !== '__TODAS__') {
                 const nodosRaiz = getNodosPorRaiz(filtroRaiz);
                 const idsRaiz = nodosRaiz.map(n => n.id);
@@ -1266,7 +1266,7 @@
         }
 
         // ============================================================
-        //  GUARDAR REPORTE (con Supabase)
+        //  GUARDAR REPORTE (con Supabase - tabla 'reports')
         // ============================================================
 
         async function guardarReporte() {
@@ -1314,7 +1314,7 @@
             };
 
             try {
-                const { error } = await supabaseClient.from('reportes').insert([reporte]);
+                const { error } = await supabaseClient.from('reports').insert([reporte]);
                 if (error) throw error;
                 alert('✅ Reporte guardado en Supabase correctamente.');
             } catch (error) {
