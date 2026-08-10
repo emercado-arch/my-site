@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
     <title>Control y Seguimiento - Grupo Pequeño</title>
     
-    <!-- ===== LIBRERÍA DE SUPABASE ===== -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
@@ -29,7 +28,6 @@
             margin: 0 auto;
         }
 
-        /* ===== BOTONES ===== */
         .btn-container {
             display: flex;
             flex-wrap: wrap;
@@ -99,7 +97,11 @@
             background: #b45309;
         }
 
-        /* ===== TARJETAS ===== */
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+        }
+
         .card {
             background: white;
             padding: 20px;
@@ -127,7 +129,6 @@
             margin-left: auto;
         }
 
-        /* ===== HEADER ===== */
         .report-header {
             display: flex;
             flex-wrap: wrap;
@@ -153,7 +154,6 @@
             margin-top: 2px;
         }
 
-        /* ===== JERARQUÍA ===== */
         .jerarquia-box {
             display: flex;
             flex-wrap: wrap;
@@ -192,7 +192,6 @@
             font-weight: 500;
         }
 
-        /* ===== METAS ===== */
         .grid-meta {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -229,7 +228,6 @@
             font-weight: 600;
         }
 
-        /* ===== TABLA ===== */
         .table-wrapper {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -350,7 +348,6 @@
             background: #fee2e2;
         }
 
-        /* ===== TOTALES (vista normal) ===== */
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -417,7 +414,6 @@
             color: #0f766e;
         }
 
-        /* ===== VISTA ADMIN ===== */
         #vistaAdmin {
             display: none;
         }
@@ -466,7 +462,27 @@
             min-width: 200px;
         }
 
-        /* ===== MODAL ===== */
+        .tabla-reportes td {
+            font-size: 0.8rem;
+            padding: 6px 8px;
+        }
+        .tabla-reportes th {
+            background: #334155;
+            font-size: 0.75rem;
+        }
+        .tabla-reportes .btn-ver-integrantes {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .tabla-reportes .btn-ver-integrantes:hover {
+            background: #1d4ed8;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -551,12 +567,6 @@
             display: inline-block;
         }
 
-        .modal-list li .padre {
-            color: #64748b;
-            font-size: 0.8rem;
-        }
-
-        /* ===== LOGIN ===== */
         .login-form {
             display: flex;
             flex-direction: column;
@@ -586,7 +596,6 @@
             text-align: center;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
             body {
                 padding: 10px;
@@ -657,6 +666,11 @@
             .filtro-admin select {
                 min-width: auto;
             }
+            .tabla-reportes td,
+            .tabla-reportes th {
+                font-size: 0.65rem;
+                padding: 4px 2px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -671,7 +685,6 @@
             }
         }
 
-        /* ===== IMPRESIÓN ===== */
         @media print {
             body {
                 background: white;
@@ -712,10 +725,6 @@
                 background: transparent !important;
                 font-weight: bold;
             }
-            .report-header .remitente {
-                border: 1px solid #ccc;
-                background: #f9f9f9;
-            }
             #vistaAdmin {
                 display: none !important;
             }
@@ -726,7 +735,6 @@
 <body>
     <div class="container">
 
-        <!-- BOTONES DE ACCIÓN -->
         <div class="btn-container no-print">
             <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / PDF</button>
             <button class="btn btn-success" id="btnAgregar">➕ Agregar integrante</button>
@@ -740,7 +748,6 @@
         <!-- ============================================================ -->
         <div id="vistaNormal">
 
-            <!-- ENCABEZADO CON REMITENTE Y JERARQUÍA -->
             <div class="report-header">
                 <div class="titulo-group">
                     <h1>📋 Control y Seguimiento de Grupo Pequeño</h1>
@@ -748,7 +755,6 @@
                 </div>
             </div>
 
-            <!-- JERARQUÍA DEL GRUPO REMITENTE -->
             <div class="card">
                 <h2>📍 Datos del Grupo Remitente</h2>
                 <div class="jerarquia-box">
@@ -769,7 +775,6 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN 1: METAS Y FECHAS -->
             <div class="card">
                 <h2>1. Actividades Espirituales y Metas de Amigos</h2>
                 <div class="grid-meta">
@@ -802,7 +807,6 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN 2: TABLA DE INTEGRANTES -->
             <div class="card">
                 <h2>
                     2. Integrantes del Grupo
@@ -831,7 +835,6 @@
                 </div>
             </div>
 
-            <!-- SECCIÓN 3: TOTALES -->
             <div class="card">
                 <h2>
                     3. Totales Calculados Automáticamente
@@ -856,12 +859,15 @@
                 </div>
             </div>
 
-            <!-- Filtro por Red Principal -->
             <div class="filtro-admin">
                 <label for="filtroRaiz">🔷 Filtrar por Red Principal (Raíz):</label>
                 <select id="filtroRaiz">
                     <option value="__TODAS__">📊 Todas las redes</option>
-                    <!-- opciones generadas por JS -->
+                </select>
+
+                <label for="filtroNodo">📌 Filtrar por Grupo (Nodo):</label>
+                <select id="filtroNodo">
+                    <option value="__TODOS__">Todos los nodos</option>
                 </select>
             </div>
 
@@ -873,6 +879,30 @@
                 <p style="margin-top:16px; font-size:0.85rem; color:#64748b;">
                     💡 Haz clic en cualquier tarjeta para ver los nombres, su padre directo y la raíz.
                 </p>
+            </div>
+
+            <div class="card">
+                <h2>📋 Reportes guardados (fechas y metas)</h2>
+                <div class="table-wrapper">
+                    <table class="tabla-reportes" id="tablaReportesAdmin">
+                        <thead>
+                            <tr>
+                                <th>Fecha reporte</th>
+                                <th>Grupo remitente</th>
+                                <th>Padre directo</th>
+                                <th>Fecha evangelismo</th>
+                                <th>Fecha amigo celular</th>
+                                <th>Meta celular</th>
+                                <th>Meta iglesia</th>
+                                <th>Integrantes</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuerpoTablaReportes">
+                            <!-- Generado por JS -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div style="text-align:center; margin-top:16px;">
@@ -914,28 +944,21 @@
 
     <script>
         // ============================================================
-        //  ESTRUCTURA JERÁRQUICA (ACTUALIZADA CON LAS 4 REDES)
+        //  ESTRUCTURA JERÁRQUICA
         // ============================================================
         const nodos = [
-            // Red 1: Andy Estrada y Griselda Garcia (Raíz)
             { id: 'node_1', nombre: 'Andy Estrada y Griselda Garcia', etiqueta: 'Raíz', parent_id: null },
             { id: 'node_2', nombre: 'Erick Sanchez y Vanessa Garcia', etiqueta: 'Célula directa', parent_id: 'node_1' },
             { id: 'node_3', nombre: 'Esteban y Sara', etiqueta: 'Célula directa', parent_id: 'node_1' },
             { id: 'node_4', nombre: 'Sergio Sánchez y Kelly Garcia', etiqueta: 'Célula directa', parent_id: 'node_1' },
-
-            // Red 2: David y Brenda Lepez (Raíz)
             { id: 'node_5', nombre: 'David y Brenda Lepez', etiqueta: 'Raíz', parent_id: null },
             { id: 'node_6', nombre: 'Álvaro y Sandra Mazariego', etiqueta: 'Célula directa', parent_id: 'node_5' },
             { id: 'node_7', nombre: 'Grace & Valery', etiqueta: 'Célula directa (Pre Teen)', parent_id: 'node_5' },
             { id: 'node_8', nombre: 'Jorge y Lorena Mazariego', etiqueta: 'Célula directa', parent_id: 'node_5' },
             { id: 'node_9', nombre: 'Frank y Celeste', etiqueta: 'Sub-célula', parent_id: 'node_8' },
             { id: 'node_10', nombre: 'Juan Carlos Aguirre y Blanca Amaya', etiqueta: 'Célula directa', parent_id: 'node_5' },
-
-            // Red 3: Francisco y Delmy Sánchez (Raíz)
             { id: 'node_11', nombre: 'Francisco y Delmy Sánchez', etiqueta: 'Raíz', parent_id: null },
             { id: 'node_12', nombre: 'Hermelindo y Lizeth Tut', etiqueta: 'Célula directa', parent_id: 'node_11' },
-
-            // Red 4: Nelson y Mariela Garcia (Raíz)
             { id: 'node_13', nombre: 'Nelson y Mariela Garcia', etiqueta: 'Raíz', parent_id: null },
             { id: 'node_14', nombre: 'Carmen Banegas y Eliazar Beb', etiqueta: 'Célula directa', parent_id: 'node_13' },
             { id: 'node_15', nombre: 'Hugo y Anna Maria González', etiqueta: 'Célula directa', parent_id: 'node_13' },
@@ -947,9 +970,6 @@
             { id: 'node_21', nombre: 'Yanira Villeda', etiqueta: 'Célula directa', parent_id: 'node_13' }
         ];
 
-        // ============================================================
-        //  FUNCIONES DE AYUDA PARA JERARQUÍA
-        // ============================================================
         function getNodoById(id) {
             return nodos.find(n => n.id === id);
         }
@@ -992,20 +1012,10 @@
         }
 
         // ============================================================
-        //  CONFIGURACIÓN GENERAL
+        //  CONFIGURACIÓN SUPABASE
         // ============================================================
-        const MIN_FILAS = 4;
-        const MAX_FILAS = 14;
-
-        // ===== ⚠️ REEMPLAZA ESTOS VALORES CON LOS TUYOS =====
-        // Ve a Settings → API en tu proyecto Supabase y copia:
-        // ===== CREDENCIALES CORREGIDAS =====
-const SUPABASE_URL = 'https://kguwyctdwtuxoeqklqeu.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
-// =================================== // <-- PON TU CLAVE ANON COMPLETA
-        // ======================================================
-
-        // ===== INICIALIZAR CLIENTE SUPABASE =====
+        const SUPABASE_URL = 'https://kguwyctdwtuxoeqklqeu.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         // ============================================================
@@ -1068,84 +1078,114 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
         // ============================================================
         //  ESTADO DE LA VISTA NORMAL
         // ============================================================
-        let filasActuales = MIN_FILAS;
+        let filasActuales = 4; // mínimo
 
         // ============================================================
-        //  FUNCIONES DE LA TABLA (vista normal)
+        //  FUNCIONES PARA OBTENER Y RENDERIZAR DATOS DE LA TABLA
         // ============================================================
 
-        function generarFilaHTML(index) {
-            const i = index;
-            return `
-                <tr id="row_${i}">
-                    <td class="row-number">${i}</td>
-                    <td><input type="text" id="nombre_${i}" placeholder="Persona ${i}" /></td>
-                    <td class="semilla-cell">
-                        <select class="calc" data-index="${i}" data-campo="semilla">
-                            <option value="sin_semilla">Sin Semilla</option>
-                            <option value="con_semilla">Con Semilla</option>
-                            <option value="graduado_semilla">Graduado Semilla</option>
-                        </select>
-                    </td>
-                    <td class="estado-cell">
-                        <select class="calc" data-index="${i}" data-campo="estado_civil">
-                            <option value="soltero">Soltero/a</option>
-                            <option value="casado">Casado/a</option>
-                            <option value="acompanado">Acompañado/a</option>
-                        </select>
-                    </td>
-                    <td class="bautismo-cell">
-                        <select class="calc" data-index="${i}" data-campo="bautismo">
-                            <option value="no_bautizado">No Bautizado</option>
-                            <option value="bautizado">Bautizado</option>
-                        </select>
-                    </td>
-                    <td class="encuentro-cell">
-                        <select class="calc" data-index="${i}" data-campo="encuentro">
-                            <option value="sin_encuentro">Sin Encuentro</option>
-                            <option value="con_encuentro">Con Encuentro</option>
-                        </select>
-                    </td>
-                    <td class="lanzamiento-cell">
-                        <select class="calc" data-index="${i}" data-campo="lanzamiento">
-                            <option value="falta_lanzamiento">Falta Lanzamiento</option>
-                            <option value="con_lanzamiento">Pasó Lanzamiento</option>
-                        </select>
-                    </td>
-                    <td class="charlas-cell">
-                        <select class="calc" data-index="${i}" data-campo="charlas">
-                            <option value="na">N/A (Solteros)</option>
-                            <option value="sin_charlas">Pareja Sin Charlas</option>
-                            <option value="con_charlas">Charlas Completas</option>
-                        </select>
-                    </td>
-                    <td class="proposito-cell">
-                        <select class="calc" data-index="${i}" data-campo="proposito">
-                            <option value="sin_proposito">Sin Propósito</option>
-                            <option value="en_proposito">En Propósito</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button class="btn-eliminar-fila no-print" data-index="${i}" title="Eliminar esta persona">✕</button>
-                    </td>
-                </tr>
-            `;
+        function obtenerDatosTabla() {
+            // Lee los valores actuales de la tabla y devuelve un array de objetos
+            const datos = [];
+            const filas = document.querySelectorAll('#tablaIntegrantes tr');
+            filas.forEach(row => {
+                const inputNombre = row.querySelector('input[type="text"]');
+                if (!inputNombre) return;
+                const nombre = inputNombre.value.trim() || `Persona ${row.id.split('_')[1]}`;
+                const selects = row.querySelectorAll('.calc');
+                const obj = {
+                    nombre: nombre,
+                    semilla: selects[0]?.value || 'sin_semilla',
+                    estado_civil: selects[1]?.value || 'soltero',
+                    bautismo: selects[2]?.value || 'no_bautizado',
+                    encuentro: selects[3]?.value || 'sin_encuentro',
+                    lanzamiento: selects[4]?.value || 'falta_lanzamiento',
+                    charlas: selects[5]?.value || 'na',
+                    proposito: selects[6]?.value || 'sin_proposito'
+                };
+                datos.push(obj);
+            });
+            return datos;
         }
 
-        function renderizarTabla() {
+        function renderizarTabla(datos) {
+            // Si no se pasan datos, los obtenemos del DOM actual (para preservar cambios)
+            if (!datos) {
+                datos = obtenerDatosTabla();
+            }
+            // Asegurar que el número de filas coincida con la longitud de datos
+            filasActuales = datos.length;
             const tbody = document.getElementById('tablaIntegrantes');
             let html = '';
-            for (let i = 1; i <= filasActuales; i++) {
-                html += generarFilaHTML(i);
-            }
+            datos.forEach((obj, idx) => {
+                const i = idx + 1; // número de fila visible (1-based)
+                html += `
+                    <tr id="row_${i}">
+                        <td class="row-number">${i}</td>
+                        <td><input type="text" id="nombre_${i}" placeholder="Persona ${i}" value="${obj.nombre || ''}" /></td>
+                        <td class="semilla-cell">
+                            <select class="calc" data-index="${i}" data-campo="semilla">
+                                <option value="sin_semilla" ${obj.semilla === 'sin_semilla' ? 'selected' : ''}>Sin Semilla</option>
+                                <option value="con_semilla" ${obj.semilla === 'con_semilla' ? 'selected' : ''}>Con Semilla</option>
+                                <option value="graduado_semilla" ${obj.semilla === 'graduado_semilla' ? 'selected' : ''}>Graduado Semilla</option>
+                            </select>
+                        </td>
+                        <td class="estado-cell">
+                            <select class="calc" data-index="${i}" data-campo="estado_civil">
+                                <option value="soltero" ${obj.estado_civil === 'soltero' ? 'selected' : ''}>Soltero/a</option>
+                                <option value="casado" ${obj.estado_civil === 'casado' ? 'selected' : ''}>Casado/a</option>
+                                <option value="acompanado" ${obj.estado_civil === 'acompanado' ? 'selected' : ''}>Acompañado/a</option>
+                            </select>
+                        </td>
+                        <td class="bautismo-cell">
+                            <select class="calc" data-index="${i}" data-campo="bautismo">
+                                <option value="no_bautizado" ${obj.bautismo === 'no_bautizado' ? 'selected' : ''}>No Bautizado</option>
+                                <option value="bautizado" ${obj.bautismo === 'bautizado' ? 'selected' : ''}>Bautizado</option>
+                            </select>
+                        </td>
+                        <td class="encuentro-cell">
+                            <select class="calc" data-index="${i}" data-campo="encuentro">
+                                <option value="sin_encuentro" ${obj.encuentro === 'sin_encuentro' ? 'selected' : ''}>Sin Encuentro</option>
+                                <option value="con_encuentro" ${obj.encuentro === 'con_encuentro' ? 'selected' : ''}>Con Encuentro</option>
+                            </select>
+                        </td>
+                        <td class="lanzamiento-cell">
+                            <select class="calc" data-index="${i}" data-campo="lanzamiento">
+                                <option value="falta_lanzamiento" ${obj.lanzamiento === 'falta_lanzamiento' ? 'selected' : ''}>Falta Lanzamiento</option>
+                                <option value="con_lanzamiento" ${obj.lanzamiento === 'con_lanzamiento' ? 'selected' : ''}>Pasó Lanzamiento</option>
+                            </select>
+                        </td>
+                        <td class="charlas-cell">
+                            <select class="calc" data-index="${i}" data-campo="charlas">
+                                <option value="na" ${obj.charlas === 'na' ? 'selected' : ''}>N/A (Solteros)</option>
+                                <option value="sin_charlas" ${obj.charlas === 'sin_charlas' ? 'selected' : ''}>Pareja Sin Charlas</option>
+                                <option value="con_charlas" ${obj.charlas === 'con_charlas' ? 'selected' : ''}>Charlas Completas</option>
+                            </select>
+                        </td>
+                        <td class="proposito-cell">
+                            <select class="calc" data-index="${i}" data-campo="proposito">
+                                <option value="sin_proposito" ${obj.proposito === 'sin_proposito' ? 'selected' : ''}>Sin Propósito</option>
+                                <option value="en_proposito" ${obj.proposito === 'en_proposito' ? 'selected' : ''}>En Propósito</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button class="btn-eliminar-fila no-print" data-index="${i}" title="Eliminar esta persona">✕</button>
+                        </td>
+                    </tr>
+                `;
+            });
             tbody.innerHTML = html;
             actualizarContador();
+
+            // Asignar eventos a los botones eliminar
             document.querySelectorAll('.btn-eliminar-fila').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     const idx = parseInt(this.dataset.index);
                     eliminarFila(idx);
                 });
             });
+
+            // Recalcular totales
             calcularTotales();
         }
 
@@ -1153,52 +1193,62 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
             document.getElementById('contadorFilas').textContent = `(${filasActuales} personas)`;
         }
 
+        // ============================================================
+        //  OPERACIONES: AGREGAR Y ELIMINAR
+        // ============================================================
+
         function agregarFila() {
-            if (filasActuales >= MAX_FILAS) {
-                alert(`Máximo de ${MAX_FILAS} integrantes alcanzado.`);
+            if (filasActuales >= 14) {
+                alert(`Máximo de 14 integrantes alcanzado.`);
                 return;
             }
-            filasActuales++;
-            renderizarTabla();
+            // Obtener datos actuales
+            const datos = obtenerDatosTabla();
+            // Agregar un objeto vacío (con valores por defecto)
+            datos.push({
+                nombre: '',
+                semilla: 'sin_semilla',
+                estado_civil: 'soltero',
+                bautismo: 'no_bautizado',
+                encuentro: 'sin_encuentro',
+                lanzamiento: 'falta_lanzamiento',
+                charlas: 'na',
+                proposito: 'sin_proposito'
+            });
+            filasActuales = datos.length;
+            renderizarTabla(datos);
+            // Scroll al final
             const tbody = document.getElementById('tablaIntegrantes');
             const lastRow = tbody.lastElementChild;
             if (lastRow) lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function eliminarFila(index) {
-            if (filasActuales <= MIN_FILAS) {
-                alert(`Mínimo de ${MIN_FILAS} integrantes requerido.`);
+            // index es el número de fila (1-based)
+            if (filasActuales <= 4) {
+                alert(`Mínimo de 4 integrantes requerido.`);
                 return;
             }
-            const row = document.getElementById(`row_${index}`);
-            if (row) {
-                row.remove();
-                filasActuales--;
-                actualizarContador();
-                calcularTotales();
-                document.querySelectorAll('.btn-eliminar-fila').forEach(btn => {
-                    btn.removeEventListener('click', eliminarFilaHandler);
-                    btn.addEventListener('click', eliminarFilaHandler);
-                });
+            const datos = obtenerDatosTabla();
+            const idx = index - 1; // convertir a 0-based
+            if (idx >= 0 && idx < datos.length) {
+                datos.splice(idx, 1);
+                filasActuales = datos.length;
+                renderizarTabla(datos);
+            } else {
+                alert('Error: fila no encontrada.');
             }
-        }
-
-        function eliminarFilaHandler(e) {
-            const idx = parseInt(this.dataset.index);
-            eliminarFila(idx);
         }
 
         function eliminarUltimaFila() {
-            if (filasActuales <= MIN_FILAS) {
-                alert(`Mínimo de ${MIN_FILAS} integrantes requerido.`);
+            if (filasActuales <= 4) {
+                alert(`Mínimo de 4 integrantes requerido.`);
                 return;
             }
-            const tbody = document.getElementById('tablaIntegrantes');
-            const lastRow = tbody.lastElementChild;
-            if (lastRow) {
-                const idx = parseInt(lastRow.id.split('_')[1]);
-                eliminarFila(idx);
-            }
+            const datos = obtenerDatosTabla();
+            datos.pop();
+            filasActuales = datos.length;
+            renderizarTabla(datos);
         }
 
         // ============================================================
@@ -1206,30 +1256,23 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
         // ============================================================
 
         function calcularTotales() {
+            const datos = obtenerDatosTabla();
             const conteos = {
-                con_semilla: 0,
-                sin_semilla: 0,
-                graduado_semilla: 0,
-                casado: 0,
-                acompanado: 0,
-                soltero: 0,
-                bautizado: 0,
-                no_bautizado: 0,
-                con_encuentro: 0,
-                sin_encuentro: 0,
-                con_lanzamiento: 0,
-                falta_lanzamiento: 0,
+                con_semilla: 0, sin_semilla: 0, graduado_semilla: 0,
+                casado: 0, acompanado: 0, soltero: 0,
+                bautizado: 0, no_bautizado: 0,
+                con_encuentro: 0, sin_encuentro: 0,
+                con_lanzamiento: 0, falta_lanzamiento: 0,
                 sin_charlas: 0,
-                en_proposito: 0,
-                sin_proposito: 0
+                en_proposito: 0, sin_proposito: 0
             };
 
-            const selects = document.querySelectorAll('#tablaIntegrantes .calc');
-            selects.forEach(sel => {
-                const val = sel.value;
-                if (conteos.hasOwnProperty(val)) {
-                    conteos[val]++;
-                }
+            datos.forEach(p => {
+                const campos = ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas', 'proposito'];
+                campos.forEach(campo => {
+                    const val = p[campo];
+                    if (val && conteos.hasOwnProperty(val)) conteos[val]++;
+                });
             });
 
             const grid = document.getElementById('summaryGrid');
@@ -1249,27 +1292,26 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
         }
 
         // ============================================================
-        //  FUNCIONES PARA SUPABASE (usando tabla 'reports')
+        //  FUNCIONES PARA SUPABASE
         // ============================================================
 
-        async function cargarReportesDesdeSupabase(filtroRaiz = '__TODAS__') {
+        async function cargarReportesDesdeSupabase(filtroRaiz = '__TODAS__', filtroNodo = '__TODOS__') {
             let query = supabaseClient.from('reports').select('*');
             if (filtroRaiz !== '__TODAS__') {
                 const nodosRaiz = getNodosPorRaiz(filtroRaiz);
                 const idsRaiz = nodosRaiz.map(n => n.id);
                 query = query.in('nodo_id', idsRaiz);
             }
-            const { data, error } = await query;
+            if (filtroNodo !== '__TODOS__') {
+                query = query.eq('nodo_id', filtroNodo);
+            }
+            const { data, error } = await query.order('timestamp', { ascending: false });
             if (error) {
                 console.error('Error al obtener reportes:', error);
                 return [];
             }
             return data;
         }
-
-        // ============================================================
-        //  GUARDAR REPORTE (con Supabase - tabla 'reports')
-        // ============================================================
 
         async function guardarReporte() {
             const nodoId = document.getElementById('nodoSelect').value;
@@ -1280,27 +1322,18 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
             const nodo = getNodoById(nodoId);
             const { padre, raiz } = getPadreYRaiz(nodoId);
 
-            const integrantes = [];
-            document.querySelectorAll('#tablaIntegrantes tr').forEach(row => {
-                const inputNombre = row.querySelector('input[type="text"]');
-                if (!inputNombre) return;
-                const nombre = inputNombre.value.trim() || `Persona ${row.id.split('_')[1]}`;
-                const selects = row.querySelectorAll('.calc');
-                const datos = {};
-                selects.forEach(sel => {
-                    datos[sel.dataset.campo] = sel.value;
-                });
-                integrantes.push({
-                    nombre,
-                    semilla: datos.semilla,
-                    estado_civil: datos.estado_civil,
-                    bautismo: datos.bautismo,
-                    encuentro: datos.encuentro,
-                    lanzamiento: datos.lanzamiento,
-                    charlas: datos.charlas,
-                    proposito: datos.proposito
-                });
-            });
+            // Obtener datos actuales de la tabla
+            const datos = obtenerDatosTabla();
+            const integrantes = datos.map(p => ({
+                nombre: p.nombre || `Persona`,
+                semilla: p.semilla,
+                estado_civil: p.estado_civil,
+                bautismo: p.bautismo,
+                encuentro: p.encuentro,
+                lanzamiento: p.lanzamiento,
+                charlas: p.charlas,
+                proposito: p.proposito
+            }));
 
             const reporte = {
                 timestamp: new Date().toISOString(),
@@ -1326,13 +1359,15 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
         }
 
         // ============================================================
-        //  VISTA ADMIN - TOTALES CONSOLIDADOS (desde Supabase)
+        //  VISTA ADMIN - TOTALES Y TABLA DE REPORTES
         // ============================================================
 
-        async function actualizarAdminTotales() {
+        async function actualizarAdminTotalesYTabla() {
             const filtroRaiz = document.getElementById('filtroRaiz').value;
-            const reportes = await cargarReportesDesdeSupabase(filtroRaiz);
+            const filtroNodo = document.getElementById('filtroNodo').value;
+            const reportes = await cargarReportesDesdeSupabase(filtroRaiz, filtroNodo);
 
+            // Totales consolidados
             const conteos = {
                 con_semilla: 0, sin_semilla: 0, graduado_semilla: 0,
                 casado: 0, acompanado: 0, soltero: 0,
@@ -1344,12 +1379,14 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
             };
 
             reportes.forEach(reporte => {
-                reporte.integrantes.forEach(p => {
-                    ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas', 'proposito'].forEach(campo => {
-                        const val = p[campo];
-                        if (val && conteos.hasOwnProperty(val)) conteos[val]++;
+                if (reporte.integrantes) {
+                    reporte.integrantes.forEach(p => {
+                        ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas', 'proposito'].forEach(campo => {
+                            const val = p[campo];
+                            if (val && conteos.hasOwnProperty(val)) conteos[val]++;
+                        });
                     });
-                });
+                }
             });
 
             const grid = document.getElementById('adminSummaryGrid');
@@ -1358,7 +1395,7 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
                 const count = conteos[key] || 0;
                 const clase = categoriaClase[key] || '';
                 html += `
-                    <div class="stat-card ${clase}" onclick="mostrarPersonas('${key}', '${label}')">
+                    <div class="stat-card ${clase}" onclick="mostrarPersonasAdminGlobal('${key}', '${label}', '${filtroRaiz}', '${filtroNodo}')">
                         <div class="label">${label}</div>
                         <div class="number">${count}</div>
                         <div class="hint">Clic para ver nombres</div>
@@ -1366,33 +1403,52 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
                 `;
             }
             grid.innerHTML = html;
-        }
 
-        function cargarFiltroRaiz() {
-            const select = document.getElementById('filtroRaiz');
-            const raices = getRaices();
-            select.innerHTML = '<option value="__TODAS__">📊 Todas las redes</option>';
-            raices.forEach(r => {
-                const opt = document.createElement('option');
-                opt.value = r.id;
-                opt.textContent = `🔷 ${r.nombre}`;
-                select.appendChild(opt);
+            // Tabla de reportes
+            const tbody = document.getElementById('cuerpoTablaReportes');
+            if (reportes.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#94a3b8; padding:20px;">No hay reportes guardados con estos filtros.</td></tr>`;
+                return;
+            }
+
+            let filas = '';
+            reportes.forEach((r, idx) => {
+                const fechaReporte = r.timestamp ? new Date(r.timestamp).toLocaleString() : 'N/A';
+                const numIntegrantes = (r.integrantes && Array.isArray(r.integrantes)) ? r.integrantes.length : 0;
+                filas += `
+                    <tr>
+                        <td>${fechaReporte}</td>
+                        <td>${r.grupo_remitente || 'N/A'}</td>
+                        <td>${r.padre_directo || 'N/A'}</td>
+                        <td>${r.fecha_evangelismo || '—'}</td>
+                        <td>${r.fecha_amigo_celular || '—'}</td>
+                        <td>${r.meta_celular !== undefined ? r.meta_celular : '—'}</td>
+                        <td>${r.meta_iglesia !== undefined ? r.meta_iglesia : '—'}</td>
+                        <td>${numIntegrantes}</td>
+                        <td><button class="btn-ver-integrantes" data-reporte-idx="${idx}">Ver integrantes</button></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = filas;
+
+            document.querySelectorAll('#cuerpoTablaReportes .btn-ver-integrantes').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.reporteIdx);
+                    const reporte = reportes[idx];
+                    mostrarIntegrantesDeReporte(reporte);
+                });
             });
         }
 
         // ============================================================
-        //  MODAL DE LISTA (vista normal y admin)
+        //  FUNCIONES DE MODAL PARA ADMIN
         // ============================================================
 
-        async function mostrarPersonas(criterio, titulo) {
-            const esAdmin = document.getElementById('vistaAdmin').style.display === 'block';
-            let personas = [];
-
-            if (esAdmin) {
-                const filtroRaiz = document.getElementById('filtroRaiz').value;
-                const reportes = await cargarReportesDesdeSupabase(filtroRaiz);
-
-                reportes.forEach(reporte => {
+        async function mostrarPersonasAdminGlobal(criterio, titulo, filtroRaiz, filtroNodo) {
+            const reportes = await cargarReportesDesdeSupabase(filtroRaiz, filtroNodo);
+            const personas = [];
+            reportes.forEach(reporte => {
+                if (reporte.integrantes) {
                     reporte.integrantes.forEach(p => {
                         const campo = criterioMap[criterio];
                         if (p[campo] === criterio) {
@@ -1403,40 +1459,69 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
                             });
                         }
                     });
-                });
-
-                const ul = document.getElementById('modalListaPersonas');
-                ul.innerHTML = '';
-                if (personas.length === 0) {
-                    ul.innerHTML = '<li style="color:#94a3b8; list-style:none;">No hay personas en esta categoría.</li>';
-                } else {
-                    personas.forEach(p => {
-                        const li = document.createElement('li');
-                        li.innerHTML = `
-                            <span class="nombre">${p.nombre}</span>
-                            <span class="jerarquia">👆 ${p.padre}</span>
-                            <span class="jerarquia">🔷 ${p.raiz}</span>
-                        `;
-                        ul.appendChild(li);
-                    });
                 }
-                document.getElementById('modalTitulo').textContent = `${titulo} (${personas.length}) - Consolidado`;
-                document.getElementById('modalNombres').classList.add('active');
+            });
+
+            const ul = document.getElementById('modalListaPersonas');
+            ul.innerHTML = '';
+            if (personas.length === 0) {
+                ul.innerHTML = '<li style="color:#94a3b8; list-style:none;">No hay personas en esta categoría.</li>';
+            } else {
+                personas.forEach(p => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span class="nombre">${p.nombre}</span>
+                        <span class="jerarquia">👆 ${p.padre}</span>
+                        <span class="jerarquia">🔷 ${p.raiz}</span>
+                    `;
+                    ul.appendChild(li);
+                });
+            }
+            document.getElementById('modalTitulo').textContent = `${titulo} (${personas.length}) - Consolidado`;
+            document.getElementById('modalNombres').classList.add('active');
+        }
+
+        function mostrarIntegrantesDeReporte(reporte) {
+            const ul = document.getElementById('modalListaPersonas');
+            ul.innerHTML = '';
+            if (!reporte.integrantes || reporte.integrantes.length === 0) {
+                ul.innerHTML = '<li style="color:#94a3b8; list-style:none;">Este reporte no tiene integrantes.</li>';
+            } else {
+                reporte.integrantes.forEach(p => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span class="nombre">${p.nombre || 'Sin nombre'}</span>
+                        <span class="jerarquia">👆 ${reporte.padre_directo || 'N/A'}</span>
+                        <span class="jerarquia">🔷 ${reporte.red_principal || 'N/A'}</span>
+                    `;
+                    ul.appendChild(li);
+                });
+            }
+            document.getElementById('modalTitulo').textContent = `Integrantes de "${reporte.grupo_remitente || 'grupo'}" (${reporte.integrantes ? reporte.integrantes.length : 0})`;
+            document.getElementById('modalNombres').classList.add('active');
+        }
+
+        // ============================================================
+        //  MOSTRAR PERSONAS (vista normal y admin global)
+        // ============================================================
+
+        async function mostrarPersonas(criterio, titulo) {
+            const esAdmin = document.getElementById('vistaAdmin').style.display === 'block';
+            if (esAdmin) {
+                const filtroRaiz = document.getElementById('filtroRaiz').value;
+                const filtroNodo = document.getElementById('filtroNodo').value;
+                await mostrarPersonasAdminGlobal(criterio, titulo, filtroRaiz, filtroNodo);
                 return;
             }
 
-            // Modo normal (solo local)
-            const rows = document.querySelectorAll('#tablaIntegrantes tr');
-            rows.forEach(row => {
-                const inputNombre = row.querySelector('input[type="text"]');
-                if (!inputNombre) return;
-                const nombre = inputNombre.value.trim() || `Persona ${row.id.split('_')[1]}`;
-                const selects = row.querySelectorAll('.calc');
-                selects.forEach(sel => {
-                    if (sel.value === criterio) {
-                        personas.push(nombre);
-                    }
-                });
+            // Modo normal
+            const datos = obtenerDatosTabla();
+            const personas = [];
+            datos.forEach(p => {
+                const campo = criterioMap[criterio];
+                if (p[campo] === criterio) {
+                    personas.push(p.nombre || 'Sin nombre');
+                }
             });
 
             const ul = document.getElementById('modalListaPersonas');
@@ -1459,7 +1544,7 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
         }
 
         // ============================================================
-        //  JERARQUÍA: CARGAR SELECTORES Y ACTUALIZAR PADRE/RAÍZ
+        //  JERARQUÍA: CARGAR SELECTORES
         // ============================================================
 
         function cargarSelectoresJerarquia() {
@@ -1485,6 +1570,40 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
         }
 
         // ============================================================
+        //  FILTROS ADMIN
+        // ============================================================
+
+        function cargarFiltroRaiz() {
+            const select = document.getElementById('filtroRaiz');
+            const raices = getRaices();
+            select.innerHTML = '<option value="__TODAS__">📊 Todas las redes</option>';
+            raices.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.id;
+                opt.textContent = `🔷 ${r.nombre}`;
+                select.appendChild(opt);
+            });
+            select.dispatchEvent(new Event('change'));
+        }
+
+        function cargarFiltroNodo(raizId) {
+            const select = document.getElementById('filtroNodo');
+            let nodosFiltrados = [];
+            if (raizId === '__TODAS__') {
+                nodosFiltrados = nodos;
+            } else {
+                nodosFiltrados = getNodosPorRaiz(raizId);
+            }
+            select.innerHTML = '<option value="__TODOS__">📌 Todos los nodos</option>';
+            nodosFiltrados.forEach(n => {
+                const opt = document.createElement('option');
+                opt.value = n.id;
+                opt.textContent = `${n.nombre} (${n.etiqueta})`;
+                select.appendChild(opt);
+            });
+        }
+
+        // ============================================================
         //  AUTENTICACIÓN Y CAMBIO DE VISTAS
         // ============================================================
 
@@ -1507,7 +1626,7 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
                 document.getElementById('vistaAdmin').style.display = 'block';
                 document.getElementById('adminUserDisplay').textContent = '👤 ' + user;
                 cargarFiltroRaiz();
-                await actualizarAdminTotales();
+                await actualizarAdminTotalesYTabla();
             } else {
                 document.getElementById('loginError').textContent = 'Usuario o clave incorrectos.';
             }
@@ -1535,12 +1654,27 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
             cargarSelectoresJerarquia();
             document.getElementById('nodoSelect').addEventListener('change', actualizarCamposJerarquia);
 
-            renderizarTabla();
+            // Inicializar tabla con 4 filas vacías
+            const datosIniciales = [];
+            for (let i = 0; i < 4; i++) {
+                datosIniciales.push({
+                    nombre: '',
+                    semilla: 'sin_semilla',
+                    estado_civil: 'soltero',
+                    bautismo: 'no_bautizado',
+                    encuentro: 'sin_encuentro',
+                    lanzamiento: 'falta_lanzamiento',
+                    charlas: 'na',
+                    proposito: 'sin_proposito'
+                });
+            }
+            renderizarTabla(datosIniciales);
 
             document.getElementById('btnAgregar').addEventListener('click', agregarFila);
             document.getElementById('btnEliminar').addEventListener('click', eliminarUltimaFila);
             document.getElementById('btnGuardarReporte').addEventListener('click', guardarReporte);
 
+            // Recalcular al cambiar selects
             document.getElementById('tablaIntegrantes').addEventListener('change', function(e) {
                 if (e.target.classList.contains('calc')) {
                     calcularTotales();
@@ -1564,7 +1698,15 @@ const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
             document.getElementById('btnCerrarSesion').addEventListener('click', cerrarSesion);
             document.getElementById('btnVolverNormal').addEventListener('click', volverNormal);
 
-            document.getElementById('filtroRaiz').addEventListener('change', actualizarAdminTotales);
+            // Filtros admin
+            document.getElementById('filtroRaiz').addEventListener('change', function() {
+                const raizId = this.value;
+                cargarFiltroNodo(raizId);
+                actualizarAdminTotalesYTabla();
+            });
+            document.getElementById('filtroNodo').addEventListener('change', function() {
+                actualizarAdminTotalesYTabla();
+            });
 
             document.getElementById('vistaAdmin').style.display = 'none';
             document.getElementById('vistaNormal').style.display = 'block';
