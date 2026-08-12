@@ -28,15 +28,6 @@
             margin: 0 auto;
         }
 
-        /* ===== BOTONES ===== */
-        .btn-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
         .btn {
             padding: 10px 18px;
             font-weight: 600;
@@ -51,68 +42,33 @@
             background: #e2e8f0;
             color: #1e293b;
         }
-
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
-
-        .btn-primary {
-            background: #1e4a7a;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #14355c;
-        }
-
-        .btn-success {
-            background: #0b6e4f;
-            color: white;
-        }
-        .btn-success:hover {
-            background: #09573e;
-        }
-
-        .btn-danger {
-            background: #b91c1c;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #991515;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #94a3b8;
-            color: #334155;
-        }
-        .btn-outline:hover {
-            background: #f1f5f9;
-        }
-
-        .btn-warning {
-            background: #d97706;
-            color: white;
-        }
-        .btn-warning:hover {
-            background: #b45309;
-        }
+        .btn-primary { background: #1e4a7a; color: white; }
+        .btn-primary:hover { background: #14355c; }
+        .btn-success { background: #0b6e4f; color: white; }
+        .btn-success:hover { background: #09573e; }
+        .btn-danger { background: #b91c1c; color: white; }
+        .btn-danger:hover { background: #991515; }
+        .btn-outline { background: transparent; border: 2px solid #94a3b8; color: #334155; }
+        .btn-outline:hover { background: #f1f5f9; }
+        .btn-warning { background: #d97706; color: white; }
+        .btn-warning:hover { background: #b45309; }
 
         .btn-sm {
             padding: 4px 10px;
             font-size: 0.75rem;
         }
 
-        /* ===== TARJETAS ===== */
         .card {
             background: white;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
             margin-bottom: 24px;
-            transition: box-shadow 0.2s;
         }
-
         .card h2 {
             font-size: 1.25rem;
             color: #0b2b4a;
@@ -123,7 +79,6 @@
             align-items: center;
             gap: 8px;
         }
-
         .card h2 span {
             font-size: 0.85rem;
             font-weight: 400;
@@ -140,16 +95,14 @@
             background: white;
             padding: 16px 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
             margin-bottom: 20px;
         }
-
         .report-header .titulo-group h1 {
             font-size: 1.5rem;
             color: #0b2b4a;
             margin: 0;
         }
-
         .report-header .titulo-group .subtitle {
             color: #475569;
             font-size: 0.95rem;
@@ -166,11 +119,9 @@
             border: 1px solid #e2e8f0;
             margin-bottom: 16px;
         }
-
         .jerarquia-box .campo {
             flex: 1 1 180px;
         }
-
         .jerarquia-box .campo label {
             font-weight: 600;
             display: block;
@@ -178,7 +129,6 @@
             color: #1e293b;
             margin-bottom: 2px;
         }
-
         .jerarquia-box .campo select,
         .jerarquia-box .campo input {
             width: 100%;
@@ -188,7 +138,6 @@
             background: white;
             font-size: 0.9rem;
         }
-
         .jerarquia-box .campo input[readonly] {
             background: #e9edf2;
             font-weight: 500;
@@ -199,14 +148,12 @@
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 16px;
         }
-
         .meta-box {
             background: #f1f5f9;
             padding: 14px 16px;
             border-radius: 8px;
             border-left: 4px solid #1e4a7a;
         }
-
         .meta-box label {
             font-weight: 600;
             display: block;
@@ -214,9 +161,7 @@
             font-size: 0.9rem;
             color: #1e293b;
         }
-
-        .meta-box input,
-        .meta-box select {
+        .meta-box input, .meta-box select {
             width: 100%;
             padding: 8px 10px;
             border: 1px solid #cbd5e1;
@@ -224,7 +169,6 @@
             background: white;
             font-size: 0.9rem;
         }
-
         .meta-box input[readonly] {
             background: #e9edf2;
             font-weight: 600;
@@ -235,22 +179,18 @@
             -webkit-overflow-scrolling: touch;
             margin: 0 -4px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.85rem;
             min-width: 780px;
         }
-
-        th,
-        td {
+        th, td {
             border: 1px solid #e2e8f0;
             padding: 6px 4px;
             text-align: center;
             vertical-align: middle;
         }
-
         th {
             color: white;
             font-weight: 600;
@@ -260,57 +200,21 @@
             top: 0;
             z-index: 5;
         }
+        .col-semilla th { background-color: #0b6e4f; }
+        .col-estado th { background-color: #1a5a8c; }
+        .col-bautismo th { background-color: #b45309; }
+        .col-encuentro th { background-color: #6d28d9; }
+        .col-lanzamiento th { background-color: #b91c1c; }
+        .col-charlas th { background-color: #9d174d; }
+        .col-proposito th { background-color: #0f766e; }
 
-        .col-semilla th {
-            background-color: #0b6e4f;
-        }
-        .col-estado th {
-            background-color: #1a5a8c;
-        }
-        .col-bautismo th {
-            background-color: #b45309;
-        }
-        .col-encuentro th {
-            background-color: #6d28d9;
-        }
-        .col-lanzamiento th {
-            background-color: #b91c1c;
-        }
-        .col-charlas th {
-            background-color: #9d174d;
-        }
-        .col-proposito th {
-            background-color: #0f766e;
-        }
-
-        td.semilla-cell select {
-            background-color: #ecfdf5;
-            border-color: #0b6e4f;
-        }
-        td.estado-cell select {
-            background-color: #eff6ff;
-            border-color: #1a5a8c;
-        }
-        td.bautismo-cell select {
-            background-color: #fffbeb;
-            border-color: #b45309;
-        }
-        td.encuentro-cell select {
-            background-color: #f5f3ff;
-            border-color: #6d28d9;
-        }
-        td.lanzamiento-cell select {
-            background-color: #fef2f2;
-            border-color: #b91c1c;
-        }
-        td.charlas-cell select {
-            background-color: #fdf2f8;
-            border-color: #9d174d;
-        }
-        td.proposito-cell select {
-            background-color: #f0fdfa;
-            border-color: #0f766e;
-        }
+        td.semilla-cell select { background-color: #ecfdf5; border-color: #0b6e4f; }
+        td.estado-cell select { background-color: #eff6ff; border-color: #1a5a8c; }
+        td.bautismo-cell select { background-color: #fffbeb; border-color: #b45309; }
+        td.encuentro-cell select { background-color: #f5f3ff; border-color: #6d28d9; }
+        td.lanzamiento-cell select { background-color: #fef2f2; border-color: #b91c1c; }
+        td.charlas-cell select { background-color: #fdf2f8; border-color: #9d174d; }
+        td.proposito-cell select { background-color: #f0fdfa; border-color: #0f766e; }
 
         td select {
             width: 100%;
@@ -321,7 +225,6 @@
             background: white;
             min-width: 70px;
         }
-
         td input[type="text"] {
             width: 100%;
             padding: 6px 4px;
@@ -330,12 +233,10 @@
             font-size: 0.8rem;
             min-width: 80px;
         }
-
         .row-number {
             font-weight: 600;
             color: #475569;
         }
-
         .btn-eliminar-fila {
             background: none;
             border: none;
@@ -346,16 +247,13 @@
             border-radius: 4px;
             transition: background 0.2s;
         }
-        .btn-eliminar-fila:hover {
-            background: #fee2e2;
-        }
+        .btn-eliminar-fila:hover { background: #fee2e2; }
 
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 12px;
         }
-
         .stat-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -366,12 +264,10 @@
             transition: all 0.15s;
             position: relative;
         }
-
         .stat-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
         }
-
         .stat-card .label {
             font-size: 0.75rem;
             font-weight: 600;
@@ -379,7 +275,6 @@
             letter-spacing: 0.3px;
             color: #334155;
         }
-
         .stat-card .number {
             font-size: 1.8rem;
             font-weight: 700;
@@ -387,39 +282,21 @@
             text-decoration: underline;
             text-underline-offset: 2px;
         }
-
         .stat-card .hint {
             font-size: 0.6rem;
             color: #94a3b8;
             margin-top: 2px;
         }
 
-        .stat-semilla .number {
-            color: #0b6e4f;
-        }
-        .stat-estado .number {
-            color: #1a5a8c;
-        }
-        .stat-bautismo .number {
-            color: #b45309;
-        }
-        .stat-encuentro .number {
-            color: #6d28d9;
-        }
-        .stat-lanzamiento .number {
-            color: #b91c1c;
-        }
-        .stat-charlas .number {
-            color: #9d174d;
-        }
-        .stat-proposito .number {
-            color: #0f766e;
-        }
+        .stat-semilla .number { color: #0b6e4f; }
+        .stat-estado .number { color: #1a5a8c; }
+        .stat-bautismo .number { color: #b45309; }
+        .stat-encuentro .number { color: #6d28d9; }
+        .stat-lanzamiento .number { color: #b91c1c; }
+        .stat-charlas .number { color: #9d174d; }
+        .stat-proposito .number { color: #0f766e; }
 
-        #vistaAdmin {
-            display: none;
-        }
-
+        #vistaAdmin { display: none; }
         #vistaAdmin .admin-header {
             display: flex;
             justify-content: space-between;
@@ -428,16 +305,8 @@
             gap: 12px;
             margin-bottom: 20px;
         }
-
-        #vistaAdmin .admin-header h2 {
-            color: #0b2b4a;
-            margin: 0;
-        }
-
-        #vistaAdmin .admin-header .admin-user {
-            font-weight: 600;
-            color: #475569;
-        }
+        #vistaAdmin .admin-header h2 { color: #0b2b4a; margin: 0; }
+        #vistaAdmin .admin-header .admin-user { font-weight: 600; color: #475569; }
 
         .filtro-admin {
             display: flex;
@@ -449,12 +318,7 @@
             border-radius: 8px;
             margin-bottom: 20px;
         }
-
-        .filtro-admin label {
-            font-weight: 600;
-            color: #1e293b;
-        }
-
+        .filtro-admin label { font-weight: 600; color: #1e293b; }
         .filtro-admin select {
             padding: 8px 12px;
             border: 1px solid #cbd5e1;
@@ -464,14 +328,8 @@
             min-width: 200px;
         }
 
-        .tabla-reportes td {
-            font-size: 0.8rem;
-            padding: 6px 8px;
-        }
-        .tabla-reportes th {
-            background: #334155;
-            font-size: 0.75rem;
-        }
+        .tabla-reportes td { font-size: 0.8rem; padding: 6px 8px; }
+        .tabla-reportes th { background: #334155; font-size: 0.75rem; }
         .tabla-reportes .btn-ver-integrantes {
             background: #2563eb;
             color: white;
@@ -481,9 +339,7 @@
             font-size: 0.7rem;
             cursor: pointer;
         }
-        .tabla-reportes .btn-ver-integrantes:hover {
-            background: #1d4ed8;
-        }
+        .tabla-reportes .btn-ver-integrantes:hover { background: #1d4ed8; }
         .tabla-reportes .btn-ver-reporte {
             background: #0b6e4f;
             color: white;
@@ -494,11 +350,8 @@
             cursor: pointer;
             margin-left: 4px;
         }
-        .tabla-reportes .btn-ver-reporte:hover {
-            background: #09573e;
-        }
+        .tabla-reportes .btn-ver-reporte:hover { background: #09573e; }
 
-        /* ===== MODAL ===== */
         .modal {
             display: none;
             position: fixed;
@@ -507,15 +360,12 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0,0,0,0.5);
             backdrop-filter: blur(2px);
             align-items: center;
             justify-content: center;
         }
-
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
         .modal-content {
             background: white;
@@ -524,11 +374,10 @@
             width: 90%;
             max-width: 480px;
             max-height: 80vh;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             position: relative;
             overflow-y: auto;
         }
-
         .modal-content.large {
             max-width: 1100px;
             width: 95%;
@@ -546,10 +395,7 @@
             line-height: 1;
             z-index: 10;
         }
-
-        .close-btn:hover {
-            color: #1e293b;
-        }
+        .close-btn:hover { color: #1e293b; }
 
         .modal-title {
             color: #0b2b4a;
@@ -566,7 +412,6 @@
             max-height: 50vh;
             overflow-y: auto;
         }
-
         .modal-list li {
             padding: 10px 8px;
             border-bottom: 1px solid #f1f5f9;
@@ -576,11 +421,7 @@
             gap: 6px 12px;
             font-size: 0.95rem;
         }
-
-        .modal-list li .nombre {
-            font-weight: 500;
-        }
-
+        .modal-list li .nombre { font-weight: 500; }
         .modal-list li .jerarquia {
             font-size: 0.75rem;
             color: #475569;
@@ -595,31 +436,16 @@
             flex-direction: column;
             gap: 14px;
         }
-
-        .login-form label {
-            font-weight: 600;
-            color: #1e293b;
-        }
-
+        .login-form label { font-weight: 600; color: #1e293b; }
         .login-form input {
             padding: 10px 12px;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
             font-size: 1rem;
         }
+        .login-form .btn { align-self: center; min-width: 120px; }
+        .login-error { color: #b91c1c; font-size: 0.9rem; text-align: center; }
 
-        .login-form .btn {
-            align-self: center;
-            min-width: 120px;
-        }
-
-        .login-error {
-            color: #b91c1c;
-            font-size: 0.9rem;
-            text-align: center;
-        }
-
-        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             top: 20px;
@@ -641,21 +467,13 @@
             transform: translateY(0);
             pointer-events: auto;
         }
-        .toast-success {
-            background: #0b6e4f;
-        }
-        .toast-error {
-            background: #b91c1c;
-        }
-        .toast-info {
-            background: #1e4a7a;
-        }
+        .toast-success { background: #0b6e4f; }
+        .toast-error { background: #b91c1c; }
+        .toast-info { background: #1e4a7a; }
 
-        /* ===== IMPRESIÓN DEL REPORTE COMPLETO ===== */
+        /* ===== IMPRESIÓN DEL REPORTE COMPLETO (MODAL) ===== */
         @media print {
-            body * {
-                visibility: hidden;
-            }
+            body * { visibility: hidden; }
             #modalReporteCompleto,
             #modalReporteCompleto * {
                 visibility: visible;
@@ -667,171 +485,67 @@
                 width: 100%;
                 background: white;
                 padding: 20px;
-            }
-            #modalReporteCompleto .no-print {
-                display: none !important;
+                display: block !important;
             }
             #modalReporteCompleto .modal-content {
                 box-shadow: none;
                 max-width: 100%;
                 width: 100%;
                 padding: 10px;
+                overflow-y: visible;
+                max-height: none;
             }
-            #modalReporteCompleto .close-btn {
+            #modalReporteCompleto .close-btn,
+            #modalReporteCompleto .no-print {
                 display: none !important;
             }
         }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
-            body {
-                padding: 10px;
-            }
-            .report-header {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                padding: 14px;
-            }
-            .jerarquia-box {
-                flex-direction: column;
-                gap: 10px;
-            }
-            .jerarquia-box .campo {
-                flex: 1 1 auto;
-            }
-            .card {
-                padding: 14px;
-            }
-            .grid-meta {
-                grid-template-columns: 1fr;
-            }
-            .summary-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
-            }
-            .stat-card .number {
-                font-size: 1.4rem;
-            }
-            .table-wrapper {
-                margin: 0 -10px;
-            }
-            table {
-                font-size: 0.75rem;
-                min-width: 700px;
-            }
-            th,
-            td {
-                padding: 4px 2px;
-            }
-            td select {
-                font-size: 0.7rem;
-                min-width: 60px;
-            }
-            td input[type="text"] {
-                font-size: 0.7rem;
-                min-width: 60px;
-            }
-            .btn {
-                padding: 8px 12px;
-                font-size: 0.85rem;
-            }
-            .modal-content {
-                padding: 16px;
-                margin: 10% auto;
-                width: 95%;
-            }
-            .modal-content.large {
-                width: 98%;
-                padding: 10px;
-                max-height: 95vh;
-            }
-            #vistaAdmin .admin-header {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
-            .filtro-admin {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .filtro-admin select {
-                min-width: auto;
-            }
-            .tabla-reportes td,
-            .tabla-reportes th {
-                font-size: 0.65rem;
-                padding: 4px 2px;
-            }
-            .toast {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                max-width: none;
-                font-size: 0.9rem;
-                padding: 12px 16px;
-            }
+            body { padding: 10px; }
+            .report-header { flex-direction: column; align-items: stretch; text-align: center; padding: 14px; }
+            .jerarquia-box { flex-direction: column; gap: 10px; }
+            .jerarquia-box .campo { flex: 1 1 auto; }
+            .card { padding: 14px; }
+            .grid-meta { grid-template-columns: 1fr; }
+            .summary-grid { grid-template-columns: repeat(2,1fr); gap: 8px; }
+            .stat-card .number { font-size: 1.4rem; }
+            .table-wrapper { margin: 0 -10px; }
+            table { font-size: 0.75rem; min-width: 700px; }
+            th, td { padding: 4px 2px; }
+            td select { font-size: 0.7rem; min-width: 60px; }
+            td input[type="text"] { font-size: 0.7rem; min-width: 60px; }
+            .btn { padding: 8px 12px; font-size: 0.85rem; }
+            .modal-content { padding: 16px; margin: 10% auto; width: 95%; }
+            .modal-content.large { width: 98%; padding: 10px; max-height: 95vh; }
+            #vistaAdmin .admin-header { flex-direction: column; align-items: stretch; text-align: center; }
+            .filtro-admin { flex-direction: column; align-items: stretch; }
+            .filtro-admin select { min-width: auto; }
+            .tabla-reportes td, .tabla-reportes th { font-size: 0.65rem; padding: 4px 2px; }
+            .toast { top: 10px; right: 10px; left: 10px; max-width: none; font-size: 0.9rem; padding: 12px 16px; }
         }
 
         @media (max-width: 480px) {
-            .summary-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .stat-card .label {
-                font-size: 0.65rem;
-            }
-            .stat-card .number {
-                font-size: 1.2rem;
-            }
+            .summary-grid { grid-template-columns: 1fr 1fr; }
+            .stat-card .label { font-size: 0.65rem; }
+            .stat-card .number { font-size: 1.2rem; }
         }
 
         /* ===== IMPRESIÓN GENERAL ===== */
         @media print {
-            body {
-                background: white;
-                padding: 0.2in;
-                font-size: 9pt;
-            }
-            .btn-container,
-            .btn-eliminar-fila,
-            .hint,
-            .close-btn,
-            .no-print {
+            body { background: white; padding: 0.2in; font-size: 9pt; }
+            .btn-container, .btn-eliminar-fila, .hint, .close-btn, .no-print {
                 display: none !important;
             }
-            .card {
-                box-shadow: none;
-                border: 1px solid #ccc;
-                page-break-inside: avoid;
-            }
-            .stat-card {
-                border: 1px solid #ccc;
-                background: white !important;
-            }
-            .stat-card .number {
-                text-decoration: none;
-                color: black !important;
-            }
-            table {
-                font-size: 8pt;
-                min-width: auto;
-            }
-            th {
-                background-color: #333 !important;
-                color: white !important;
-            }
-            td select,
-            td input {
-                border: none !important;
-                background: transparent !important;
-                font-weight: bold;
-            }
-            #vistaAdmin {
-                display: none !important;
-            }
-            .toast {
-                display: none !important;
-            }
+            .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+            .stat-card { border: 1px solid #ccc; background: white !important; }
+            .stat-card .number { text-decoration: none; color: black !important; }
+            table { font-size: 8pt; min-width: auto; }
+            th { background-color: #333 !important; color: white !important; }
+            td select, td input { border: none !important; background: transparent !important; font-weight: bold; }
+            #vistaAdmin { display: none !important; }
+            .toast { display: none !important; }
         }
     </style>
 </head>
@@ -847,14 +561,10 @@
             <button class="btn btn-outline" id="btnAdmin">🔐 Admin</button>
         </div>
 
-        <!-- TOAST -->
         <div id="toast" class="toast"></div>
 
-        <!-- ============================================================ -->
-        <!-- VISTA NORMAL (REPORTE) -->
-        <!-- ============================================================ -->
+        <!-- VISTA NORMAL -->
         <div id="vistaNormal">
-
             <div class="report-header">
                 <div class="titulo-group">
                     <h1>📋 Control y Seguimiento de Grupo Pequeño</h1>
@@ -867,9 +577,7 @@
                 <div class="jerarquia-box">
                     <div class="campo">
                         <label for="nodoSelect">✏️ Grupo Remitente (selecciona tu nodo)</label>
-                        <select id="nodoSelect">
-                            <!-- opciones generadas por JS -->
-                        </select>
+                        <select id="nodoSelect"></select>
                     </div>
                     <div class="campo">
                         <label>👆 Padre Directo</label>
@@ -915,10 +623,7 @@
             </div>
 
             <div class="card">
-                <h2>
-                    2. Integrantes del Grupo
-                    <span id="contadorFilas">(4 personas)</span>
-                </h2>
+                <h2>2. Integrantes del Grupo <span id="contadorFilas">(4 personas)</span></h2>
                 <div class="table-wrapper">
                     <table>
                         <thead>
@@ -935,28 +640,18 @@
                                 <th style="width:30px; background:#475569; min-width:30px;"></th>
                             </tr>
                         </thead>
-                        <tbody id="tablaIntegrantes">
-                            <!-- Filas generadas por JS -->
-                        </tbody>
+                        <tbody id="tablaIntegrantes"></tbody>
                     </table>
                 </div>
             </div>
 
             <div class="card">
-                <h2>
-                    3. Totales Calculados Automáticamente
-                    <span style="font-size:0.75rem; font-weight:400; color:#64748b;">💡 Haz clic en cualquier tarjeta para ver la lista</span>
-                </h2>
-                <div class="summary-grid" id="summaryGrid">
-                    <!-- Generado por JS -->
-                </div>
+                <h2>3. Totales Calculados Automáticamente <span style="font-size:0.75rem; font-weight:400; color:#64748b;">💡 Haz clic en cualquier tarjeta para ver la lista</span></h2>
+                <div class="summary-grid" id="summaryGrid"></div>
             </div>
         </div>
-        <!-- FIN VISTA NORMAL -->
 
-        <!-- ============================================================ -->
         <!-- VISTA ADMIN -->
-        <!-- ============================================================ -->
         <div id="vistaAdmin">
             <div class="admin-header">
                 <h2>📊 Panel de Administración - Totales Consolidados</h2>
@@ -968,21 +663,14 @@
 
             <div class="filtro-admin">
                 <label for="filtroRaiz">🔷 Filtrar por Red Principal (Raíz):</label>
-                <select id="filtroRaiz">
-                    <option value="__TODAS__">📊 Todas las redes</option>
-                </select>
-
+                <select id="filtroRaiz"><option value="__TODAS__">📊 Todas las redes</option></select>
                 <label for="filtroNodo">📌 Filtrar por Grupo (Nodo):</label>
-                <select id="filtroNodo">
-                    <option value="__TODOS__">Todos los nodos</option>
-                </select>
+                <select id="filtroNodo"><option value="__TODOS__">Todos los nodos</option></select>
             </div>
 
             <div class="card">
                 <h2>Totales de todos los reportes guardados (filtrados)</h2>
-                <div class="summary-grid" id="adminSummaryGrid">
-                    <!-- Generado por JS -->
-                </div>
+                <div class="summary-grid" id="adminSummaryGrid"></div>
                 <p style="margin-top:16px; font-size:0.85rem; color:#64748b;">
                     💡 Haz clic en cualquier tarjeta para ver los nombres, su grupo, padre directo y raíz.
                 </p>
@@ -1005,9 +693,7 @@
                                 <th>Acción</th>
                             </tr>
                         </thead>
-                        <tbody id="cuerpoTablaReportes">
-                            <!-- Generado por JS -->
-                        </tbody>
+                        <tbody id="cuerpoTablaReportes"></tbody>
                     </table>
                 </div>
             </div>
@@ -1016,9 +702,8 @@
                 <button class="btn btn-outline" id="btnVolverNormal">← Volver al reporte</button>
             </div>
         </div>
-        <!-- FIN VISTA ADMIN -->
 
-        <!-- MODAL DE LISTA DE PERSONAS (compartido) -->
+        <!-- MODAL LISTA DE PERSONAS -->
         <div id="modalNombres" class="modal">
             <div class="modal-content">
                 <span class="close-btn" id="modalClose">&times;</span>
@@ -1027,20 +712,18 @@
             </div>
         </div>
 
-        <!-- MODAL DE REPORTE COMPLETO -->
+        <!-- MODAL REPORTE COMPLETO -->
         <div id="modalReporteCompleto" class="modal">
             <div class="modal-content large">
                 <span class="close-btn" id="modalReporteClose">&times;</span>
-                <div id="contenidoReporteCompleto">
-                    <!-- Se llena dinámicamente -->
-                </div>
+                <div id="contenidoReporteCompleto"></div>
                 <div style="text-align:center; margin-top:16px;" class="no-print">
                     <button class="btn btn-primary" onclick="imprimirReporteCompleto()">🖨️ Imprimir este reporte</button>
                 </div>
             </div>
         </div>
 
-        <!-- MODAL DE LOGIN -->
+        <!-- MODAL LOGIN -->
         <div id="modalLogin" class="modal">
             <div class="modal-content">
                 <span class="close-btn" id="loginClose">&times;</span>
@@ -1063,9 +746,7 @@
     </div>
 
     <script>
-        // ============================================================
-        //  ESTRUCTURA JERÁRQUICA
-        // ============================================================
+        // ===== JERARQUÍA =====
         const nodos = [
             { id: 'node_1', nombre: 'Andy Estrada y Griselda Garcia', etiqueta: 'Raíz', parent_id: null },
             { id: 'node_2', nombre: 'Erick Sanchez y Vanessa Garcia', etiqueta: 'Célula directa', parent_id: 'node_1' },
@@ -1090,145 +771,89 @@
             { id: 'node_21', nombre: 'Yanira Villeda', etiqueta: 'Célula directa', parent_id: 'node_13' }
         ];
 
-        function getNodoById(id) {
-            return nodos.find(n => n.id === id);
-        }
-
+        function getNodoById(id) { return nodos.find(n => n.id === id); }
         function getPadreYRaiz(nodoId) {
             const nodo = getNodoById(nodoId);
             if (!nodo) return { padre: null, raiz: null };
             let padre = null;
-            if (nodo.parent_id) {
-                padre = getNodoById(nodo.parent_id);
-            }
-            let actual = nodo;
-            let raiz = null;
+            if (nodo.parent_id) padre = getNodoById(nodo.parent_id);
+            let actual = nodo, raiz = null;
             while (actual) {
-                if (actual.parent_id === null) {
-                    raiz = actual;
-                    break;
-                }
+                if (actual.parent_id === null) { raiz = actual; break; }
                 actual = getNodoById(actual.parent_id);
             }
             return { padre, raiz };
         }
-
-        function getRaices() {
-            return nodos.filter(n => n.parent_id === null);
-        }
-
+        function getRaices() { return nodos.filter(n => n.parent_id === null); }
         function getNodosPorRaiz(raizId) {
-            const resultado = [];
             const raiz = getNodoById(raizId);
-            if (!raiz) return resultado;
-            const cola = [raiz];
-            while (cola.length > 0) {
+            if (!raiz) return [];
+            const resultado = [], cola = [raiz];
+            while (cola.length) {
                 const actual = cola.shift();
                 resultado.push(actual);
-                const hijos = nodos.filter(n => n.parent_id === actual.id);
-                cola.push(...hijos);
+                cola.push(...nodos.filter(n => n.parent_id === actual.id));
             }
             return resultado;
         }
 
-        // ============================================================
-        //  CONFIGURACIÓN SUPABASE
-        // ============================================================
+        // ===== SUPABASE =====
         const SUPABASE_URL = 'https://kguwyctdwtuxoeqklqeu.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_i1_UpqgegV6-m7YOdTqmdA_PCEqgHo8';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // ============================================================
-        //  MAPAS Y ETIQUETAS
-        // ============================================================
+        // ===== MAPAS =====
         const categoriaClase = {
-            con_semilla: 'stat-semilla',
-            sin_semilla: 'stat-semilla',
-            graduado_semilla: 'stat-semilla',
-            casado: 'stat-estado',
-            acompanado: 'stat-estado',
-            soltero: 'stat-estado',
-            bautizado: 'stat-bautismo',
-            no_bautizado: 'stat-bautismo',
-            con_encuentro: 'stat-encuentro',
-            sin_encuentro: 'stat-encuentro',
-            con_lanzamiento: 'stat-lanzamiento',
-            falta_lanzamiento: 'stat-lanzamiento',
-            sin_charlas: 'stat-charlas',
-            en_proposito: 'stat-proposito',
-            sin_proposito: 'stat-proposito'
+            con_semilla:'stat-semilla', sin_semilla:'stat-semilla', graduado_semilla:'stat-semilla',
+            casado:'stat-estado', acompanado:'stat-estado', soltero:'stat-estado',
+            bautizado:'stat-bautismo', no_bautizado:'stat-bautismo',
+            con_encuentro:'stat-encuentro', sin_encuentro:'stat-encuentro',
+            con_lanzamiento:'stat-lanzamiento', falta_lanzamiento:'stat-lanzamiento',
+            sin_charlas:'stat-charlas',
+            en_proposito:'stat-proposito', sin_proposito:'stat-proposito'
         };
-
         const etiquetasTotales = {
-            con_semilla: 'Con Semilla / Cursando',
-            sin_semilla: 'Sin Semilla / Para Integrar',
-            graduado_semilla: 'Graduados de Semilla',
-            casado: 'Casados',
-            acompanado: 'Acompañados (Sin Casar)',
-            soltero: 'Solteros',
-            bautizado: 'Bautizados',
-            no_bautizado: 'No Bautizados',
-            con_encuentro: 'Con Encuentro',
-            sin_encuentro: 'Sin Encuentro',
-            con_lanzamiento: 'Con Lanzamiento',
-            falta_lanzamiento: 'Falta Lanzamiento',
-            sin_charlas: 'Parejas Sin Charlas',
-            en_proposito: 'En Propósito',
-            sin_proposito: 'Sin Propósito'
+            con_semilla:'Con Semilla / Cursando', sin_semilla:'Sin Semilla / Para Integrar', graduado_semilla:'Graduados de Semilla',
+            casado:'Casados', acompanado:'Acompañados (Sin Casar)', soltero:'Solteros',
+            bautizado:'Bautizados', no_bautizado:'No Bautizados',
+            con_encuentro:'Con Encuentro', sin_encuentro:'Sin Encuentro',
+            con_lanzamiento:'Con Lanzamiento', falta_lanzamiento:'Falta Lanzamiento',
+            sin_charlas:'Parejas Sin Charlas',
+            en_proposito:'En Propósito', sin_proposito:'Sin Propósito'
         };
-
         const criterioMap = {
-            'con_semilla': 'semilla',
-            'sin_semilla': 'semilla',
-            'graduado_semilla': 'semilla',
-            'casado': 'estado_civil',
-            'acompanado': 'estado_civil',
-            'soltero': 'estado_civil',
-            'bautizado': 'bautismo',
-            'no_bautizado': 'bautismo',
-            'con_encuentro': 'encuentro',
-            'sin_encuentro': 'encuentro',
-            'con_lanzamiento': 'lanzamiento',
-            'falta_lanzamiento': 'lanzamiento',
-            'sin_charlas': 'charlas',
-            'en_proposito': 'proposito',
-            'sin_proposito': 'proposito'
+            'con_semilla':'semilla','sin_semilla':'semilla','graduado_semilla':'semilla',
+            'casado':'estado_civil','acompanado':'estado_civil','soltero':'estado_civil',
+            'bautizado':'bautismo','no_bautizado':'bautismo',
+            'con_encuentro':'encuentro','sin_encuentro':'encuentro',
+            'con_lanzamiento':'lanzamiento','falta_lanzamiento':'lanzamiento',
+            'sin_charlas':'charlas',
+            'en_proposito':'proposito','sin_proposito':'proposito'
         };
 
-        // ============================================================
-        //  TOAST
-        // ============================================================
-        function mostrarToast(mensaje, tipo = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = mensaje;
-            toast.className = 'toast';
-            toast.classList.add(`toast-${tipo}`);
-            toast.classList.add('show');
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 4000);
+        // ===== TOAST =====
+        function mostrarToast(msg, tipo='success') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast';
+            t.classList.add(`toast-${tipo}`);
+            t.classList.add('show');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 4000);
         }
 
-        // ============================================================
-        //  ESTADO DE LA VISTA NORMAL
-        // ============================================================
-        let filasActuales = 4; // mínimo
-
-        // ============================================================
-        //  FUNCIONES PARA OBTENER Y RENDERIZAR DATOS DE LA TABLA
-        // ============================================================
+        // ===== TABLA =====
+        let filasActuales = 4;
 
         function obtenerDatosTabla() {
             const datos = [];
-            const filas = document.querySelectorAll('#tablaIntegrantes tr');
-            filas.forEach(row => {
-                const inputNombre = row.querySelector('input[type="text"]');
-                if (!inputNombre) return;
-                const nombre = inputNombre.value.trim() || `Persona ${row.id.split('_')[1]}`;
+            document.querySelectorAll('#tablaIntegrantes tr').forEach(row => {
+                const inp = row.querySelector('input[type="text"]');
+                if (!inp) return;
+                const nombre = inp.value.trim() || `Persona ${row.id.split('_')[1]}`;
                 const selects = row.querySelectorAll('.calc');
-                const obj = {
-                    nombre: nombre,
+                datos.push({
+                    nombre,
                     semilla: selects[0]?.value || 'sin_semilla',
                     estado_civil: selects[1]?.value || 'soltero',
                     bautismo: selects[2]?.value || 'no_bautizado',
@@ -1236,219 +861,140 @@
                     lanzamiento: selects[4]?.value || 'falta_lanzamiento',
                     charlas: selects[5]?.value || 'na',
                     proposito: selects[6]?.value || 'sin_proposito'
-                };
-                datos.push(obj);
+                });
             });
             return datos;
         }
 
         function renderizarTabla(datos) {
-            if (!datos) {
-                datos = obtenerDatosTabla();
-            }
+            if (!datos) datos = obtenerDatosTabla();
             filasActuales = datos.length;
             const tbody = document.getElementById('tablaIntegrantes');
             let html = '';
             datos.forEach((obj, idx) => {
-                const i = idx + 1;
+                const i = idx+1;
                 html += `
                     <tr id="row_${i}">
                         <td class="row-number">${i}</td>
-                        <td><input type="text" id="nombre_${i}" placeholder="Persona ${i}" value="${obj.nombre || ''}" /></td>
-                        <td class="semilla-cell">
-                            <select class="calc" data-index="${i}" data-campo="semilla">
-                                <option value="sin_semilla" ${obj.semilla === 'sin_semilla' ? 'selected' : ''}>Sin Semilla</option>
-                                <option value="con_semilla" ${obj.semilla === 'con_semilla' ? 'selected' : ''}>Con Semilla</option>
-                                <option value="graduado_semilla" ${obj.semilla === 'graduado_semilla' ? 'selected' : ''}>Graduado Semilla</option>
-                            </select>
-                        </td>
-                        <td class="estado-cell">
-                            <select class="calc" data-index="${i}" data-campo="estado_civil">
-                                <option value="soltero" ${obj.estado_civil === 'soltero' ? 'selected' : ''}>Soltero/a</option>
-                                <option value="casado" ${obj.estado_civil === 'casado' ? 'selected' : ''}>Casado/a</option>
-                                <option value="acompanado" ${obj.estado_civil === 'acompanado' ? 'selected' : ''}>Acompañado/a</option>
-                            </select>
-                        </td>
-                        <td class="bautismo-cell">
-                            <select class="calc" data-index="${i}" data-campo="bautismo">
-                                <option value="no_bautizado" ${obj.bautismo === 'no_bautizado' ? 'selected' : ''}>No Bautizado</option>
-                                <option value="bautizado" ${obj.bautismo === 'bautizado' ? 'selected' : ''}>Bautizado</option>
-                            </select>
-                        </td>
-                        <td class="encuentro-cell">
-                            <select class="calc" data-index="${i}" data-campo="encuentro">
-                                <option value="sin_encuentro" ${obj.encuentro === 'sin_encuentro' ? 'selected' : ''}>Sin Encuentro</option>
-                                <option value="con_encuentro" ${obj.encuentro === 'con_encuentro' ? 'selected' : ''}>Con Encuentro</option>
-                            </select>
-                        </td>
-                        <td class="lanzamiento-cell">
-                            <select class="calc" data-index="${i}" data-campo="lanzamiento">
-                                <option value="falta_lanzamiento" ${obj.lanzamiento === 'falta_lanzamiento' ? 'selected' : ''}>Falta Lanzamiento</option>
-                                <option value="con_lanzamiento" ${obj.lanzamiento === 'con_lanzamiento' ? 'selected' : ''}>Pasó Lanzamiento</option>
-                            </select>
-                        </td>
-                        <td class="charlas-cell">
-                            <select class="calc" data-index="${i}" data-campo="charlas">
-                                <option value="na" ${obj.charlas === 'na' ? 'selected' : ''}>N/A (Solteros)</option>
-                                <option value="sin_charlas" ${obj.charlas === 'sin_charlas' ? 'selected' : ''}>Pareja Sin Charlas</option>
-                                <option value="con_charlas" ${obj.charlas === 'con_charlas' ? 'selected' : ''}>Charlas Completas</option>
-                            </select>
-                        </td>
-                        <td class="proposito-cell">
-                            <select class="calc" data-index="${i}" data-campo="proposito">
-                                <option value="sin_proposito" ${obj.proposito === 'sin_proposito' ? 'selected' : ''}>Sin Propósito</option>
-                                <option value="en_proposito" ${obj.proposito === 'en_proposito' ? 'selected' : ''}>En Propósito</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button class="btn-eliminar-fila no-print" data-index="${i}" title="Eliminar esta persona">✕</button>
-                        </td>
+                        <td><input type="text" id="nombre_${i}" placeholder="Persona ${i}" value="${obj.nombre||''}" /></td>
+                        <td class="semilla-cell"><select class="calc" data-index="${i}" data-campo="semilla">
+                            <option value="sin_semilla" ${obj.semilla==='sin_semilla'?'selected':''}>Sin Semilla</option>
+                            <option value="con_semilla" ${obj.semilla==='con_semilla'?'selected':''}>Con Semilla</option>
+                            <option value="graduado_semilla" ${obj.semilla==='graduado_semilla'?'selected':''}>Graduado Semilla</option>
+                        </select></td>
+                        <td class="estado-cell"><select class="calc" data-index="${i}" data-campo="estado_civil">
+                            <option value="soltero" ${obj.estado_civil==='soltero'?'selected':''}>Soltero/a</option>
+                            <option value="casado" ${obj.estado_civil==='casado'?'selected':''}>Casado/a</option>
+                            <option value="acompanado" ${obj.estado_civil==='acompanado'?'selected':''}>Acompañado/a</option>
+                        </select></td>
+                        <td class="bautismo-cell"><select class="calc" data-index="${i}" data-campo="bautismo">
+                            <option value="no_bautizado" ${obj.bautismo==='no_bautizado'?'selected':''}>No Bautizado</option>
+                            <option value="bautizado" ${obj.bautismo==='bautizado'?'selected':''}>Bautizado</option>
+                        </select></td>
+                        <td class="encuentro-cell"><select class="calc" data-index="${i}" data-campo="encuentro">
+                            <option value="sin_encuentro" ${obj.encuentro==='sin_encuentro'?'selected':''}>Sin Encuentro</option>
+                            <option value="con_encuentro" ${obj.encuentro==='con_encuentro'?'selected':''}>Con Encuentro</option>
+                        </select></td>
+                        <td class="lanzamiento-cell"><select class="calc" data-index="${i}" data-campo="lanzamiento">
+                            <option value="falta_lanzamiento" ${obj.lanzamiento==='falta_lanzamiento'?'selected':''}>Falta Lanzamiento</option>
+                            <option value="con_lanzamiento" ${obj.lanzamiento==='con_lanzamiento'?'selected':''}>Pasó Lanzamiento</option>
+                        </select></td>
+                        <td class="charlas-cell"><select class="calc" data-index="${i}" data-campo="charlas">
+                            <option value="na" ${obj.charlas==='na'?'selected':''}>N/A (Solteros)</option>
+                            <option value="sin_charlas" ${obj.charlas==='sin_charlas'?'selected':''}>Pareja Sin Charlas</option>
+                            <option value="con_charlas" ${obj.charlas==='con_charlas'?'selected':''}>Charlas Completas</option>
+                        </select></td>
+                        <td class="proposito-cell"><select class="calc" data-index="${i}" data-campo="proposito">
+                            <option value="sin_proposito" ${obj.proposito==='sin_proposito'?'selected':''}>Sin Propósito</option>
+                            <option value="en_proposito" ${obj.proposito==='en_proposito'?'selected':''}>En Propósito</option>
+                        </select></td>
+                        <td><button class="btn-eliminar-fila no-print" data-index="${i}">✕</button></td>
                     </tr>
                 `;
             });
             tbody.innerHTML = html;
-            actualizarContador();
-
+            document.getElementById('contadorFilas').textContent = `(${filasActuales} personas)`;
             document.querySelectorAll('.btn-eliminar-fila').forEach(btn => {
-                btn.addEventListener('click', function(e) {
+                btn.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.index);
                     eliminarFila(idx);
                 });
             });
-
             calcularTotales();
         }
 
-        function actualizarContador() {
-            document.getElementById('contadorFilas').textContent = `(${filasActuales} personas)`;
-        }
-
-        // ============================================================
-        //  OPERACIONES: AGREGAR Y ELIMINAR
-        // ============================================================
-
         function agregarFila() {
-            if (filasActuales >= 14) {
-                mostrarToast('Máximo de 14 integrantes alcanzado.', 'error');
-                return;
-            }
+            if (filasActuales >= 14) { mostrarToast('Máximo 14 integrantes.','error'); return; }
             const datos = obtenerDatosTabla();
-            datos.push({
-                nombre: '',
-                semilla: 'sin_semilla',
-                estado_civil: 'soltero',
-                bautismo: 'no_bautizado',
-                encuentro: 'sin_encuentro',
-                lanzamiento: 'falta_lanzamiento',
-                charlas: 'na',
-                proposito: 'sin_proposito'
-            });
+            datos.push({ nombre:'', semilla:'sin_semilla', estado_civil:'soltero', bautismo:'no_bautizado', encuentro:'sin_encuentro', lanzamiento:'falta_lanzamiento', charlas:'na', proposito:'sin_proposito' });
             filasActuales = datos.length;
             renderizarTabla(datos);
-            const tbody = document.getElementById('tablaIntegrantes');
-            const lastRow = tbody.lastElementChild;
-            if (lastRow) lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const last = document.getElementById('tablaIntegrantes').lastElementChild;
+            if (last) last.scrollIntoView({ behavior:'smooth', block:'center' });
         }
 
         function eliminarFila(index) {
-            if (filasActuales <= 4) {
-                mostrarToast('Mínimo de 4 integrantes requerido.', 'error');
-                return;
-            }
+            if (filasActuales <= 4) { mostrarToast('Mínimo 4 integrantes.','error'); return; }
             const datos = obtenerDatosTabla();
-            const idx = index - 1;
-            if (idx >= 0 && idx < datos.length) {
-                datos.splice(idx, 1);
+            const idx = index-1;
+            if (idx>=0 && idx<datos.length) {
+                datos.splice(idx,1);
                 filasActuales = datos.length;
                 renderizarTabla(datos);
             }
         }
 
         function eliminarUltimaFila() {
-            if (filasActuales <= 4) {
-                mostrarToast('Mínimo de 4 integrantes requerido.', 'error');
-                return;
-            }
+            if (filasActuales <= 4) { mostrarToast('Mínimo 4 integrantes.','error'); return; }
             const datos = obtenerDatosTabla();
             datos.pop();
             filasActuales = datos.length;
             renderizarTabla(datos);
         }
 
-        // ============================================================
-        //  CÁLCULO DE TOTALES (vista normal)
-        // ============================================================
-
         function calcularTotales() {
             const datos = obtenerDatosTabla();
-            const conteos = {
-                con_semilla: 0, sin_semilla: 0, graduado_semilla: 0,
-                casado: 0, acompanado: 0, soltero: 0,
-                bautizado: 0, no_bautizado: 0,
-                con_encuentro: 0, sin_encuentro: 0,
-                con_lanzamiento: 0, falta_lanzamiento: 0,
-                sin_charlas: 0,
-                en_proposito: 0, sin_proposito: 0
-            };
-
+            const conteos = { con_semilla:0, sin_semilla:0, graduado_semilla:0, casado:0, acompanado:0, soltero:0, bautizado:0, no_bautizado:0, con_encuentro:0, sin_encuentro:0, con_lanzamiento:0, falta_lanzamiento:0, sin_charlas:0, en_proposito:0, sin_proposito:0 };
             datos.forEach(p => {
-                const campos = ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas', 'proposito'];
-                campos.forEach(campo => {
+                ['semilla','estado_civil','bautismo','encuentro','lanzamiento','charlas','proposito'].forEach(campo => {
                     const val = p[campo];
                     if (val && conteos.hasOwnProperty(val)) conteos[val]++;
                 });
             });
-
             const grid = document.getElementById('summaryGrid');
             let html = '';
-            for (const [key, label] of Object.entries(etiquetasTotales)) {
+            for (const [key,label] of Object.entries(etiquetasTotales)) {
                 const count = conteos[key] || 0;
-                const clase = categoriaClase[key] || '';
-                html += `
-                    <div class="stat-card ${clase}" onclick="mostrarPersonas('${key}', '${label}')">
-                        <div class="label">${label}</div>
-                        <div class="number">${count}</div>
-                        <div class="hint">Clic para ver nombres</div>
-                    </div>
-                `;
+                html += `<div class="stat-card ${categoriaClase[key]||''}" onclick="mostrarPersonas('${key}','${label}')">
+                    <div class="label">${label}</div>
+                    <div class="number">${count}</div>
+                    <div class="hint">Clic para ver nombres</div>
+                </div>`;
             }
             grid.innerHTML = html;
         }
 
-        // ============================================================
-        //  FUNCIONES PARA SUPABASE
-        // ============================================================
-
-        async function cargarReportesDesdeSupabase(filtroRaiz = '__TODAS__', filtroNodo = '__TODOS__') {
+        // ===== SUPABASE FUNCTIONS =====
+        async function cargarReportesDesdeSupabase(filtroRaiz='__TODAS__', filtroNodo='__TODOS__') {
             let query = supabaseClient.from('reports').select('*');
             if (filtroRaiz !== '__TODAS__') {
-                const nodosRaiz = getNodosPorRaiz(filtroRaiz);
-                const idsRaiz = nodosRaiz.map(n => n.id);
-                query = query.in('nodo_id', idsRaiz);
+                const ids = getNodosPorRaiz(filtroRaiz).map(n => n.id);
+                query = query.in('nodo_id', ids);
             }
-            if (filtroNodo !== '__TODOS__') {
-                query = query.eq('nodo_id', filtroNodo);
-            }
+            if (filtroNodo !== '__TODOS__') query = query.eq('nodo_id', filtroNodo);
             const { data, error } = await query.order('timestamp', { ascending: false });
-            if (error) {
-                console.error('Error al obtener reportes:', error);
-                return [];
-            }
+            if (error) { console.error(error); return []; }
             return data;
         }
 
         async function guardarReporte() {
             const nodoId = document.getElementById('nodoSelect').value;
-            if (!nodoId) {
-                mostrarToast('Por favor, selecciona un nodo (grupo remitente).', 'error');
-                return;
-            }
+            if (!nodoId) { mostrarToast('Selecciona un nodo.','error'); return; }
             const nodo = getNodoById(nodoId);
             const { padre, raiz } = getPadreYRaiz(nodoId);
-
             const datos = obtenerDatosTabla();
             const integrantes = datos.map(p => ({
-                nombre: p.nombre || `Persona`,
+                nombre: p.nombre || 'Persona',
                 semilla: p.semilla,
                 estado_civil: p.estado_civil,
                 bautismo: p.bautismo,
@@ -1457,7 +1003,6 @@
                 charlas: p.charlas,
                 proposito: p.proposito
             }));
-
             const reporte = {
                 timestamp: new Date().toISOString(),
                 nodo_id: nodoId,
@@ -1470,155 +1015,110 @@
                 meta_iglesia: parseInt(document.getElementById('metaAmigosIglesia').value),
                 integrantes
             };
-
             try {
-                const { data: existente, error: buscaError } = await supabaseClient
+                const { data: existente } = await supabaseClient
                     .from('reports')
                     .select('id')
                     .eq('nodo_id', nodoId)
                     .order('timestamp', { ascending: false })
                     .limit(1);
-
-                if (buscaError) throw buscaError;
-
-                let resultado;
                 if (existente && existente.length > 0) {
-                    const idExistente = existente[0].id;
-                    resultado = await supabaseClient
-                        .from('reports')
-                        .update(reporte)
-                        .eq('id', idExistente);
-                    if (resultado.error) throw resultado.error;
-                    mostrarToast('✅ Reporte actualizado correctamente.', 'success');
+                    await supabaseClient.from('reports').update(reporte).eq('id', existente[0].id);
+                    mostrarToast('✅ Reporte actualizado.','success');
                 } else {
-                    resultado = await supabaseClient
-                        .from('reports')
-                        .insert([reporte]);
-                    if (resultado.error) throw resultado.error;
-                    mostrarToast('✅ Reporte guardado correctamente.', 'success');
+                    await supabaseClient.from('reports').insert([reporte]);
+                    mostrarToast('✅ Reporte guardado.','success');
                 }
-            } catch (error) {
-                console.error('Error al guardar en Supabase:', error);
-                mostrarToast('❌ Error al guardar. Revisa la consola.', 'error');
-            }
+            } catch(e) { console.error(e); mostrarToast('❌ Error al guardar.','error'); }
         }
 
-        // ============================================================
-        //  VISTA ADMIN - TOTALES Y TABLA DE REPORTES
-        // ============================================================
-
+        // ===== ADMIN =====
         async function actualizarAdminTotalesYTabla() {
             const filtroRaiz = document.getElementById('filtroRaiz').value;
             const filtroNodo = document.getElementById('filtroNodo').value;
             const reportes = await cargarReportesDesdeSupabase(filtroRaiz, filtroNodo);
 
-            // Totales consolidados
-            const conteos = {
-                con_semilla: 0, sin_semilla: 0, graduado_semilla: 0,
-                casado: 0, acompanado: 0, soltero: 0,
-                bautizado: 0, no_bautizado: 0,
-                con_encuentro: 0, sin_encuentro: 0,
-                con_lanzamiento: 0, falta_lanzamiento: 0,
-                sin_charlas: 0,
-                en_proposito: 0, sin_proposito: 0
-            };
-
-            reportes.forEach(reporte => {
-                if (reporte.integrantes) {
-                    reporte.integrantes.forEach(p => {
-                        ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas', 'proposito'].forEach(campo => {
+            const conteos = { con_semilla:0, sin_semilla:0, graduado_semilla:0, casado:0, acompanado:0, soltero:0, bautizado:0, no_bautizado:0, con_encuentro:0, sin_encuentro:0, con_lanzamiento:0, falta_lanzamiento:0, sin_charlas:0, en_proposito:0, sin_proposito:0 };
+            reportes.forEach(r => {
+                if (r.integrantes) {
+                    r.integrantes.forEach(p => {
+                        ['semilla','estado_civil','bautismo','encuentro','lanzamiento','charlas','proposito'].forEach(campo => {
                             const val = p[campo];
                             if (val && conteos.hasOwnProperty(val)) conteos[val]++;
                         });
                     });
                 }
             });
-
             const grid = document.getElementById('adminSummaryGrid');
             let html = '';
-            for (const [key, label] of Object.entries(etiquetasTotales)) {
+            for (const [key,label] of Object.entries(etiquetasTotales)) {
                 const count = conteos[key] || 0;
-                const clase = categoriaClase[key] || '';
-                html += `
-                    <div class="stat-card ${clase}" onclick="mostrarPersonasAdminGlobal('${key}', '${label}', '${filtroRaiz}', '${filtroNodo}')">
-                        <div class="label">${label}</div>
-                        <div class="number">${count}</div>
-                        <div class="hint">Clic para ver nombres</div>
-                    </div>
-                `;
+                html += `<div class="stat-card ${categoriaClase[key]||''}" onclick="mostrarPersonasAdminGlobal('${key}','${label}','${filtroRaiz}','${filtroNodo}')">
+                    <div class="label">${label}</div>
+                    <div class="number">${count}</div>
+                    <div class="hint">Clic para ver nombres</div>
+                </div>`;
             }
             grid.innerHTML = html;
 
-            // Tabla de reportes
             const tbody = document.getElementById('cuerpoTablaReportes');
             if (reportes.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#94a3b8; padding:20px;">No hay reportes guardados con estos filtros.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#94a3b8; padding:20px;">No hay reportes con estos filtros.</td></tr>`;
                 return;
             }
-
             let filas = '';
             reportes.forEach((r, idx) => {
-                const fechaReporte = r.timestamp ? new Date(r.timestamp).toLocaleString() : 'N/A';
-                const numIntegrantes = (r.integrantes && Array.isArray(r.integrantes)) ? r.integrantes.length : 0;
-                filas += `
-                    <tr>
-                        <td>${fechaReporte}</td>
-                        <td>${r.grupo_remitente || 'N/A'}</td>
-                        <td>${r.padre_directo || 'N/A'}</td>
-                        <td>${r.fecha_evangelismo || '—'}</td>
-                        <td>${r.fecha_amigo_celular || '—'}</td>
-                        <td>${r.meta_celular !== undefined ? r.meta_celular : '—'}</td>
-                        <td>${r.meta_iglesia !== undefined ? r.meta_iglesia : '—'}</td>
-                        <td>${numIntegrantes}</td>
-                        <td>
-                            <button class="btn-ver-integrantes" data-reporte-idx="${idx}">👥 Ver integrantes</button>
-                            <button class="btn-ver-reporte" data-reporte-idx="${idx}">📄 Ver reporte</button>
-                        </td>
-                    </tr>
-                `;
+                const fecha = r.timestamp ? new Date(r.timestamp).toLocaleString() : 'N/A';
+                const num = (r.integrantes && Array.isArray(r.integrantes)) ? r.integrantes.length : 0;
+                filas += `<tr>
+                    <td>${fecha}</td>
+                    <td>${r.grupo_remitente || 'N/A'}</td>
+                    <td>${r.padre_directo || 'N/A'}</td>
+                    <td>${r.fecha_evangelismo || '—'}</td>
+                    <td>${r.fecha_amigo_celular || '—'}</td>
+                    <td>${r.meta_celular !== undefined ? r.meta_celular : '—'}</td>
+                    <td>${r.meta_iglesia !== undefined ? r.meta_iglesia : '—'}</td>
+                    <td>${num}</td>
+                    <td>
+                        <button class="btn-ver-integrantes" data-reporte-idx="${idx}">👥 Ver integrantes</button>
+                        <button class="btn-ver-reporte" data-reporte-idx="${idx}">📄 Ver reporte</button>
+                    </td>
+                </tr>`;
             });
             tbody.innerHTML = filas;
-
-            document.querySelectorAll('#cuerpoTablaReportes .btn-ver-integrantes').forEach(btn => {
+            document.querySelectorAll('.btn-ver-integrantes').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.reporteIdx);
-                    const reporte = reportes[idx];
-                    mostrarIntegrantesDeReporte(reporte);
+                    mostrarIntegrantesDeReporte(reportes[idx]);
                 });
             });
-
-            document.querySelectorAll('#cuerpoTablaReportes .btn-ver-reporte').forEach(btn => {
+            document.querySelectorAll('.btn-ver-reporte').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.reporteIdx);
-                    const reporte = reportes[idx];
-                    mostrarReporteCompleto(reporte);
+                    mostrarReporteCompleto(reportes[idx]);
                 });
             });
         }
 
-        // ============================================================
-        //  FUNCIONES DE MODAL PARA ADMIN
-        // ============================================================
-
+        // ===== MODALES ADMIN =====
         async function mostrarPersonasAdminGlobal(criterio, titulo, filtroRaiz, filtroNodo) {
             const reportes = await cargarReportesDesdeSupabase(filtroRaiz, filtroNodo);
             const personas = [];
-            reportes.forEach(reporte => {
-                if (reporte.integrantes) {
-                    reporte.integrantes.forEach(p => {
+            reportes.forEach(r => {
+                if (r.integrantes) {
+                    r.integrantes.forEach(p => {
                         const campo = criterioMap[criterio];
                         if (p[campo] === criterio) {
-                            personas.push({
-                                nombre: p.nombre,
-                                grupo: reporte.grupo_remitente || 'Sin grupo',
-                                padre: reporte.padre_directo || 'Sin padre',
-                                raiz: reporte.red_principal || 'Sin raíz'
-                            });
+                            const grupo = r.grupo_remitente || 'Sin grupo';
+                            const padre = r.padre_directo || 'Sin padre';
+                            const raiz = r.red_principal || 'Sin raíz';
+                            // Evitar duplicados: si padre === raiz, no mostrar padre (o mostrar "Raíz")
+                            const padreMostrar = (padre === raiz) ? '' : padre;
+                            personas.push({ nombre: p.nombre || 'Sin nombre', grupo, padre: padreMostrar, raiz });
                         }
                     });
                 }
             });
-
             const ul = document.getElementById('modalListaPersonas');
             ul.innerHTML = '';
             if (personas.length === 0) {
@@ -1626,12 +1126,10 @@
             } else {
                 personas.forEach(p => {
                     const li = document.createElement('li');
-                    li.innerHTML = `
-                        <span class="nombre">${p.nombre}</span>
-                        <span class="jerarquia">👥 ${p.grupo}</span>
-                        <span class="jerarquia">👆 ${p.padre}</span>
-                        <span class="jerarquia">🔷 ${p.raiz}</span>
-                    `;
+                    let html = `<span class="nombre">${p.nombre}</span><span class="jerarquia">👥 ${p.grupo}</span>`;
+                    if (p.padre) html += `<span class="jerarquia">👆 ${p.padre}</span>`;
+                    html += `<span class="jerarquia">🔷 ${p.raiz}</span>`;
+                    li.innerHTML = html;
                     ul.appendChild(li);
                 });
             }
@@ -1660,14 +1158,9 @@
             document.getElementById('modalNombres').classList.add('active');
         }
 
-        // ============================================================
-        //  REPORTE COMPLETO (modal grande)
-        // ============================================================
-
+        // ===== REPORTE COMPLETO =====
         function mostrarReporteCompleto(reporte) {
             const contenedor = document.getElementById('contenidoReporteCompleto');
-            
-            // Generar HTML del reporte
             let html = `
                 <div style="padding:10px;">
                     <h2 style="color:#0b2b4a; border-bottom:2px solid #e9edf2; padding-bottom:10px; margin-bottom:16px;">
@@ -1702,85 +1195,67 @@
                             </thead>
                             <tbody>
             `;
-
             if (reporte.integrantes && reporte.integrantes.length > 0) {
                 reporte.integrantes.forEach((p, idx) => {
-                    html += `
-                        <tr>
-                            <td>${idx + 1}</td>
-                            <td>${p.nombre || ''}</td>
-                            <td>${p.semilla ? etiquetasTotales[p.semilla] || p.semilla : ''}</td>
-                            <td>${p.estado_civil ? etiquetasTotales[p.estado_civil] || p.estado_civil : ''}</td>
-                            <td>${p.bautismo ? etiquetasTotales[p.bautismo] || p.bautismo : ''}</td>
-                            <td>${p.encuentro ? etiquetasTotales[p.encuentro] || p.encuentro : ''}</td>
-                            <td>${p.lanzamiento ? etiquetasTotales[p.lanzamiento] || p.lanzamiento : ''}</td>
-                            <td>${p.charlas ? etiquetasTotales[p.charlas] || p.charlas : ''}</td>
-                            <td>${p.proposito ? etiquetasTotales[p.proposito] || p.proposito : ''}</td>
-                        </tr>
-                    `;
+                    html += `<tr>
+                        <td>${idx+1}</td>
+                        <td>${p.nombre || ''}</td>
+                        <td>${etiquetasTotales[p.semilla] || p.semilla || ''}</td>
+                        <td>${etiquetasTotales[p.estado_civil] || p.estado_civil || ''}</td>
+                        <td>${etiquetasTotales[p.bautismo] || p.bautismo || ''}</td>
+                        <td>${etiquetasTotales[p.encuentro] || p.encuentro || ''}</td>
+                        <td>${etiquetasTotales[p.lanzamiento] || p.lanzamiento || ''}</td>
+                        <td>${etiquetasTotales[p.charlas] || p.charlas || ''}</td>
+                        <td>${etiquetasTotales[p.proposito] || p.proposito || ''}</td>
+                    </tr>`;
                 });
             } else {
                 html += `<tr><td colspan="9" style="text-align:center; color:#94a3b8;">No hay integrantes.</td></tr>`;
             }
-
             html += `
                             </tbody>
                         </table>
                     </div>
                     <h3 style="margin-top:20px; margin-bottom:10px;">📊 Totales calculados</h3>
-                    <div class="summary-grid" id="resumenReporteCompleto">
-                        <!-- se llenará con JS -->
-                    </div>
+                    <div class="summary-grid" id="resumenReporteCompleto"></div>
                 </div>
             `;
-
             contenedor.innerHTML = html;
 
             // Calcular totales para este reporte
-            const conteos = {
-                con_semilla: 0, sin_semilla: 0, graduado_semilla: 0,
-                casado: 0, acompanado: 0, soltero: 0,
-                bautizado: 0, no_bautizado: 0,
-                con_encuentro: 0, sin_encuentro: 0,
-                con_lanzamiento: 0, falta_lanzamiento: 0,
-                sin_charlas: 0,
-                en_proposito: 0, sin_proposito: 0
-            };
+            const conteos = { con_semilla:0, sin_semilla:0, graduado_semilla:0, casado:0, acompanado:0, soltero:0, bautizado:0, no_bautizado:0, con_encuentro:0, sin_encuentro:0, con_lanzamiento:0, falta_lanzamiento:0, sin_charlas:0, en_proposito:0, sin_proposito:0 };
             if (reporte.integrantes) {
                 reporte.integrantes.forEach(p => {
-                    ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas', 'proposito'].forEach(campo => {
+                    ['semilla','estado_civil','bautismo','encuentro','lanzamiento','charlas','proposito'].forEach(campo => {
                         const val = p[campo];
                         if (val && conteos.hasOwnProperty(val)) conteos[val]++;
                     });
                 });
             }
-
-            const gridResumen = document.getElementById('resumenReporteCompleto');
-            let htmlResumen = '';
-            for (const [key, label] of Object.entries(etiquetasTotales)) {
+            const gridR = document.getElementById('resumenReporteCompleto');
+            let htmlR = '';
+            for (const [key,label] of Object.entries(etiquetasTotales)) {
                 const count = conteos[key] || 0;
-                const clase = categoriaClase[key] || '';
-                htmlResumen += `
-                    <div class="stat-card ${clase}" style="cursor:default;">
-                        <div class="label">${label}</div>
-                        <div class="number">${count}</div>
-                    </div>
-                `;
+                htmlR += `<div class="stat-card ${categoriaClase[key]||''}" style="cursor:default;">
+                    <div class="label">${label}</div>
+                    <div class="number">${count}</div>
+                </div>`;
             }
-            gridResumen.innerHTML = htmlResumen;
+            gridR.innerHTML = htmlR;
 
-            // Mostrar el modal
             document.getElementById('modalReporteCompleto').classList.add('active');
         }
 
         function imprimirReporteCompleto() {
+            // Forzamos a que el modal esté visible en la impresión
             window.print();
         }
 
-        // ============================================================
-        //  MOSTRAR PERSONAS (vista normal y admin global)
-        // ============================================================
+        function cerrarModalReporte() {
+            document.getElementById('modalReporteCompleto').classList.remove('active');
+        }
 
+        // ===== MOSTRAR PERSONAS (vista normal y admin) =====
         async function mostrarPersonas(criterio, titulo) {
             const esAdmin = document.getElementById('vistaAdmin').style.display === 'block';
             if (esAdmin) {
@@ -1789,16 +1264,12 @@
                 await mostrarPersonasAdminGlobal(criterio, titulo, filtroRaiz, filtroNodo);
                 return;
             }
-
             const datos = obtenerDatosTabla();
             const personas = [];
             datos.forEach(p => {
                 const campo = criterioMap[criterio];
-                if (p[campo] === criterio) {
-                    personas.push(p.nombre || 'Sin nombre');
-                }
+                if (p[campo] === criterio) personas.push(p.nombre || 'Sin nombre');
             });
-
             const ul = document.getElementById('modalListaPersonas');
             ul.innerHTML = '';
             if (personas.length === 0) {
@@ -1818,83 +1289,57 @@
             document.getElementById('modalNombres').classList.remove('active');
         }
 
-        function cerrarModalReporte() {
-            document.getElementById('modalReporteCompleto').classList.remove('active');
-        }
-
-        // ============================================================
-        //  JERARQUÍA: CARGAR SELECTORES
-        // ============================================================
-
+        // ===== JERARQUÍA SELECTORES =====
         function cargarSelectoresJerarquia() {
-            const selectNodo = document.getElementById('nodoSelect');
-            selectNodo.innerHTML = '';
+            const sel = document.getElementById('nodoSelect');
+            sel.innerHTML = '';
             nodos.forEach(n => {
                 const opt = document.createElement('option');
                 opt.value = n.id;
                 opt.textContent = `${n.nombre} (${n.etiqueta})`;
-                selectNodo.appendChild(opt);
+                sel.appendChild(opt);
             });
-            if (nodos.length > 0) {
-                selectNodo.value = nodos[0].id;
-                actualizarCamposJerarquia();
-            }
+            if (nodos.length) { sel.value = nodos[0].id; actualizarCamposJerarquia(); }
         }
-
         function actualizarCamposJerarquia() {
-            const nodoId = document.getElementById('nodoSelect').value;
-            const { padre, raiz } = getPadreYRaiz(nodoId);
-            document.getElementById('padreDirecto').value = padre ? padre.nombre : 'Ninguno (es raíz)';
+            const id = document.getElementById('nodoSelect').value;
+            const { padre, raiz } = getPadreYRaiz(id);
+            document.getElementById('padreDirecto').value = padre ? padre.nombre : 'Ninguno (raíz)';
             document.getElementById('redPrincipal').value = raiz ? raiz.nombre : 'Ninguna';
         }
 
-        // ============================================================
-        //  FILTROS ADMIN
-        // ============================================================
-
         function cargarFiltroRaiz() {
-            const select = document.getElementById('filtroRaiz');
+            const sel = document.getElementById('filtroRaiz');
             const raices = getRaices();
-            select.innerHTML = '<option value="__TODAS__">📊 Todas las redes</option>';
+            sel.innerHTML = '<option value="__TODAS__">📊 Todas las redes</option>';
             raices.forEach(r => {
                 const opt = document.createElement('option');
                 opt.value = r.id;
                 opt.textContent = `🔷 ${r.nombre}`;
-                select.appendChild(opt);
+                sel.appendChild(opt);
             });
-            select.dispatchEvent(new Event('change'));
+            sel.dispatchEvent(new Event('change'));
         }
-
         function cargarFiltroNodo(raizId) {
-            const select = document.getElementById('filtroNodo');
-            let nodosFiltrados = [];
-            if (raizId === '__TODAS__') {
-                nodosFiltrados = nodos;
-            } else {
-                nodosFiltrados = getNodosPorRaiz(raizId);
-            }
-            select.innerHTML = '<option value="__TODOS__">📌 Todos los nodos</option>';
+            const sel = document.getElementById('filtroNodo');
+            let nodosFiltrados = (raizId === '__TODAS__') ? nodos : getNodosPorRaiz(raizId);
+            sel.innerHTML = '<option value="__TODOS__">📌 Todos los nodos</option>';
             nodosFiltrados.forEach(n => {
                 const opt = document.createElement('option');
                 opt.value = n.id;
                 opt.textContent = `${n.nombre} (${n.etiqueta})`;
-                select.appendChild(opt);
+                sel.appendChild(opt);
             });
         }
 
-        // ============================================================
-        //  AUTENTICACIÓN Y CAMBIO DE VISTAS
-        // ============================================================
-
+        // ===== AUTENTICACIÓN =====
         function mostrarLogin() {
             document.getElementById('modalLogin').classList.add('active');
             document.getElementById('loginError').textContent = '';
         }
-
         function cerrarLogin() {
             document.getElementById('modalLogin').classList.remove('active');
         }
-
         async function autenticar(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value.trim();
@@ -1910,21 +1355,14 @@
                 document.getElementById('loginError').textContent = 'Usuario o clave incorrectos.';
             }
         }
-
         function volverNormal() {
             document.getElementById('vistaAdmin').style.display = 'none';
             document.getElementById('vistaNormal').style.display = 'block';
             calcularTotales();
         }
+        function cerrarSesion() { volverNormal(); }
 
-        function cerrarSesion() {
-            volverNormal();
-        }
-
-        // ============================================================
-        //  INICIALIZACIÓN
-        // ============================================================
-
+        // ===== INICIALIZACIÓN =====
         document.addEventListener('DOMContentLoaded', function() {
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fechaEvangelismo').value = hoy;
@@ -1934,17 +1372,8 @@
             document.getElementById('nodoSelect').addEventListener('change', actualizarCamposJerarquia);
 
             const datosIniciales = [];
-            for (let i = 0; i < 4; i++) {
-                datosIniciales.push({
-                    nombre: '',
-                    semilla: 'sin_semilla',
-                    estado_civil: 'soltero',
-                    bautismo: 'no_bautizado',
-                    encuentro: 'sin_encuentro',
-                    lanzamiento: 'falta_lanzamiento',
-                    charlas: 'na',
-                    proposito: 'sin_proposito'
-                });
+            for (let i=0; i<4; i++) {
+                datosIniciales.push({ nombre:'', semilla:'sin_semilla', estado_civil:'soltero', bautismo:'no_bautizado', encuentro:'sin_encuentro', lanzamiento:'falta_lanzamiento', charlas:'na', proposito:'sin_proposito' });
             }
             renderizarTabla(datosIniciales);
 
@@ -1953,9 +1382,7 @@
             document.getElementById('btnGuardarReporte').addEventListener('click', guardarReporte);
 
             document.getElementById('tablaIntegrantes').addEventListener('change', function(e) {
-                if (e.target.classList.contains('calc')) {
-                    calcularTotales();
-                }
+                if (e.target.classList.contains('calc')) calcularTotales();
             });
 
             document.getElementById('modalClose').addEventListener('click', cerrarModal);
@@ -1963,10 +1390,7 @@
                 if (e.target === this) cerrarModal();
             });
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    cerrarModal();
-                    cerrarModalReporte();
-                }
+                if (e.key === 'Escape') { cerrarModal(); cerrarModalReporte(); }
             });
 
             document.getElementById('btnAdmin').addEventListener('click', mostrarLogin);
@@ -1996,6 +1420,5 @@
             document.getElementById('vistaNormal').style.display = 'block';
         });
     </script>
-
 </body>
 </html>
