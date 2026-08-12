@@ -471,34 +471,21 @@
         .toast-error { background: #b91c1c; }
         .toast-info { background: #1e4a7a; }
 
-        /* ===== IMPRESIÓN DEL REPORTE COMPLETO (MODAL) ===== */
+        /* ===== IMPRESIÓN GENERAL ===== */
         @media print {
-            body * { visibility: hidden; }
-            #modalReporteCompleto,
-            #modalReporteCompleto * {
-                visibility: visible;
-            }
-            #modalReporteCompleto {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                background: white;
-                padding: 20px;
-                display: block !important;
-            }
-            #modalReporteCompleto .modal-content {
-                box-shadow: none;
-                max-width: 100%;
-                width: 100%;
-                padding: 10px;
-                overflow-y: visible;
-                max-height: none;
-            }
-            #modalReporteCompleto .close-btn,
-            #modalReporteCompleto .no-print {
+            body { background: white; padding: 0.2in; font-size: 9pt; }
+            .btn-container, .btn-eliminar-fila, .hint, .close-btn, .no-print, .toast {
                 display: none !important;
             }
+            .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+            .stat-card { border: 1px solid #ccc; background: white !important; }
+            .stat-card .number { text-decoration: none; color: black !important; }
+            table { font-size: 8pt; min-width: auto; }
+            th { background-color: #333 !important; color: white !important; }
+            td select, td input { border: none !important; background: transparent !important; font-weight: bold; }
+            #vistaAdmin { display: none !important; }
+            /* Ocultar el modal de reporte completo en la impresión general */
+            #modalReporteCompleto { display: none !important; }
         }
 
         /* ===== RESPONSIVE ===== */
@@ -530,22 +517,6 @@
             .summary-grid { grid-template-columns: 1fr 1fr; }
             .stat-card .label { font-size: 0.65rem; }
             .stat-card .number { font-size: 1.2rem; }
-        }
-
-        /* ===== IMPRESIÓN GENERAL ===== */
-        @media print {
-            body { background: white; padding: 0.2in; font-size: 9pt; }
-            .btn-container, .btn-eliminar-fila, .hint, .close-btn, .no-print {
-                display: none !important;
-            }
-            .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
-            .stat-card { border: 1px solid #ccc; background: white !important; }
-            .stat-card .number { text-decoration: none; color: black !important; }
-            table { font-size: 8pt; min-width: auto; }
-            th { background-color: #333 !important; color: white !important; }
-            td select, td input { border: none !important; background: transparent !important; font-weight: bold; }
-            #vistaAdmin { display: none !important; }
-            .toast { display: none !important; }
         }
     </style>
 </head>
@@ -712,13 +683,13 @@
             </div>
         </div>
 
-        <!-- MODAL REPORTE COMPLETO -->
+        <!-- MODAL REPORTE COMPLETO (solo se usa para visualizar, la impresión se hace en nueva ventana) -->
         <div id="modalReporteCompleto" class="modal">
             <div class="modal-content large">
                 <span class="close-btn" id="modalReporteClose">&times;</span>
                 <div id="contenidoReporteCompleto"></div>
                 <div style="text-align:center; margin-top:16px;" class="no-print">
-                    <button class="btn btn-primary" onclick="imprimirReporteCompleto()">🖨️ Imprimir este reporte</button>
+                    <button class="btn btn-primary" id="btnImprimirReporte">🖨️ Imprimir este reporte</button>
                 </div>
             </div>
         </div>
@@ -1112,7 +1083,6 @@
                             const grupo = r.grupo_remitente || 'Sin grupo';
                             const padre = r.padre_directo || 'Sin padre';
                             const raiz = r.red_principal || 'Sin raíz';
-                            // Evitar duplicados: si padre === raiz, no mostrar padre (o mostrar "Raíz")
                             const padreMostrar = (padre === raiz) ? '' : padre;
                             personas.push({ nombre: p.nombre || 'Sin nombre', grupo, padre: padreMostrar, raiz });
                         }
@@ -1246,13 +1216,92 @@
             document.getElementById('modalReporteCompleto').classList.add('active');
         }
 
+        // ===== IMPRIMIR REPORTE COMPLETO EN NUEVA VENTANA =====
         function imprimirReporteCompleto() {
-            // Forzamos a que el modal esté visible en la impresión
-            window.print();
-        }
+            // Obtener el contenido HTML del reporte (sin los botones de impresión ni el modal)
+            const contenido = document.getElementById('contenidoReporteCompleto');
+            if (!contenido) return;
+            // Clonar el contenido para no afectar al modal
+            const clon = contenido.cloneNode(true);
+            // Eliminar posibles botones de impresión dentro del clon (si los hay)
+            const btns = clon.querySelectorAll('.no-print, .btn');
+            btns.forEach(b => b.remove());
 
-        function cerrarModalReporte() {
-            document.getElementById('modalReporteCompleto').classList.remove('active');
+            // Construir HTML completo para la nueva ventana
+            const ventana = window.open('', '_blank', 'width=1000,height=800,scrollbars=yes');
+            if (!ventana) {
+                mostrarToast('No se pudo abrir la ventana. Permite ventanas emergentes.', 'error');
+                return;
+            }
+            ventana.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Reporte - ${document.querySelector('#contenidoReporteCompleto h2')?.textContent || 'Reporte'}</title>
+                    <style>
+                        body { font-family: 'Segoe UI', Roboto, sans-serif; padding: 20px; color: #1e293b; }
+                        .summary-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                            gap: 12px;
+                            margin-top: 10px;
+                        }
+                        .stat-card {
+                            background: #f8fafc;
+                            border: 1px solid #e2e8f0;
+                            padding: 12px 8px;
+                            border-radius: 8px;
+                            text-align: center;
+                        }
+                        .stat-card .label {
+                            font-size: 0.75rem;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                            color: #334155;
+                        }
+                        .stat-card .number {
+                            font-size: 1.8rem;
+                            font-weight: 700;
+                            margin-top: 4px;
+                        }
+                        .stat-semilla .number { color: #0b6e4f; }
+                        .stat-estado .number { color: #1a5a8c; }
+                        .stat-bautismo .number { color: #b45309; }
+                        .stat-encuentro .number { color: #6d28d9; }
+                        .stat-lanzamiento .number { color: #b91c1c; }
+                        .stat-charlas .number { color: #9d174d; }
+                        .stat-proposito .number { color: #0f766e; }
+                        table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 0.85rem; }
+                        th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: center; }
+                        th { background: #334155; color: white; }
+                        .col-semilla th { background-color: #0b6e4f; }
+                        .col-estado th { background-color: #1a5a8c; }
+                        .col-bautismo th { background-color: #b45309; }
+                        .col-encuentro th { background-color: #6d28d9; }
+                        .col-lanzamiento th { background-color: #b91c1c; }
+                        .col-charlas th { background-color: #9d174d; }
+                        .col-proposito th { background-color: #0f766e; }
+                        .table-wrapper { overflow-x: auto; }
+                        @media print {
+                            body { padding: 0.2in; }
+                            .no-print { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${clon.innerHTML}
+                    <script>
+                        // Auto-imprimir al cargar
+                        window.onload = function() {
+                            window.print();
+                            window.close();
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            ventana.document.close();
         }
 
         // ===== MOSTRAR PERSONAS (vista normal y admin) =====
@@ -1416,9 +1465,17 @@
                 if (e.target === this) cerrarModalReporte();
             });
 
+            // Botón de imprimir reporte desde el modal
+            document.getElementById('btnImprimirReporte').addEventListener('click', imprimirReporteCompleto);
+
             document.getElementById('vistaAdmin').style.display = 'none';
             document.getElementById('vistaNormal').style.display = 'block';
         });
+
+        function cerrarModalReporte() {
+            document.getElementById('modalReporteCompleto').classList.remove('active');
+        }
     </script>
+
 </body>
 </html>
