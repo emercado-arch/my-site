@@ -254,6 +254,21 @@
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 12px;
         }
+        /* Para los totales en los modales de reporte, usar 3 columnas */
+        .summary-grid-3col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        @media (max-width: 640px) {
+            .summary-grid-3col {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .summary-grid-3col {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .stat-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
@@ -484,8 +499,8 @@
             th { background-color: #333 !important; color: white !important; }
             td select, td input { border: none !important; background: transparent !important; font-weight: bold; }
             #vistaAdmin { display: none !important; }
-            /* Ocultar el modal de reporte completo en la impresión general */
-            #modalReporteCompleto { display: none !important; }
+            #modalReporteCompleto, #modalVerReporte { display: none !important; }
+            .summary-grid-3col { grid-template-columns: repeat(3,1fr) !important; }
         }
 
         /* ===== RESPONSIVE ===== */
@@ -511,12 +526,14 @@
             .filtro-admin select { min-width: auto; }
             .tabla-reportes td, .tabla-reportes th { font-size: 0.65rem; padding: 4px 2px; }
             .toast { top: 10px; right: 10px; left: 10px; max-width: none; font-size: 0.9rem; padding: 12px 16px; }
+            .summary-grid-3col { grid-template-columns: repeat(2,1fr) !important; }
         }
 
         @media (max-width: 480px) {
             .summary-grid { grid-template-columns: 1fr 1fr; }
             .stat-card .label { font-size: 0.65rem; }
             .stat-card .number { font-size: 1.2rem; }
+            .summary-grid-3col { grid-template-columns: 1fr !important; }
         }
     </style>
 </head>
@@ -529,6 +546,7 @@
             <button class="btn btn-success" id="btnAgregar">➕ Agregar integrante</button>
             <button class="btn btn-danger" id="btnEliminar">➖ Eliminar último</button>
             <button class="btn btn-warning" id="btnGuardarReporte">💾 Guardar reporte</button>
+            <button class="btn btn-outline" id="btnVerReporteUsuario">📄 Ver reporte guardado</button>
             <button class="btn btn-outline" id="btnAdmin">🔐 Admin</button>
         </div>
 
@@ -683,13 +701,24 @@
             </div>
         </div>
 
-        <!-- MODAL REPORTE COMPLETO (solo se usa para visualizar, la impresión se hace en nueva ventana) -->
+        <!-- MODAL REPORTE COMPLETO (ADMIN) -->
         <div id="modalReporteCompleto" class="modal">
             <div class="modal-content large">
                 <span class="close-btn" id="modalReporteClose">&times;</span>
                 <div id="contenidoReporteCompleto"></div>
                 <div style="text-align:center; margin-top:16px;" class="no-print">
-                    <button class="btn btn-primary" id="btnImprimirReporte">🖨️ Imprimir este reporte</button>
+                    <button class="btn btn-primary" id="btnImprimirReporteAdmin">🖨️ Imprimir este reporte</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL VER REPORTE (USUARIO NORMAL) -->
+        <div id="modalVerReporte" class="modal">
+            <div class="modal-content large">
+                <span class="close-btn" id="modalVerReporteClose">&times;</span>
+                <div id="contenidoVerReporte"></div>
+                <div style="text-align:center; margin-top:16px;" class="no-print">
+                    <button class="btn btn-primary" id="btnImprimirReporteUsuario">🖨️ Imprimir este reporte</button>
                 </div>
             </div>
         </div>
@@ -1128,9 +1157,17 @@
             document.getElementById('modalNombres').classList.add('active');
         }
 
-        // ===== REPORTE COMPLETO =====
+        // ===== REPORTE COMPLETO (ADMIN) =====
         function mostrarReporteCompleto(reporte) {
             const contenedor = document.getElementById('contenidoReporteCompleto');
+            contenedor.innerHTML = generarHTMLReporte(reporte);
+            // Calcular totales y llenar grid
+            llenarGridTotales(reporte, 'resumenReporteCompleto');
+            document.getElementById('modalReporteCompleto').classList.add('active');
+        }
+
+        // ===== GENERAR HTML DE REPORTE =====
+        function generarHTMLReporte(reporte) {
             let html = `
                 <div style="padding:10px;">
                     <h2 style="color:#0b2b4a; border-bottom:2px solid #e9edf2; padding-bottom:10px; margin-bottom:16px;">
@@ -1187,12 +1224,14 @@
                         </table>
                     </div>
                     <h3 style="margin-top:20px; margin-bottom:10px;">📊 Totales calculados</h3>
-                    <div class="summary-grid" id="resumenReporteCompleto"></div>
+                    <div class="summary-grid summary-grid-3col" id="resumenReporteCompleto"></div>
                 </div>
             `;
-            contenedor.innerHTML = html;
+            return html;
+        }
 
-            // Calcular totales para este reporte
+        // ===== LLENAR GRID DE TOTALES EN REPORTE =====
+        function llenarGridTotales(reporte, idGrid) {
             const conteos = { con_semilla:0, sin_semilla:0, graduado_semilla:0, casado:0, acompanado:0, soltero:0, bautizado:0, no_bautizado:0, con_encuentro:0, sin_encuentro:0, con_lanzamiento:0, falta_lanzamiento:0, sin_charlas:0, en_proposito:0, sin_proposito:0 };
             if (reporte.integrantes) {
                 reporte.integrantes.forEach(p => {
@@ -1202,32 +1241,28 @@
                     });
                 });
             }
-            const gridR = document.getElementById('resumenReporteCompleto');
-            let htmlR = '';
+            const grid = document.getElementById(idGrid);
+            if (!grid) return;
+            let html = '';
             for (const [key,label] of Object.entries(etiquetasTotales)) {
                 const count = conteos[key] || 0;
-                htmlR += `<div class="stat-card ${categoriaClase[key]||''}" style="cursor:default;">
+                html += `<div class="stat-card ${categoriaClase[key]||''}" style="cursor:default;">
                     <div class="label">${label}</div>
                     <div class="number">${count}</div>
                 </div>`;
             }
-            gridR.innerHTML = htmlR;
-
-            document.getElementById('modalReporteCompleto').classList.add('active');
+            grid.innerHTML = html;
         }
 
-        // ===== IMPRIMIR REPORTE COMPLETO EN NUEVA VENTANA =====
-        function imprimirReporteCompleto() {
-            // Obtener el contenido HTML del reporte (sin los botones de impresión ni el modal)
-            const contenido = document.getElementById('contenidoReporteCompleto');
+        // ===== IMPRIMIR REPORTE (NUEVA VENTANA) =====
+        function imprimirReporte(contenedorId, titulo) {
+            const contenido = document.getElementById(contenedorId);
             if (!contenido) return;
-            // Clonar el contenido para no afectar al modal
             const clon = contenido.cloneNode(true);
-            // Eliminar posibles botones de impresión dentro del clon (si los hay)
+            // Eliminar botones de impresión dentro del clon
             const btns = clon.querySelectorAll('.no-print, .btn');
             btns.forEach(b => b.remove());
 
-            // Construir HTML completo para la nueva ventana
             const ventana = window.open('', '_blank', 'width=1000,height=800,scrollbars=yes');
             if (!ventana) {
                 mostrarToast('No se pudo abrir la ventana. Permite ventanas emergentes.', 'error');
@@ -1238,14 +1273,20 @@
                 <html>
                 <head>
                     <meta charset="UTF-8">
-                    <title>Reporte - ${document.querySelector('#contenidoReporteCompleto h2')?.textContent || 'Reporte'}</title>
+                    <title>${titulo || 'Reporte'}</title>
                     <style>
                         body { font-family: 'Segoe UI', Roboto, sans-serif; padding: 20px; color: #1e293b; }
                         .summary-grid {
                             display: grid;
-                            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                            grid-template-columns: repeat(3, 1fr);
                             gap: 12px;
                             margin-top: 10px;
+                        }
+                        @media (max-width: 640px) {
+                            .summary-grid { grid-template-columns: repeat(2,1fr); }
+                        }
+                        @media (max-width: 480px) {
+                            .summary-grid { grid-template-columns: 1fr; }
                         }
                         .stat-card {
                             background: #f8fafc;
@@ -1292,7 +1333,6 @@
                 <body>
                     ${clon.innerHTML}
                     <script>
-                        // Auto-imprimir al cargar
                         window.onload = function() {
                             window.print();
                             window.close();
@@ -1302,6 +1342,36 @@
                 </html>
             `);
             ventana.document.close();
+        }
+
+        // ===== VER REPORTE (USUARIO NORMAL) =====
+        async function verReporteUsuario() {
+            const nodoId = document.getElementById('nodoSelect').value;
+            if (!nodoId) {
+                mostrarToast('Selecciona un nodo para ver su reporte.', 'error');
+                return;
+            }
+            // Buscar el último reporte de ese nodo
+            const { data, error } = await supabaseClient
+                .from('reports')
+                .select('*')
+                .eq('nodo_id', nodoId)
+                .order('timestamp', { ascending: false })
+                .limit(1);
+            if (error) {
+                console.error(error);
+                mostrarToast('Error al consultar el reporte.', 'error');
+                return;
+            }
+            if (!data || data.length === 0) {
+                mostrarToast('No hay reporte guardado para este nodo.', 'error');
+                return;
+            }
+            const reporte = data[0];
+            const contenedor = document.getElementById('contenidoVerReporte');
+            contenedor.innerHTML = generarHTMLReporte(reporte);
+            llenarGridTotales(reporte, 'resumenReporteCompletoUsuario');
+            document.getElementById('modalVerReporte').classList.add('active');
         }
 
         // ===== MOSTRAR PERSONAS (vista normal y admin) =====
@@ -1430,6 +1500,9 @@
             document.getElementById('btnEliminar').addEventListener('click', eliminarUltimaFila);
             document.getElementById('btnGuardarReporte').addEventListener('click', guardarReporte);
 
+            // Botón ver reporte usuario
+            document.getElementById('btnVerReporteUsuario').addEventListener('click', verReporteUsuario);
+
             document.getElementById('tablaIntegrantes').addEventListener('change', function(e) {
                 if (e.target.classList.contains('calc')) calcularTotales();
             });
@@ -1439,7 +1512,11 @@
                 if (e.target === this) cerrarModal();
             });
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') { cerrarModal(); cerrarModalReporte(); }
+                if (e.key === 'Escape') {
+                    cerrarModal();
+                    cerrarModalReporte();
+                    cerrarModalVerReporte();
+                }
             });
 
             document.getElementById('btnAdmin').addEventListener('click', mostrarLogin);
@@ -1465,8 +1542,18 @@
                 if (e.target === this) cerrarModalReporte();
             });
 
-            // Botón de imprimir reporte desde el modal
-            document.getElementById('btnImprimirReporte').addEventListener('click', imprimirReporteCompleto);
+            document.getElementById('modalVerReporteClose').addEventListener('click', cerrarModalVerReporte);
+            document.getElementById('modalVerReporte').addEventListener('click', function(e) {
+                if (e.target === this) cerrarModalVerReporte();
+            });
+
+            // Botones de imprimir
+            document.getElementById('btnImprimirReporteAdmin').addEventListener('click', function() {
+                imprimirReporte('contenidoReporteCompleto', 'Reporte completo');
+            });
+            document.getElementById('btnImprimirReporteUsuario').addEventListener('click', function() {
+                imprimirReporte('contenidoVerReporte', 'Reporte de grupo');
+            });
 
             document.getElementById('vistaAdmin').style.display = 'none';
             document.getElementById('vistaNormal').style.display = 'block';
@@ -1475,7 +1562,9 @@
         function cerrarModalReporte() {
             document.getElementById('modalReporteCompleto').classList.remove('active');
         }
+        function cerrarModalVerReporte() {
+            document.getElementById('modalVerReporte').classList.remove('active');
+        }
     </script>
-
 </body>
 </html>
