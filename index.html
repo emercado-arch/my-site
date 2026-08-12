@@ -28,6 +28,7 @@
             margin: 0 auto;
         }
 
+        /* ===== BOTONES ===== */
         .btn-container {
             display: flex;
             flex-wrap: wrap;
@@ -102,6 +103,7 @@
             font-size: 0.75rem;
         }
 
+        /* ===== TARJETAS ===== */
         .card {
             background: white;
             padding: 20px;
@@ -596,6 +598,39 @@
             text-align: center;
         }
 
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
+            max-width: 400px;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .toast-success {
+            background: #0b6e4f;
+        }
+        .toast-error {
+            background: #b91c1c;
+        }
+        .toast-info {
+            background: #1e4a7a;
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
             body {
                 padding: 10px;
@@ -671,6 +706,14 @@
                 font-size: 0.65rem;
                 padding: 4px 2px;
             }
+            .toast {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+                font-size: 0.9rem;
+                padding: 12px 16px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -728,6 +771,9 @@
             #vistaAdmin {
                 display: none !important;
             }
+            .toast {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -742,6 +788,9 @@
             <button class="btn btn-warning" id="btnGuardarReporte">💾 Guardar reporte</button>
             <button class="btn btn-outline" id="btnAdmin">🔐 Admin</button>
         </div>
+
+        <!-- TOAST -->
+        <div id="toast" class="toast"></div>
 
         <!-- ============================================================ -->
         <!-- VISTA NORMAL (REPORTE) -->
@@ -1076,6 +1125,21 @@
         };
 
         // ============================================================
+        //  TOAST
+        // ============================================================
+        function mostrarToast(mensaje, tipo = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = mensaje;
+            toast.className = 'toast';
+            toast.classList.add(`toast-${tipo}`);
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // ============================================================
         //  ESTADO DE LA VISTA NORMAL
         // ============================================================
         let filasActuales = 4; // mínimo
@@ -1085,7 +1149,6 @@
         // ============================================================
 
         function obtenerDatosTabla() {
-            // Lee los valores actuales de la tabla y devuelve un array de objetos
             const datos = [];
             const filas = document.querySelectorAll('#tablaIntegrantes tr');
             filas.forEach(row => {
@@ -1109,16 +1172,14 @@
         }
 
         function renderizarTabla(datos) {
-            // Si no se pasan datos, los obtenemos del DOM actual (para preservar cambios)
             if (!datos) {
                 datos = obtenerDatosTabla();
             }
-            // Asegurar que el número de filas coincida con la longitud de datos
             filasActuales = datos.length;
             const tbody = document.getElementById('tablaIntegrantes');
             let html = '';
             datos.forEach((obj, idx) => {
-                const i = idx + 1; // número de fila visible (1-based)
+                const i = idx + 1;
                 html += `
                     <tr id="row_${i}">
                         <td class="row-number">${i}</td>
@@ -1177,7 +1238,6 @@
             tbody.innerHTML = html;
             actualizarContador();
 
-            // Asignar eventos a los botones eliminar
             document.querySelectorAll('.btn-eliminar-fila').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     const idx = parseInt(this.dataset.index);
@@ -1185,7 +1245,6 @@
                 });
             });
 
-            // Recalcular totales
             calcularTotales();
         }
 
@@ -1199,12 +1258,10 @@
 
         function agregarFila() {
             if (filasActuales >= 14) {
-                alert(`Máximo de 14 integrantes alcanzado.`);
+                mostrarToast('Máximo de 14 integrantes alcanzado.', 'error');
                 return;
             }
-            // Obtener datos actuales
             const datos = obtenerDatosTabla();
-            // Agregar un objeto vacío (con valores por defecto)
             datos.push({
                 nombre: '',
                 semilla: 'sin_semilla',
@@ -1217,32 +1274,28 @@
             });
             filasActuales = datos.length;
             renderizarTabla(datos);
-            // Scroll al final
             const tbody = document.getElementById('tablaIntegrantes');
             const lastRow = tbody.lastElementChild;
             if (lastRow) lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function eliminarFila(index) {
-            // index es el número de fila (1-based)
             if (filasActuales <= 4) {
-                alert(`Mínimo de 4 integrantes requerido.`);
+                mostrarToast('Mínimo de 4 integrantes requerido.', 'error');
                 return;
             }
             const datos = obtenerDatosTabla();
-            const idx = index - 1; // convertir a 0-based
+            const idx = index - 1;
             if (idx >= 0 && idx < datos.length) {
                 datos.splice(idx, 1);
                 filasActuales = datos.length;
                 renderizarTabla(datos);
-            } else {
-                alert('Error: fila no encontrada.');
             }
         }
 
         function eliminarUltimaFila() {
             if (filasActuales <= 4) {
-                alert(`Mínimo de 4 integrantes requerido.`);
+                mostrarToast('Mínimo de 4 integrantes requerido.', 'error');
                 return;
             }
             const datos = obtenerDatosTabla();
@@ -1316,13 +1369,12 @@
         async function guardarReporte() {
             const nodoId = document.getElementById('nodoSelect').value;
             if (!nodoId) {
-                alert('Por favor, selecciona un nodo (grupo remitente).');
+                mostrarToast('Por favor, selecciona un nodo (grupo remitente).', 'error');
                 return;
             }
             const nodo = getNodoById(nodoId);
             const { padre, raiz } = getPadreYRaiz(nodoId);
 
-            // Obtener datos actuales de la tabla
             const datos = obtenerDatosTabla();
             const integrantes = datos.map(p => ({
                 nombre: p.nombre || `Persona`,
@@ -1349,12 +1401,37 @@
             };
 
             try {
-                const { error } = await supabaseClient.from('reports').insert([reporte]);
-                if (error) throw error;
-                alert('✅ Reporte guardado en Supabase correctamente.');
+                // Verificar si ya existe un reporte para este nodo_id
+                const { data: existente, error: buscaError } = await supabaseClient
+                    .from('reports')
+                    .select('id')
+                    .eq('nodo_id', nodoId)
+                    .order('timestamp', { ascending: false })
+                    .limit(1);
+
+                if (buscaError) throw buscaError;
+
+                let resultado;
+                if (existente && existente.length > 0) {
+                    // Actualizar el reporte existente
+                    const idExistente = existente[0].id;
+                    resultado = await supabaseClient
+                        .from('reports')
+                        .update(reporte)
+                        .eq('id', idExistente);
+                    if (resultado.error) throw resultado.error;
+                    mostrarToast('✅ Reporte actualizado correctamente.', 'success');
+                } else {
+                    // Insertar nuevo
+                    resultado = await supabaseClient
+                        .from('reports')
+                        .insert([reporte]);
+                    if (resultado.error) throw resultado.error;
+                    mostrarToast('✅ Reporte guardado correctamente.', 'success');
+                }
             } catch (error) {
                 console.error('Error al guardar en Supabase:', error);
-                alert('❌ Error al guardar. Revisa la consola.');
+                mostrarToast('❌ Error al guardar. Revisa la consola.', 'error');
             }
         }
 
@@ -1514,7 +1591,6 @@
                 return;
             }
 
-            // Modo normal
             const datos = obtenerDatosTabla();
             const personas = [];
             datos.forEach(p => {
@@ -1654,7 +1730,6 @@
             cargarSelectoresJerarquia();
             document.getElementById('nodoSelect').addEventListener('change', actualizarCamposJerarquia);
 
-            // Inicializar tabla con 4 filas vacías
             const datosIniciales = [];
             for (let i = 0; i < 4; i++) {
                 datosIniciales.push({
@@ -1674,7 +1749,6 @@
             document.getElementById('btnEliminar').addEventListener('click', eliminarUltimaFila);
             document.getElementById('btnGuardarReporte').addEventListener('click', guardarReporte);
 
-            // Recalcular al cambiar selects
             document.getElementById('tablaIntegrantes').addEventListener('change', function(e) {
                 if (e.target.classList.contains('calc')) {
                     calcularTotales();
@@ -1698,7 +1772,6 @@
             document.getElementById('btnCerrarSesion').addEventListener('click', cerrarSesion);
             document.getElementById('btnVolverNormal').addEventListener('click', volverNormal);
 
-            // Filtros admin
             document.getElementById('filtroRaiz').addEventListener('change', function() {
                 const raizId = this.value;
                 cargarFiltroNodo(raizId);
