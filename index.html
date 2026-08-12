@@ -484,7 +484,21 @@
         .tabla-reportes .btn-ver-integrantes:hover {
             background: #1d4ed8;
         }
+        .tabla-reportes .btn-ver-reporte {
+            background: #0b6e4f;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            margin-left: 4px;
+        }
+        .tabla-reportes .btn-ver-reporte:hover {
+            background: #09573e;
+        }
 
+        /* ===== MODAL ===== */
         .modal {
             display: none;
             position: fixed;
@@ -515,6 +529,12 @@
             overflow-y: auto;
         }
 
+        .modal-content.large {
+            max-width: 1100px;
+            width: 95%;
+            max-height: 90vh;
+        }
+
         .close-btn {
             position: absolute;
             right: 16px;
@@ -524,6 +544,7 @@
             color: #94a3b8;
             cursor: pointer;
             line-height: 1;
+            z-index: 10;
         }
 
         .close-btn:hover {
@@ -630,6 +651,37 @@
             background: #1e4a7a;
         }
 
+        /* ===== IMPRESIÓN DEL REPORTE COMPLETO ===== */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #modalReporteCompleto,
+            #modalReporteCompleto * {
+                visibility: visible;
+            }
+            #modalReporteCompleto {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+            }
+            #modalReporteCompleto .no-print {
+                display: none !important;
+            }
+            #modalReporteCompleto .modal-content {
+                box-shadow: none;
+                max-width: 100%;
+                width: 100%;
+                padding: 10px;
+            }
+            #modalReporteCompleto .close-btn {
+                display: none !important;
+            }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
             body {
@@ -689,6 +741,11 @@
                 margin: 10% auto;
                 width: 95%;
             }
+            .modal-content.large {
+                width: 98%;
+                padding: 10px;
+                max-height: 95vh;
+            }
             #vistaAdmin .admin-header {
                 flex-direction: column;
                 align-items: stretch;
@@ -728,6 +785,7 @@
             }
         }
 
+        /* ===== IMPRESIÓN GENERAL ===== */
         @media print {
             body {
                 background: white;
@@ -926,7 +984,7 @@
                     <!-- Generado por JS -->
                 </div>
                 <p style="margin-top:16px; font-size:0.85rem; color:#64748b;">
-                    💡 Haz clic en cualquier tarjeta para ver los nombres, su padre directo y la raíz.
+                    💡 Haz clic en cualquier tarjeta para ver los nombres, su grupo, padre directo y raíz.
                 </p>
             </div>
 
@@ -966,6 +1024,19 @@
                 <span class="close-btn" id="modalClose">&times;</span>
                 <h3 class="modal-title" id="modalTitulo">Lista de Personas</h3>
                 <ul class="modal-list" id="modalListaPersonas"></ul>
+            </div>
+        </div>
+
+        <!-- MODAL DE REPORTE COMPLETO -->
+        <div id="modalReporteCompleto" class="modal">
+            <div class="modal-content large">
+                <span class="close-btn" id="modalReporteClose">&times;</span>
+                <div id="contenidoReporteCompleto">
+                    <!-- Se llena dinámicamente -->
+                </div>
+                <div style="text-align:center; margin-top:16px;" class="no-print">
+                    <button class="btn btn-primary" onclick="imprimirReporteCompleto()">🖨️ Imprimir este reporte</button>
+                </div>
             </div>
         </div>
 
@@ -1401,7 +1472,6 @@
             };
 
             try {
-                // Verificar si ya existe un reporte para este nodo_id
                 const { data: existente, error: buscaError } = await supabaseClient
                     .from('reports')
                     .select('id')
@@ -1413,7 +1483,6 @@
 
                 let resultado;
                 if (existente && existente.length > 0) {
-                    // Actualizar el reporte existente
                     const idExistente = existente[0].id;
                     resultado = await supabaseClient
                         .from('reports')
@@ -1422,7 +1491,6 @@
                     if (resultado.error) throw resultado.error;
                     mostrarToast('✅ Reporte actualizado correctamente.', 'success');
                 } else {
-                    // Insertar nuevo
                     resultado = await supabaseClient
                         .from('reports')
                         .insert([reporte]);
@@ -1502,7 +1570,10 @@
                         <td>${r.meta_celular !== undefined ? r.meta_celular : '—'}</td>
                         <td>${r.meta_iglesia !== undefined ? r.meta_iglesia : '—'}</td>
                         <td>${numIntegrantes}</td>
-                        <td><button class="btn-ver-integrantes" data-reporte-idx="${idx}">Ver integrantes</button></td>
+                        <td>
+                            <button class="btn-ver-integrantes" data-reporte-idx="${idx}">👥 Ver integrantes</button>
+                            <button class="btn-ver-reporte" data-reporte-idx="${idx}">📄 Ver reporte</button>
+                        </td>
                     </tr>
                 `;
             });
@@ -1513,6 +1584,14 @@
                     const idx = parseInt(this.dataset.reporteIdx);
                     const reporte = reportes[idx];
                     mostrarIntegrantesDeReporte(reporte);
+                });
+            });
+
+            document.querySelectorAll('#cuerpoTablaReportes .btn-ver-reporte').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.reporteIdx);
+                    const reporte = reportes[idx];
+                    mostrarReporteCompleto(reporte);
                 });
             });
         }
@@ -1531,6 +1610,7 @@
                         if (p[campo] === criterio) {
                             personas.push({
                                 nombre: p.nombre,
+                                grupo: reporte.grupo_remitente || 'Sin grupo',
                                 padre: reporte.padre_directo || 'Sin padre',
                                 raiz: reporte.red_principal || 'Sin raíz'
                             });
@@ -1548,6 +1628,7 @@
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <span class="nombre">${p.nombre}</span>
+                        <span class="jerarquia">👥 ${p.grupo}</span>
                         <span class="jerarquia">👆 ${p.padre}</span>
                         <span class="jerarquia">🔷 ${p.raiz}</span>
                     `;
@@ -1568,6 +1649,7 @@
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <span class="nombre">${p.nombre || 'Sin nombre'}</span>
+                        <span class="jerarquia">👥 ${reporte.grupo_remitente || 'N/A'}</span>
                         <span class="jerarquia">👆 ${reporte.padre_directo || 'N/A'}</span>
                         <span class="jerarquia">🔷 ${reporte.red_principal || 'N/A'}</span>
                     `;
@@ -1576,6 +1658,123 @@
             }
             document.getElementById('modalTitulo').textContent = `Integrantes de "${reporte.grupo_remitente || 'grupo'}" (${reporte.integrantes ? reporte.integrantes.length : 0})`;
             document.getElementById('modalNombres').classList.add('active');
+        }
+
+        // ============================================================
+        //  REPORTE COMPLETO (modal grande)
+        // ============================================================
+
+        function mostrarReporteCompleto(reporte) {
+            const contenedor = document.getElementById('contenidoReporteCompleto');
+            
+            // Generar HTML del reporte
+            let html = `
+                <div style="padding:10px;">
+                    <h2 style="color:#0b2b4a; border-bottom:2px solid #e9edf2; padding-bottom:10px; margin-bottom:16px;">
+                        📋 Reporte completo: ${reporte.grupo_remitente || 'Sin grupo'}
+                    </h2>
+                    <div style="background:#f8fafc; padding:16px; border-radius:8px; margin-bottom:20px;">
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px;">
+                            <div><strong>👥 Grupo:</strong> ${reporte.grupo_remitente || 'N/A'}</div>
+                            <div><strong>👆 Padre directo:</strong> ${reporte.padre_directo || 'N/A'}</div>
+                            <div><strong>🔷 Red principal:</strong> ${reporte.red_principal || 'N/A'}</div>
+                            <div><strong>📅 Fecha evangelismo:</strong> ${reporte.fecha_evangelismo || '—'}</div>
+                            <div><strong>📅 Fecha amigo celular:</strong> ${reporte.fecha_amigo_celular || '—'}</div>
+                            <div><strong>🎯 Meta celular:</strong> ${reporte.meta_celular !== undefined ? reporte.meta_celular : '—'}</div>
+                            <div><strong>⛪ Meta iglesia:</strong> ${reporte.meta_iglesia !== undefined ? reporte.meta_iglesia : '—'}</div>
+                        </div>
+                    </div>
+                    <h3 style="margin-top:16px; margin-bottom:10px;">👥 Integrantes (${reporte.integrantes ? reporte.integrantes.length : 0})</h3>
+                    <div class="table-wrapper">
+                        <table style="font-size:0.8rem;">
+                            <thead>
+                                <tr>
+                                    <th style="background:#475569;">#</th>
+                                    <th style="background:#475569;">Nombre</th>
+                                    <th class="col-semilla">Semilla</th>
+                                    <th class="col-estado">Estado Civil</th>
+                                    <th class="col-bautismo">Bautismo</th>
+                                    <th class="col-encuentro">Encuentro</th>
+                                    <th class="col-lanzamiento">Lanzamiento</th>
+                                    <th class="col-charlas">Charlas</th>
+                                    <th class="col-proposito">Propósito</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            `;
+
+            if (reporte.integrantes && reporte.integrantes.length > 0) {
+                reporte.integrantes.forEach((p, idx) => {
+                    html += `
+                        <tr>
+                            <td>${idx + 1}</td>
+                            <td>${p.nombre || ''}</td>
+                            <td>${p.semilla ? etiquetasTotales[p.semilla] || p.semilla : ''}</td>
+                            <td>${p.estado_civil ? etiquetasTotales[p.estado_civil] || p.estado_civil : ''}</td>
+                            <td>${p.bautismo ? etiquetasTotales[p.bautismo] || p.bautismo : ''}</td>
+                            <td>${p.encuentro ? etiquetasTotales[p.encuentro] || p.encuentro : ''}</td>
+                            <td>${p.lanzamiento ? etiquetasTotales[p.lanzamiento] || p.lanzamiento : ''}</td>
+                            <td>${p.charlas ? etiquetasTotales[p.charlas] || p.charlas : ''}</td>
+                            <td>${p.proposito ? etiquetasTotales[p.proposito] || p.proposito : ''}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                html += `<tr><td colspan="9" style="text-align:center; color:#94a3b8;">No hay integrantes.</td></tr>`;
+            }
+
+            html += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3 style="margin-top:20px; margin-bottom:10px;">📊 Totales calculados</h3>
+                    <div class="summary-grid" id="resumenReporteCompleto">
+                        <!-- se llenará con JS -->
+                    </div>
+                </div>
+            `;
+
+            contenedor.innerHTML = html;
+
+            // Calcular totales para este reporte
+            const conteos = {
+                con_semilla: 0, sin_semilla: 0, graduado_semilla: 0,
+                casado: 0, acompanado: 0, soltero: 0,
+                bautizado: 0, no_bautizado: 0,
+                con_encuentro: 0, sin_encuentro: 0,
+                con_lanzamiento: 0, falta_lanzamiento: 0,
+                sin_charlas: 0,
+                en_proposito: 0, sin_proposito: 0
+            };
+            if (reporte.integrantes) {
+                reporte.integrantes.forEach(p => {
+                    ['semilla', 'estado_civil', 'bautismo', 'encuentro', 'lanzamiento', 'charlas', 'proposito'].forEach(campo => {
+                        const val = p[campo];
+                        if (val && conteos.hasOwnProperty(val)) conteos[val]++;
+                    });
+                });
+            }
+
+            const gridResumen = document.getElementById('resumenReporteCompleto');
+            let htmlResumen = '';
+            for (const [key, label] of Object.entries(etiquetasTotales)) {
+                const count = conteos[key] || 0;
+                const clase = categoriaClase[key] || '';
+                htmlResumen += `
+                    <div class="stat-card ${clase}" style="cursor:default;">
+                        <div class="label">${label}</div>
+                        <div class="number">${count}</div>
+                    </div>
+                `;
+            }
+            gridResumen.innerHTML = htmlResumen;
+
+            // Mostrar el modal
+            document.getElementById('modalReporteCompleto').classList.add('active');
+        }
+
+        function imprimirReporteCompleto() {
+            window.print();
         }
 
         // ============================================================
@@ -1617,6 +1816,10 @@
 
         function cerrarModal() {
             document.getElementById('modalNombres').classList.remove('active');
+        }
+
+        function cerrarModalReporte() {
+            document.getElementById('modalReporteCompleto').classList.remove('active');
         }
 
         // ============================================================
@@ -1760,7 +1963,10 @@
                 if (e.target === this) cerrarModal();
             });
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') cerrarModal();
+                if (e.key === 'Escape') {
+                    cerrarModal();
+                    cerrarModalReporte();
+                }
             });
 
             document.getElementById('btnAdmin').addEventListener('click', mostrarLogin);
@@ -1779,6 +1985,11 @@
             });
             document.getElementById('filtroNodo').addEventListener('change', function() {
                 actualizarAdminTotalesYTabla();
+            });
+
+            document.getElementById('modalReporteClose').addEventListener('click', cerrarModalReporte);
+            document.getElementById('modalReporteCompleto').addEventListener('click', function(e) {
+                if (e.target === this) cerrarModalReporte();
             });
 
             document.getElementById('vistaAdmin').style.display = 'none';
