@@ -57,11 +57,6 @@
         .btn-warning { background: #d97706; color: white; }
         .btn-warning:hover { background: #b45309; }
 
-        .btn-sm {
-            padding: 4px 10px;
-            font-size: 0.75rem;
-        }
-
         .card {
             background: white;
             padding: 20px;
@@ -249,24 +244,11 @@
         }
         .btn-eliminar-fila:hover { background: #fee2e2; }
 
+        /* ===== TOTALES (vista normal) ===== */
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 12px;
-        }
-        /* Para los totales en los modales de reporte, usar 3 columnas */
-        .summary-grid-3col {
-            grid-template-columns: repeat(3, 1fr);
-        }
-        @media (max-width: 640px) {
-            .summary-grid-3col {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 480px) {
-            .summary-grid-3col {
-                grid-template-columns: 1fr;
-            }
         }
 
         .stat-card {
@@ -277,7 +259,6 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.15s;
-            position: relative;
         }
         .stat-card:hover {
             transform: translateY(-3px);
@@ -301,6 +282,39 @@
             font-size: 0.6rem;
             color: #94a3b8;
             margin-top: 2px;
+        }
+
+        /* ===== TOTALES EN REPORTES (admin y usuario) ===== */
+        .stat-card-reporte {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 6px 4px;
+            border-radius: 6px;
+            text-align: center;
+        }
+        .stat-card-reporte .label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+            color: #334155;
+        }
+        .stat-card-reporte .number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .summary-grid-3col {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+        @media (max-width: 640px) {
+            .summary-grid-3col { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .summary-grid-3col { grid-template-columns: 1fr; }
         }
 
         .stat-semilla .number { color: #0b6e4f; }
@@ -501,6 +515,9 @@
             #vistaAdmin { display: none !important; }
             #modalReporteCompleto, #modalVerReporte { display: none !important; }
             .summary-grid-3col { grid-template-columns: repeat(3,1fr) !important; }
+            .stat-card-reporte { padding: 4px 3px !important; }
+            .stat-card-reporte .label { font-size: 0.55rem !important; }
+            .stat-card-reporte .number { font-size: 1rem !important; }
         }
 
         /* ===== RESPONSIVE ===== */
@@ -1157,36 +1174,27 @@
             document.getElementById('modalNombres').classList.add('active');
         }
 
-        // ===== REPORTE COMPLETO (ADMIN) =====
-        function mostrarReporteCompleto(reporte) {
-            const contenedor = document.getElementById('contenidoReporteCompleto');
-            contenedor.innerHTML = generarHTMLReporte(reporte);
-            // Calcular totales y llenar grid
-            llenarGridTotales(reporte, 'resumenReporteCompleto');
-            document.getElementById('modalReporteCompleto').classList.add('active');
-        }
-
         // ===== GENERAR HTML DE REPORTE =====
         function generarHTMLReporte(reporte) {
             let html = `
                 <div style="padding:10px;">
-                    <h2 style="color:#0b2b4a; border-bottom:2px solid #e9edf2; padding-bottom:10px; margin-bottom:16px;">
+                    <h2 style="color:#0b2b4a; border-bottom:2px solid #e9edf2; padding-bottom:10px; margin-bottom:16px; font-size:1.3rem;">
                         📋 Reporte completo: ${reporte.grupo_remitente || 'Sin grupo'}
                     </h2>
-                    <div style="background:#f8fafc; padding:16px; border-radius:8px; margin-bottom:20px;">
-                        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px;">
+                    <div style="background:#f8fafc; padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:0.9rem;">
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:8px;">
                             <div><strong>👥 Grupo:</strong> ${reporte.grupo_remitente || 'N/A'}</div>
-                            <div><strong>👆 Padre directo:</strong> ${reporte.padre_directo || 'N/A'}</div>
-                            <div><strong>🔷 Red principal:</strong> ${reporte.red_principal || 'N/A'}</div>
-                            <div><strong>📅 Fecha evangelismo:</strong> ${reporte.fecha_evangelismo || '—'}</div>
-                            <div><strong>📅 Fecha amigo celular:</strong> ${reporte.fecha_amigo_celular || '—'}</div>
+                            <div><strong>👆 Padre:</strong> ${reporte.padre_directo || 'N/A'}</div>
+                            <div><strong>🔷 Raíz:</strong> ${reporte.red_principal || 'N/A'}</div>
+                            <div><strong>📅 Evangelismo:</strong> ${reporte.fecha_evangelismo || '—'}</div>
+                            <div><strong>📅 Amigo celular:</strong> ${reporte.fecha_amigo_celular || '—'}</div>
                             <div><strong>🎯 Meta celular:</strong> ${reporte.meta_celular !== undefined ? reporte.meta_celular : '—'}</div>
                             <div><strong>⛪ Meta iglesia:</strong> ${reporte.meta_iglesia !== undefined ? reporte.meta_iglesia : '—'}</div>
                         </div>
                     </div>
-                    <h3 style="margin-top:16px; margin-bottom:10px;">👥 Integrantes (${reporte.integrantes ? reporte.integrantes.length : 0})</h3>
+                    <h3 style="margin-top:12px; margin-bottom:8px; font-size:1rem;">👥 Integrantes (${reporte.integrantes ? reporte.integrantes.length : 0})</h3>
                     <div class="table-wrapper">
-                        <table style="font-size:0.8rem;">
+                        <table style="font-size:0.78rem;">
                             <thead>
                                 <tr>
                                     <th style="background:#475569;">#</th>
@@ -1223,7 +1231,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <h3 style="margin-top:20px; margin-bottom:10px;">📊 Totales calculados</h3>
+                    <h3 style="margin-top:16px; margin-bottom:8px; font-size:1rem;">📊 Totales calculados</h3>
                     <div class="summary-grid summary-grid-3col" id="resumenReporteCompleto"></div>
                 </div>
             `;
@@ -1246,7 +1254,8 @@
             let html = '';
             for (const [key,label] of Object.entries(etiquetasTotales)) {
                 const count = conteos[key] || 0;
-                html += `<div class="stat-card ${categoriaClase[key]||''}" style="cursor:default;">
+                const clase = categoriaClase[key] || '';
+                html += `<div class="stat-card-reporte ${clase}">
                     <div class="label">${label}</div>
                     <div class="number">${count}</div>
                 </div>`;
@@ -1259,7 +1268,6 @@
             const contenido = document.getElementById(contenedorId);
             if (!contenido) return;
             const clon = contenido.cloneNode(true);
-            // Eliminar botones de impresión dentro del clon
             const btns = clon.querySelectorAll('.no-print, .btn');
             btns.forEach(b => b.remove());
 
@@ -1275,36 +1283,33 @@
                     <meta charset="UTF-8">
                     <title>${titulo || 'Reporte'}</title>
                     <style>
-                        body { font-family: 'Segoe UI', Roboto, sans-serif; padding: 20px; color: #1e293b; }
-                        .summary-grid {
+                        body { font-family: 'Segoe UI', Roboto, sans-serif; padding: 20px; color: #1e293b; font-size: 10pt; }
+                        .summary-grid-3col {
                             display: grid;
                             grid-template-columns: repeat(3, 1fr);
-                            gap: 12px;
-                            margin-top: 10px;
+                            gap: 6px;
+                            margin-top: 8px;
                         }
-                        @media (max-width: 640px) {
-                            .summary-grid { grid-template-columns: repeat(2,1fr); }
-                        }
-                        @media (max-width: 480px) {
-                            .summary-grid { grid-template-columns: 1fr; }
-                        }
-                        .stat-card {
+                        @media (max-width: 640px) { .summary-grid-3col { grid-template-columns: repeat(2,1fr); } }
+                        @media (max-width: 480px) { .summary-grid-3col { grid-template-columns: 1fr; } }
+                        .stat-card-reporte {
                             background: #f8fafc;
                             border: 1px solid #e2e8f0;
-                            padding: 12px 8px;
-                            border-radius: 8px;
+                            padding: 4px 3px;
+                            border-radius: 4px;
                             text-align: center;
                         }
-                        .stat-card .label {
-                            font-size: 0.75rem;
+                        .stat-card-reporte .label {
+                            font-size: 0.55rem;
                             font-weight: 600;
                             text-transform: uppercase;
+                            letter-spacing: 0.2px;
                             color: #334155;
                         }
-                        .stat-card .number {
-                            font-size: 1.8rem;
+                        .stat-card-reporte .number {
+                            font-size: 1rem;
                             font-weight: 700;
-                            margin-top: 4px;
+                            margin-top: 1px;
                         }
                         .stat-semilla .number { color: #0b6e4f; }
                         .stat-estado .number { color: #1a5a8c; }
@@ -1313,9 +1318,9 @@
                         .stat-lanzamiento .number { color: #b91c1c; }
                         .stat-charlas .number { color: #9d174d; }
                         .stat-proposito .number { color: #0f766e; }
-                        table { border-collapse: collapse; width: 100%; margin: 10px 0; font-size: 0.85rem; }
-                        th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: center; }
-                        th { background: #334155; color: white; }
+                        table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 8.5pt; }
+                        th, td { border: 1px solid #ccc; padding: 4px 4px; text-align: center; }
+                        th { background: #334155; color: white; font-size: 8pt; }
                         .col-semilla th { background-color: #0b6e4f; }
                         .col-estado th { background-color: #1a5a8c; }
                         .col-bautismo th { background-color: #b45309; }
@@ -1324,9 +1329,16 @@
                         .col-charlas th { background-color: #9d174d; }
                         .col-proposito th { background-color: #0f766e; }
                         .table-wrapper { overflow-x: auto; }
+                        h2 { font-size: 1.1rem; }
+                        h3 { font-size: 0.9rem; margin-top: 10px; margin-bottom: 6px; }
                         @media print {
-                            body { padding: 0.2in; }
+                            body { padding: 0.15in; }
                             .no-print { display: none; }
+                            .stat-card-reporte { padding: 3px 2px !important; }
+                            .stat-card-reporte .label { font-size: 0.5rem !important; }
+                            .stat-card-reporte .number { font-size: 0.9rem !important; }
+                            table { font-size: 7.5pt; }
+                            th, td { padding: 3px 3px; }
                         }
                     </style>
                 </head>
@@ -1351,7 +1363,6 @@
                 mostrarToast('Selecciona un nodo para ver su reporte.', 'error');
                 return;
             }
-            // Buscar el último reporte de ese nodo
             const { data, error } = await supabaseClient
                 .from('reports')
                 .select('*')
@@ -1372,6 +1383,14 @@
             contenedor.innerHTML = generarHTMLReporte(reporte);
             llenarGridTotales(reporte, 'resumenReporteCompletoUsuario');
             document.getElementById('modalVerReporte').classList.add('active');
+        }
+
+        // ===== MOSTRAR REPORTE (ADMIN) =====
+        function mostrarReporteCompleto(reporte) {
+            const contenedor = document.getElementById('contenidoReporteCompleto');
+            contenedor.innerHTML = generarHTMLReporte(reporte);
+            llenarGridTotales(reporte, 'resumenReporteCompleto');
+            document.getElementById('modalReporteCompleto').classList.add('active');
         }
 
         // ===== MOSTRAR PERSONAS (vista normal y admin) =====
@@ -1499,8 +1518,6 @@
             document.getElementById('btnAgregar').addEventListener('click', agregarFila);
             document.getElementById('btnEliminar').addEventListener('click', eliminarUltimaFila);
             document.getElementById('btnGuardarReporte').addEventListener('click', guardarReporte);
-
-            // Botón ver reporte usuario
             document.getElementById('btnVerReporteUsuario').addEventListener('click', verReporteUsuario);
 
             document.getElementById('tablaIntegrantes').addEventListener('change', function(e) {
@@ -1547,7 +1564,6 @@
                 if (e.target === this) cerrarModalVerReporte();
             });
 
-            // Botones de imprimir
             document.getElementById('btnImprimirReporteAdmin').addEventListener('click', function() {
                 imprimirReporte('contenidoReporteCompleto', 'Reporte completo');
             });
