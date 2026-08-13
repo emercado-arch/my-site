@@ -1056,7 +1056,14 @@
             const reportes = await cargarReportesDesdeSupabase(filtroRaiz, filtroNodo);
 
             const conteos = { con_semilla:0, sin_semilla:0, graduado_semilla:0, casado:0, acompanado:0, soltero:0, bautizado:0, no_bautizado:0, con_encuentro:0, sin_encuentro:0, con_lanzamiento:0, falta_lanzamiento:0, sin_charlas:0, en_proposito:0, sin_proposito:0 };
+            let sumMetaCelular = 0;
+            let sumMetaIglesia = 0;
+
             reportes.forEach(r => {
+                // Sumar metas
+                if (r.meta_celular !== undefined && r.meta_celular !== null) sumMetaCelular += Number(r.meta_celular);
+                if (r.meta_iglesia !== undefined && r.meta_iglesia !== null) sumMetaIglesia += Number(r.meta_iglesia);
+
                 if (r.integrantes) {
                     r.integrantes.forEach(p => {
                         ['semilla','estado_civil','bautismo','encuentro','lanzamiento','charlas','proposito'].forEach(campo => {
@@ -1066,6 +1073,7 @@
                     });
                 }
             });
+
             const grid = document.getElementById('adminSummaryGrid');
             let html = '';
             for (const [key,label] of Object.entries(etiquetasTotales)) {
@@ -1076,6 +1084,21 @@
                     <div class="hint">Clic para ver nombres</div>
                 </div>`;
             }
+
+            // Agregar tarjetas de totales de metas al final
+            html += `
+                <div class="stat-card" style="border-left-color: #2563eb;">
+                    <div class="label">🎯 Suma Meta Amigos Celular</div>
+                    <div class="number">${sumMetaCelular}</div>
+                    <div class="hint">Total de metas de celular</div>
+                </div>
+                <div class="stat-card" style="border-left-color: #7c3aed;">
+                    <div class="label">⛪ Suma Meta Amigos Iglesia</div>
+                    <div class="number">${sumMetaIglesia}</div>
+                    <div class="hint">Total de metas de iglesia</div>
+                </div>
+            `;
+
             grid.innerHTML = html;
 
             const tbody = document.getElementById('cuerpoTablaReportes');
