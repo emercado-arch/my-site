@@ -1004,9 +1004,10 @@
             return data;
         }
 
+        // ===== FUNCIÓN GUARDAR REPORTE ACTUALIZADA =====
         async function guardarReporte() {
             const nodoId = document.getElementById('nodoSelect').value;
-            if (!nodoId) { mostrarToast('Selecciona un nodo.','error'); return; }
+            if (!nodoId) { mostrarToast('Selecciona un nodo.', 'error'); return; }
             const nodo = getNodoById(nodoId);
             const { padre, raiz } = getPadreYRaiz(nodoId);
             const datos = obtenerDatosTabla();
@@ -1032,21 +1033,23 @@
                 meta_iglesia: parseInt(document.getElementById('metaAmigosIglesia').value),
                 integrantes
             };
+
             try {
-                const { data: existente } = await supabaseClient
-                    .from('reports')
-                    .select('id')
-                    .eq('nodo_id', nodoId)
-                    .order('timestamp', { ascending: false })
-                    .limit(1);
-                if (existente && existente.length > 0) {
-                    await supabaseClient.from('reports').update(reporte).eq('id', existente[0].id);
-                    mostrarToast('✅ Reporte actualizado.','success');
-                } else {
-                    await supabaseClient.from('reports').insert([reporte]);
-                    mostrarToast('✅ Reporte guardado.','success');
+                // 1. Eliminar todos los reportes anteriores del mismo nodo
+                await supabaseClient.from('reports').delete().eq('nodo_id', nodoId);
+                // 2. Insertar el nuevo reporte
+                await supabaseClient.from('reports').insert([reporte]);
+                mostrarToast('✅ Reporte guardado/actualizado correctamente.', 'success');
+
+                // 3. Si el panel de administración está visible, refrescar sus datos
+                const adminVisible = document.getElementById('vistaAdmin').style.display === 'block';
+                if (adminVisible) {
+                    await actualizarAdminTotalesYTabla();
                 }
-            } catch(e) { console.error(e); mostrarToast('❌ Error al guardar.','error'); }
+            } catch (e) {
+                console.error('Error al guardar reporte:', e);
+                mostrarToast('❌ Error al guardar. Revisa la consola.', 'error');
+            }
         }
 
         // ===== ADMIN =====
