@@ -1061,11 +1061,16 @@
             const conteos = { con_semilla:0, sin_semilla:0, graduado_semilla:0, casado:0, acompanado:0, soltero:0, bautizado:0, no_bautizado:0, con_encuentro:0, sin_encuentro:0, con_lanzamiento:0, falta_lanzamiento:0, sin_charlas:0, en_proposito:0, sin_proposito:0 };
             let sumMetaCelular = 0;
             let sumMetaIglesia = 0;
+            let sumIntegrantes = 0;
 
             reportes.forEach(r => {
                 // Sumar metas
                 if (r.meta_celular !== undefined && r.meta_celular !== null) sumMetaCelular += Number(r.meta_celular);
                 if (r.meta_iglesia !== undefined && r.meta_iglesia !== null) sumMetaIglesia += Number(r.meta_iglesia);
+                // Sumar integrantes
+                if (r.integrantes && Array.isArray(r.integrantes)) {
+                    sumIntegrantes += r.integrantes.length;
+                }
 
                 if (r.integrantes) {
                     r.integrantes.forEach(p => {
@@ -1088,7 +1093,7 @@
                 </div>`;
             }
 
-            // Agregar tarjetas de totales de metas al final
+            // Agregar tarjetas de totales de metas y total de integrantes
             html += `
                 <div class="stat-card" style="border-left-color: #2563eb;">
                     <div class="label">🎯 Suma Meta Amigos Celular</div>
@@ -1099,6 +1104,11 @@
                     <div class="label">⛪ Suma Meta Amigos Iglesia</div>
                     <div class="number">${sumMetaIglesia}</div>
                     <div class="hint">Total de metas de iglesia</div>
+                </div>
+                <div class="stat-card" style="border-left-color: #0b6e4f;">
+                    <div class="label">👥 Total de Integrantes</div>
+                    <div class="number">${sumIntegrantes}</div>
+                    <div class="hint">Suma de todos los miembros</div>
                 </div>
             `;
 
