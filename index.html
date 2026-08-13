@@ -991,15 +991,15 @@
             grid.innerHTML = html;
         }
 
-        // ===== SUPABASE FUNCTIONS (TABLA: reportes) =====
+        // ===== SUPABASE FUNCTIONS =====
         async function cargarReportesDesdeSupabase(filtroRaiz='__TODAS__', filtroNodo='__TODOS__') {
-            let query = supabaseClient.from('reportes').select('*');
+            let query = supabaseClient.from('reports').select('*');
             if (filtroRaiz !== '__TODAS__') {
                 const ids = getNodosPorRaiz(filtroRaiz).map(n => n.id);
                 query = query.in('nodo_id', ids);
             }
             if (filtroNodo !== '__TODOS__') query = query.eq('nodo_id', filtroNodo);
-            const { data, error } = await query.order('created_at', { ascending: false });
+            const { data, error } = await query.order('timestamp', { ascending: false });
             if (error) { console.error(error); return []; }
             return data;
         }
@@ -1020,30 +1020,30 @@
                 charlas: p.charlas,
                 proposito: p.proposito
             }));
-            // Mapear a las columnas reales de la tabla 'reportes'
             const reporte = {
+                timestamp: new Date().toISOString(),
                 nodo_id: nodoId,
-                nodo_nombre: nodo ? nodo.nombre : 'Desconocido',
+                grupo_remitente: nodo ? nodo.nombre : 'Desconocido',
                 padre_directo: padre ? padre.nombre : 'Ninguno (raíz)',
                 red_principal: raiz ? raiz.nombre : 'Ninguna',
                 fecha_evangelismo: document.getElementById('fechaEvangelismo').value || null,
                 fecha_amigo_celular: document.getElementById('fechaAmigoCelular').value || null,
-                meta_amigos_celular: parseInt(document.getElementById('metaAmigosCelular').value),
-                meta_amigos_iglesia: parseInt(document.getElementById('metaAmigosIglesia').value),
-                integrantes: integrantes
+                meta_celular: parseInt(document.getElementById('metaAmigosCelular').value),
+                meta_iglesia: parseInt(document.getElementById('metaAmigosIglesia').value),
+                integrantes
             };
             try {
                 const { data: existente } = await supabaseClient
-                    .from('reportes')
+                    .from('reports')
                     .select('id')
                     .eq('nodo_id', nodoId)
-                    .order('created_at', { ascending: false })
+                    .order('timestamp', { ascending: false })
                     .limit(1);
                 if (existente && existente.length > 0) {
-                    await supabaseClient.from('reportes').update(reporte).eq('id', existente[0].id);
+                    await supabaseClient.from('reports').update(reporte).eq('id', existente[0].id);
                     mostrarToast('✅ Reporte actualizado.','success');
                 } else {
-                    await supabaseClient.from('reportes').insert([reporte]);
+                    await supabaseClient.from('reports').insert([reporte]);
                     mostrarToast('✅ Reporte guardado.','success');
                 }
             } catch(e) { console.error(e); mostrarToast('❌ Error al guardar.','error'); }
@@ -1085,16 +1085,16 @@
             }
             let filas = '';
             reportes.forEach((r, idx) => {
-                const fecha = r.created_at ? new Date(r.created_at).toLocaleString() : 'N/A';
+                const fecha = r.timestamp ? new Date(r.timestamp).toLocaleString() : 'N/A';
                 const num = (r.integrantes && Array.isArray(r.integrantes)) ? r.integrantes.length : 0;
                 filas += `<tr>
                     <td>${fecha}</td>
-                    <td>${r.nodo_nombre || 'N/A'}</td>
+                    <td>${r.grupo_remitente || 'N/A'}</td>
                     <td>${r.padre_directo || 'N/A'}</td>
                     <td>${r.fecha_evangelismo || '—'}</td>
                     <td>${r.fecha_amigo_celular || '—'}</td>
-                    <td>${r.meta_amigos_celular !== undefined ? r.meta_amigos_celular : '—'}</td>
-                    <td>${r.meta_amigos_iglesia !== undefined ? r.meta_amigos_iglesia : '—'}</td>
+                    <td>${r.meta_celular !== undefined ? r.meta_celular : '—'}</td>
+                    <td>${r.meta_iglesia !== undefined ? r.meta_iglesia : '—'}</td>
                     <td>${num}</td>
                     <td>
                         <button class="btn-ver-integrantes" data-reporte-idx="${idx}">👥 Ver integrantes</button>
@@ -1126,7 +1126,7 @@
                     r.integrantes.forEach(p => {
                         const campo = criterioMap[criterio];
                         if (p[campo] === criterio) {
-                            const grupo = r.nodo_nombre || 'Sin grupo';
+                            const grupo = r.grupo_remitente || 'Sin grupo';
                             const padre = r.padre_directo || 'Sin padre';
                             const raiz = r.red_principal || 'Sin raíz';
                             const padreMostrar = (padre === raiz) ? '' : padre;
@@ -1163,14 +1163,14 @@
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <span class="nombre">${p.nombre || 'Sin nombre'}</span>
-                        <span class="jerarquia">👥 ${reporte.nodo_nombre || 'N/A'}</span>
+                        <span class="jerarquia">👥 ${reporte.grupo_remitente || 'N/A'}</span>
                         <span class="jerarquia">👆 ${reporte.padre_directo || 'N/A'}</span>
                         <span class="jerarquia">🔷 ${reporte.red_principal || 'N/A'}</span>
                     `;
                     ul.appendChild(li);
                 });
             }
-            document.getElementById('modalTitulo').textContent = `Integrantes de "${reporte.nodo_nombre || 'grupo'}" (${reporte.integrantes ? reporte.integrantes.length : 0})`;
+            document.getElementById('modalTitulo').textContent = `Integrantes de "${reporte.grupo_remitente || 'grupo'}" (${reporte.integrantes ? reporte.integrantes.length : 0})`;
             document.getElementById('modalNombres').classList.add('active');
         }
 
@@ -1179,17 +1179,17 @@
             let html = `
                 <div style="padding:10px;">
                     <h2 style="color:#0b2b4a; border-bottom:2px solid #e9edf2; padding-bottom:10px; margin-bottom:16px; font-size:1.3rem;">
-                        📋 Reporte completo: ${reporte.nodo_nombre || 'Sin grupo'}
+                        📋 Reporte completo: ${reporte.grupo_remitente || 'Sin grupo'}
                     </h2>
                     <div style="background:#f8fafc; padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:0.9rem;">
                         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:8px;">
-                            <div><strong>👥 Grupo:</strong> ${reporte.nodo_nombre || 'N/A'}</div>
+                            <div><strong>👥 Grupo:</strong> ${reporte.grupo_remitente || 'N/A'}</div>
                             <div><strong>👆 Padre:</strong> ${reporte.padre_directo || 'N/A'}</div>
                             <div><strong>🔷 Raíz:</strong> ${reporte.red_principal || 'N/A'}</div>
                             <div><strong>📅 Evangelismo:</strong> ${reporte.fecha_evangelismo || '—'}</div>
                             <div><strong>📅 Amigo celular:</strong> ${reporte.fecha_amigo_celular || '—'}</div>
-                            <div><strong>🎯 Meta celular:</strong> ${reporte.meta_amigos_celular !== undefined ? reporte.meta_amigos_celular : '—'}</div>
-                            <div><strong>⛪ Meta iglesia:</strong> ${reporte.meta_amigos_iglesia !== undefined ? reporte.meta_amigos_iglesia : '—'}</div>
+                            <div><strong>🎯 Meta celular:</strong> ${reporte.meta_celular !== undefined ? reporte.meta_celular : '—'}</div>
+                            <div><strong>⛪ Meta iglesia:</strong> ${reporte.meta_iglesia !== undefined ? reporte.meta_iglesia : '—'}</div>
                         </div>
                     </div>
                     <h3 style="margin-top:12px; margin-bottom:8px; font-size:1rem;">👥 Integrantes (${reporte.integrantes ? reporte.integrantes.length : 0})</h3>
@@ -1364,10 +1364,10 @@
                 return;
             }
             const { data, error } = await supabaseClient
-                .from('reportes')
+                .from('reports')
                 .select('*')
                 .eq('nodo_id', nodoId)
-                .order('created_at', { ascending: false })
+                .order('timestamp', { ascending: false })
                 .limit(1);
             if (error) {
                 console.error(error);
