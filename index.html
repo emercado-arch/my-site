@@ -1004,6 +1004,18 @@
             return data;
         }
 
+        // ===== FUNCIÓN PARA OBTENER EL REPORTE MÁS RECIENTE POR NODO =====
+        function obtenerReportesMasRecientesPorNodo(reportes) {
+            const map = new Map();
+            reportes.forEach(r => {
+                const nodoId = r.nodo_id;
+                if (!map.has(nodoId) || new Date(r.timestamp) > new Date(map.get(nodoId).timestamp)) {
+                    map.set(nodoId, r);
+                }
+            });
+            return Array.from(map.values());
+        }
+
         // ===== FUNCIÓN GUARDAR REPORTE ACTUALIZADA =====
         async function guardarReporte() {
             const nodoId = document.getElementById('nodoSelect').value;
@@ -1057,13 +1069,15 @@
             const filtroRaiz = document.getElementById('filtroRaiz').value;
             const filtroNodo = document.getElementById('filtroNodo').value;
             const reportes = await cargarReportesDesdeSupabase(filtroRaiz, filtroNodo);
+            // Tomar solo el más reciente por nodo
+            const reportesUnicos = obtenerReportesMasRecientesPorNodo(reportes);
 
             const conteos = { con_semilla:0, sin_semilla:0, graduado_semilla:0, casado:0, acompanado:0, soltero:0, bautizado:0, no_bautizado:0, con_encuentro:0, sin_encuentro:0, con_lanzamiento:0, falta_lanzamiento:0, sin_charlas:0, en_proposito:0, sin_proposito:0 };
             let sumMetaCelular = 0;
             let sumMetaIglesia = 0;
             let sumIntegrantes = 0;
 
-            reportes.forEach(r => {
+            reportesUnicos.forEach(r => {
                 // Sumar metas
                 if (r.meta_celular !== undefined && r.meta_celular !== null) sumMetaCelular += Number(r.meta_celular);
                 if (r.meta_iglesia !== undefined && r.meta_iglesia !== null) sumMetaIglesia += Number(r.meta_iglesia);
@@ -1115,12 +1129,12 @@
             grid.innerHTML = html;
 
             const tbody = document.getElementById('cuerpoTablaReportes');
-            if (reportes.length === 0) {
+            if (reportesUnicos.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#94a3b8; padding:20px;">No hay reportes con estos filtros.</td></tr>`;
                 return;
             }
             let filas = '';
-            reportes.forEach((r, idx) => {
+            reportesUnicos.forEach((r, idx) => {
                 const fecha = r.timestamp ? new Date(r.timestamp).toLocaleString() : 'N/A';
                 const num = (r.integrantes && Array.isArray(r.integrantes)) ? r.integrantes.length : 0;
                 filas += `<tr>
@@ -1142,13 +1156,13 @@
             document.querySelectorAll('.btn-ver-integrantes').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.reporteIdx);
-                    mostrarIntegrantesDeReporte(reportes[idx]);
+                    mostrarIntegrantesDeReporte(reportesUnicos[idx]);
                 });
             });
             document.querySelectorAll('.btn-ver-reporte').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const idx = parseInt(this.dataset.reporteIdx);
-                    mostrarReporteCompleto(reportes[idx]);
+                    mostrarReporteCompleto(reportesUnicos[idx]);
                 });
             });
         }
@@ -1156,8 +1170,9 @@
         // ===== MODALES ADMIN =====
         async function mostrarPersonasAdminGlobal(criterio, titulo, filtroRaiz, filtroNodo) {
             const reportes = await cargarReportesDesdeSupabase(filtroRaiz, filtroNodo);
+            const reportesUnicos = obtenerReportesMasRecientesPorNodo(reportes);
             const personas = [];
-            reportes.forEach(r => {
+            reportesUnicos.forEach(r => {
                 if (r.integrantes) {
                     r.integrantes.forEach(p => {
                         const campo = criterioMap[criterio];
